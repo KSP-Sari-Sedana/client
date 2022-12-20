@@ -4,7 +4,7 @@ import { Notification } from "./Notification";
 import { UserMenu } from "./UserMenu";
 import { useAuthContext } from "../../context/authContext";
 
-export default function Navbar() {
+function Navbar() {
   const { isAuth } = useAuthContext();
 
   return (
@@ -54,3 +54,5 @@ export default function Navbar() {
     </div>
   );
 }
+
+export { Navbar };
