@@ -7,13 +7,20 @@ function useToggleContext() {
 }
 
 function ToggleProvider({ children }) {
+  const [isPopupAvatar, setIsPopupAvatar] = useState(false);
   const [isPopupNotif, setIsPopupNotif] = useState(false);
+
+  function togglePopupAvatar() {
+    setIsPopupAvatar(!isPopupAvatar);
+    setIsPopupNotif(false);
+  }
 
   function togglePopupNotif() {
     setIsPopupNotif(!isPopupNotif);
+    setIsPopupAvatar(false);
   }
 
-  const toggleContextValue = { isPopupNotif, togglePopupNotif };
+  const toggleContextValue = { isPopupAvatar, togglePopupAvatar, isPopupNotif, togglePopupNotif };
 
   return <toggleContext.Provider value={toggleContextValue}>{children}</toggleContext.Provider>;
 }
