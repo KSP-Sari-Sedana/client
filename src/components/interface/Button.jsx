@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 
-export default function Button({ text, style, link, round, height, width }) {
+function Button({ text, style, link, round, height, width }) {
   const electron = "bg-electron-500 hover:bg-electron-600 text-white text-sm text-center";
   const light = "bg-gray-100 hover:bg-gray-200 text-zinc-900 text-sm text-center";
   const bethlehem = "bg-bethlehem-700 hover:bg-bethlehem-800 text-white text-sm text-center";
@@ -27,3 +27,5 @@ export default function Button({ text, style, link, round, height, width }) {
     </Link>
   );
 }
+
+export { Button };
