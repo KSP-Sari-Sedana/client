@@ -5,7 +5,7 @@ function Product() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-80 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-        <img src="/assets/placeholder-product.svg" alt="" className="mx-auto" />
+        <img src="/assets/placeholder.svg" alt="" className="mx-auto" />
         <div className="px-2">
           <p className="font-sourcecodepro font-bold text-2xl mt-2 mb-2">SIPURA</p>
           <Badge style="clear" content="Simpanan" />

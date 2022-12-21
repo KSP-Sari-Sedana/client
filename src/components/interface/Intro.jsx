@@ -11,7 +11,7 @@ function Intro() {
           </p>
         </div>
         <div className="flex mx-60">
-          <img src="/assets/placeholder-product.svg" alt="" className="mx-auto mt-7 w-60" />
+          <img src="/assets/placeholder.svg" alt="" className="mx-auto mt-7 w-60" />
         </div>
       </div>
     </div>
