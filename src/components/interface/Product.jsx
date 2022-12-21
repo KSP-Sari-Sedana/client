@@ -1,7 +1,7 @@
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 
-export default function ProductCard() {
+function Product() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-80 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
@@ -25,3 +25,5 @@ export default function ProductCard() {
     </div>
   );
 }
+
+export { Product };
