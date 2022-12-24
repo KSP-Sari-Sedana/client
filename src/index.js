@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
 
@@ -11,12 +12,14 @@ import AuthProvider from "./context/authContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <div className="w-10/12 mx-auto">
-      <ToggleProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ToggleProvider>
-    </div>
+    <BrowserRouter>
+      <div className="w-10/12 mx-auto">
+        <ToggleProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </ToggleProvider>
+      </div>
+    </BrowserRouter>
   </React.StrictMode>
 );
