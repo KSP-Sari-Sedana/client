@@ -7,9 +7,11 @@ import { DashboardIcon } from "../icons/DashboardIcon";
 import { ProfileCircleIcon } from "../icons/ProfileCircleIcon";
 import { DoorIcon } from "../icons/DoorIcon";
 import { useToggleContext } from "../../context/toggleContext";
+import { useAuthContext } from "../../context/authContext";
 
 function UserMenu() {
   const { isPopupAvatar, togglePopupAvatar } = useToggleContext();
+  const { authContexts } = useAuthContext();
 
   return (
     <Fragment>
@@ -39,7 +41,13 @@ function UserMenu() {
               <span className="ml-2 text-sm">Profil</span>
             </div>
           </Link>
-          <div className="inline-flex items-center cursor-pointer w-full hover:bg-zinc-100 p-2 rounded-md" onClick={togglePopupAvatar}>
+          <div
+            className="inline-flex items-center cursor-pointer w-full hover:bg-zinc-100 p-2 rounded-md"
+            onClick={() => {
+              togglePopupAvatar();
+              authContexts.logout();
+            }}
+          >
             <DoorIcon />
             <span className="ml-2 text-sm">Keluar</span>
           </div>
