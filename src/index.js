@@ -8,6 +8,7 @@ import App from "./App";
 
 import ToggleProvider from "./context/toggleContext";
 import AuthProvider from "./context/authContext";
+import UserProvider from "./context/userContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,7 +17,9 @@ root.render(
       <div className="w-10/12 mx-auto">
         <ToggleProvider>
           <AuthProvider>
-            <App />
+            <UserProvider>
+              <App />
+            </UserProvider>
           </AuthProvider>
         </ToggleProvider>
       </div>
