@@ -5,10 +5,10 @@ import { UserMenu } from "./UserMenu";
 import { useAuthContext } from "../../context/authContext";
 
 function Navbar() {
-  const { isAuth } = useAuthContext();
+  const { authContexts } = useAuthContext();
 
   return (
-    <div className="bg-pampas-50 px-2 py-2.5 fixed w-10/12 top-0 border-b border-slate-200">
+    <div className="bg-pampas-50 px-2 py-2.5 fixed w-10/12 top-0 border-b border-slate-200 z-10">
       <div className="flex items-center justify-between">
         <div className="w-72">
           <Logo />
@@ -36,7 +36,7 @@ function Navbar() {
           </li>
         </ul>
         <div className="w-72">
-          {isAuth ? (
+          {authContexts.isAuth ? (
             <div className="flex place-content-end">
               <div className="flex items-center space-x-8">
                 <Notification />
