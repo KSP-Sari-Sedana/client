@@ -45,6 +45,12 @@ function AuthProvider({ children }) {
     window.location.reload();
   }
 
+  function logout() {
+    localStorage.removeItem("token");
+    setIsAuth(false);
+    navigate("/login");
+  }
+
   const authContexts = {
     isAuth,
     email,
@@ -54,6 +60,7 @@ function AuthProvider({ children }) {
     login,
     setEmail,
     setPassword,
+    logout,
   };
 
   const authContextValue = { authContexts };
