@@ -9,6 +9,7 @@ import App from "./App";
 import ToggleProvider from "./context/toggleContext";
 import AuthProvider from "./context/authContext";
 import UserProvider from "./context/userContext";
+import ProductProvider from "./context/productContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,7 +19,9 @@ root.render(
         <ToggleProvider>
           <AuthProvider>
             <UserProvider>
-              <App />
+              <ProductProvider>
+                <App />
+              </ProductProvider>
             </UserProvider>
           </AuthProvider>
         </ToggleProvider>
