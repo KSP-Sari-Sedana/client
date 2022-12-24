@@ -2,7 +2,7 @@ import { AtIcon } from "../icons/AtIcon";
 import { KeyIcon } from "../icons/KeyIcon";
 import { FingerPrintIcon } from "../icons/FingerPrintIcon";
 
-function Input({ label, type, placeHolder, icon, value, onChange }) {
+function Input({ label, type, placeHolder, icon, value, action }) {
   return (
     <div className="mb-4">
       <label className="block mb-2 text-sm">{label}</label>
@@ -14,7 +14,15 @@ function Input({ label, type, placeHolder, icon, value, onChange }) {
             {icon === "fingerPrint" && <FingerPrintIcon />}
           </div>
         )}
-        <input type={type} className={`border border-gray-300 text-sm text-zinc-900 rounded-lg w-full p-2.5 ${icon ? "pl-10" : "pl-4"}`} placeholder={placeHolder} />
+        <input
+          onChange={(event) => {
+            action(event.target.value);
+          }}
+          type={type}
+          className={`border border-gray-300 text-sm text-zinc-900 rounded-lg w-full p-2.5 ${icon ? "pl-10" : "pl-4"}`}
+          placeholder={placeHolder}
+          value={value}
+        />
       </div>
     </div>
   );
