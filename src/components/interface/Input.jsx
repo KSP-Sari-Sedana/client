@@ -1,6 +1,7 @@
 import { AtIcon } from "../icons/AtIcon";
 import { KeyIcon } from "../icons/KeyIcon";
 import { FingerPrintIcon } from "../icons/FingerPrintIcon";
+import { CurrencyIcon } from "../icons/CurrencyIcon";
 
 function Input({ label, type, placeHolder, icon, value, action }) {
   return (
@@ -12,6 +13,7 @@ function Input({ label, type, placeHolder, icon, value, action }) {
             {icon === "email" && <AtIcon />}
             {icon === "password" && <KeyIcon />}
             {icon === "fingerPrint" && <FingerPrintIcon />}
+            {icon === "currency" && <CurrencyIcon />}
           </div>
         )}
         <input
