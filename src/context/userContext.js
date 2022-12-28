@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userAPI from "../api/userAPI";
 
 const userContext = createContext();
 
@@ -20,15 +21,7 @@ function UserProvider({ children }) {
 
   async function register() {
     setIsLoading({ ...isLoading, register: true });
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
-      method: "POST",
-      body: JSON.stringify({ username, email, namaDepan: firstName, namaBelakang: lastName, password }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    result = await result.json();
+    let result = await userAPI.register(username, email, firstName, lastName, password);
     setAPIResponse(result);
     if (result.status !== "OK") {
       setIsLoading({ ...isLoading, register: false });

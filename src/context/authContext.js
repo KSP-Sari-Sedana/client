@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import authAPI from "../api/authAPI";
 
 const authContext = createContext();
 
@@ -24,15 +25,7 @@ function AuthProvider({ children }) {
 
   async function login() {
     setIsLoading({ ...isLoading, login: true });
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    result = await result.json();
+    let result = await authAPI.login(email, password);
     setAPIResponse(result);
     if (result.status !== "OK") {
       setIsLoading({ ...isLoading, login: false });

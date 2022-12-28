@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import productAPI from "../api/productAPI";
 
 const productContext = createContext();
 
@@ -11,28 +12,26 @@ function ProductProvider({ children }) {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/api/products`);
-    result = await result.json();
+    let result = await productAPI.get();
     if (result.status !== "OK") {
       return;
     }
-    setProducts(result.data.products);
+    setProducts(result.data.products || []);
   }
 
-  async function getProductById(id) {
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}`);
-    result = await result.json();
+  async function getById(id) {
+    let result = await productAPI.getById(id);
     if (result.status !== "OK") {
       return;
     }
-    setProduct(result.data.product);
+    setProduct(result.data.product || {});
   }
 
   const productContexts = {
     product,
     products,
     getProducts,
-    getProductById,
+    getById,
   };
 
   const productContextValue = { productContexts };
