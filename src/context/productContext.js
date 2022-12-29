@@ -8,6 +8,13 @@ function useProductContext() {
 }
 
 function ProductProvider({ children }) {
+  const [tenor, setTenor] = useState(12);
+  const [installment, setInstallment] = useState(0);
+  const [interestType, setInterestType] = useState("Menurun");
+  const [loanFund, setLoanFund] = useState(6000000);
+
+  const [calculation, setCalculation] = useState({});
+
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState([]);
 
@@ -25,13 +32,34 @@ function ProductProvider({ children }) {
       return;
     }
     setProduct(result.data.product || {});
+    setTenor(result.data.product.tenor[0]);
+    setInstallment(result.data.product.installment[0]);
+  }
+
+  async function calculate(id) {
+    let result = await productAPI.calculate(id, { tenor, installment, loanFund, interestType });
+    if (result.status !== "OK") {
+      setCalculation({});
+      return;
+    }
+    setCalculation(result.data || {});
   }
 
   const productContexts = {
     product,
     products,
+    tenor,
+    installment,
+    calculation,
+    interestType,
+    loanFund,
+    setLoanFund,
+    setInterestType,
+    setInstallment,
+    setTenor,
     getProducts,
     getById,
+    calculate,
   };
 
   const productContextValue = { productContexts };
