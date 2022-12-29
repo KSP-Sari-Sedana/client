@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-import { ArrowRightIcon } from "../icons/ArrowRightIcon";
+import { ArrowIcon } from "../icons/ArrowIcon";
 import { SpinnerIcon } from "../icons/SpinnerIcon";
 
 function Button({ text, style, link, round, height, width, icon, action, isLoading }) {
@@ -29,7 +29,7 @@ function Button({ text, style, link, round, height, width, icon, action, isLoadi
           <div className={`${style} ${height} ${width} ${round}`}>
             <div className="flex items-center justify-center">
               <button>{text}</button>
-              {icon === "arrowRight" && <ArrowRightIcon />}
+              {icon === "arrow" && <ArrowIcon />}
             </div>
           </div>
         </Link>
