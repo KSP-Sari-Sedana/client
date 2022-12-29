@@ -14,7 +14,9 @@ function UserProvider({ children }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
+
   const [isLoading, setIsLoading] = useState({ register: false });
+  const [me, setMe] = useState({});
   const [APIResponse, setAPIResponse] = useState({});
 
   const navigate = useNavigate();
@@ -32,6 +34,11 @@ function UserProvider({ children }) {
     window.location.reload();
   }
 
+  async function getMyProfile() {
+    let result = await userAPI.getMyProfile();
+    setMe(result.data.user);
+  }
+
   const userContexts = {
     username,
     email,
@@ -40,12 +47,14 @@ function UserProvider({ children }) {
     password,
     APIResponse,
     isLoading,
+    me,
     setUsername,
     setEmail,
     setFirstName,
     setLastName,
     setPassword,
     register,
+    getMyProfile,
   };
 
   const userContextValue = { userContexts };

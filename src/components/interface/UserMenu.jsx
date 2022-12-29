@@ -3,15 +3,19 @@ import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 
 import { Avatar } from "./Avatar";
-import { GoldStarIcon } from "../icons/GoldStarIcon";
+import { StarIcon } from "../icons/StarIcon";
 import { DashboardIcon } from "../icons/DashboardIcon";
 import { ProfileCircleIcon } from "../icons/ProfileCircleIcon";
 import { DoorIcon } from "../icons/DoorIcon";
 import { useAuthContext } from "../../context/authContext";
+import { useUserContext } from "../../context/userContext";
 
 function UserMenu() {
   const { authContexts } = useAuthContext();
+  const { userContexts } = useUserContext();
+
   const { logout } = authContexts;
+  const { me } = userContexts;
 
   return (
     <Fragment>
@@ -32,23 +36,23 @@ function UserMenu() {
             <div className="w-60 rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
               <div className="flex items-center">
                 <Avatar />
-                <div className="ml-3">
-                  <p className="font-darkergrotesque font-bold text-2xl leading-none">Suprapta</p>
+                <div className="ml-3 grow">
+                  <p className="font-medium leading-none">{`${me.firstName} ${me.lastName}`}</p>
                   <div className="flex items-center">
-                    <GoldStarIcon />
-                    <p className="text-sm text-slate-500 leading-tight">Admin</p>
+                    <StarIcon role={me.role} />
+                    <p className="text-sm text-slate-500 leading-tight">{me.role}</p>
                   </div>
                 </div>
               </div>
               <hr className="my-3 h-px bg-gray-200 border-0"></hr>
               <Link to="/dashboard">
-                <div className="inline-flex items-center cursor-pointer w-full hover:bg-zinc-100 p-2 rounded-md">
+                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
                   <DashboardIcon />
                   <span className="ml-2 text-sm">Dashboard</span>
                 </div>
               </Link>
               <Link to="/profile">
-                <div className="inline-flex items-center cursor-pointer w-full hover:bg-zinc-100 p-2 rounded-md">
+                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
                   <ProfileCircleIcon />
                   <span className="ml-2 text-sm">Profil</span>
                 </div>
