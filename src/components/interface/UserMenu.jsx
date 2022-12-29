@@ -54,7 +54,7 @@ function UserMenu() {
                 </div>
               </Link>
               <div
-                className="inline-flex items-center cursor-pointer w-full hover:bg-zinc-100 p-2 rounded-md"
+                className="inline-flex items-center cursor-pointer w-full hover:bg-bethlehem-600 hover:text-white p-2 rounded-md"
                 onClick={() => {
                   logout();
                 }}
