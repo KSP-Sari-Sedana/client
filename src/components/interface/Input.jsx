@@ -21,7 +21,7 @@ function Input({ label, type, placeHolder, icon, value, action }) {
             action(event.target.value);
           }}
           type={type}
-          className={`border border-gray-300 text-sm text-zinc-900 rounded-lg w-full p-2.5 ${icon ? "pl-10" : "pl-4"}`}
+          className={`border border-gray-300 text-sm text-zinc-900 rounded-lg w-full p-2.5 ${icon ? "pl-10" : "pl-4"} focus:outline-none`}
           placeholder={placeHolder}
           defaultValue={value}
         />
