@@ -1,6 +1,6 @@
 function DoorIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" className="hover:fill-white">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
       <path
         fill="currentColor"
         fillRule="evenodd"
