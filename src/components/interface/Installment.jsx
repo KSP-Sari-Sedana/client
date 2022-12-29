@@ -37,7 +37,10 @@ function Installment({ isOpen, closeModal, installment }) {
                       </div>
                       {installment?.map((item, index) => {
                         return (
-                          <div className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${installment.length === index + 1 && "rounded-b-2xl"} px-4 py-3 grid grid-cols-9 text-sm text-zinc-600`}>
+                          <div
+                            key={index}
+                            className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${installment.length === index + 1 && "rounded-b-2xl"} px-4 py-3 grid grid-cols-9 text-sm text-zinc-600`}
+                          >
                             <dt>{index + 1}</dt>
                             <dt className="col-span-2">Rp. {item.principal.toLocaleString("Id-id")}</dt>
                             <dt className="col-span-2">Rp. {item.interest.toLocaleString("Id-id")}</dt>
