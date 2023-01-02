@@ -110,15 +110,15 @@ function Calculator(props) {
               <div className="grid grid-cols-3 mt-5">
                 <div>
                   <p className="text-sm mb-1">Total</p>
-                  <Badge style="rice" content={`Rp. ${calculation?.total?.toLocaleString("ID-id") || 0}`} />
+                  <Badge style="rice">{`Rp. ${calculation?.total?.toLocaleString("ID-id") || 0}`}</Badge>
                 </div>
                 <div>
                   <p className="text-sm mb-1">Bunga</p>
-                  <Badge style="rice" content={`Rp. ${calculation?.interest?.toLocaleString("ID-id") || 0}`} />
+                  <Badge style="rice">{`Rp. ${calculation?.interest?.toLocaleString("ID-id") || 0}`}</Badge>
                 </div>
                 <div>
                   <p className="text-sm mb-1">Profit</p>
-                  <Badge style="rice" content={`Rp. ${calculation?.profit?.toLocaleString("ID-id") || 0}`} />
+                  <Badge style="rice">{`Rp. ${calculation?.profit?.toLocaleString("ID-id") || 0}`}</Badge>
                 </div>
               </div>
             )}
@@ -127,41 +127,41 @@ function Calculator(props) {
                 <div className="grid grid-cols-4 mt-2 gap-3">
                   <div>
                     <p className="text-sm mb-1">Administrasi</p>
-                    <Badge style="pippin" content={`Rp. ${calculation?.terms?.administrative?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="pippin">{`Rp. ${calculation?.terms?.administrative?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Notaris</p>
-                    <Badge style="pippin" content={`Rp. ${calculation?.terms?.notary?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="pippin">{`Rp. ${calculation?.terms?.notary?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Pemeriksaan</p>
-                    <Badge style="pippin" content={`Rp. ${calculation?.terms?.checkingFee?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="pippin">{`Rp. ${calculation?.terms?.checkingFee?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Materai</p>
-                    <Badge style="pippin" content={`Rp. ${calculation?.terms?.stampDuty?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="pippin">{`Rp. ${calculation?.terms?.stampDuty?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Asuransi</p>
-                    <Badge style="rice" content={`Rp. ${calculation?.terms?.insurance?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="rice">{`Rp. ${calculation?.terms?.insurance?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Provisi</p>
-                    <Badge style="rice" content={`Rp. ${calculation?.terms?.provision?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="rice">{`Rp. ${calculation?.terms?.provision?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Simpanan Wajib</p>
-                    <Badge style="rice" content={`Rp. ${calculation?.terms?.provision?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="rice">{`Rp. ${calculation?.terms?.provision?.toLocaleString("ID-id") || 0}`} </Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 mt-8 gap-3">
                   <div>
                     <p className="text-sm mb-1">Potongan</p>
-                    <Badge style="magenta" content={`Rp. ${calculation?.deductionAmount?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="magenta">{`Rp. ${calculation?.deductionAmount?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div>
                     <p className="text-sm mb-1">Uang Diterima</p>
-                    <Badge style="rice" content={`Rp. ${calculation?.receivedAmount?.toLocaleString("ID-id") || 0}`} />
+                    <Badge style="rice">{`Rp. ${calculation?.receivedAmount?.toLocaleString("ID-id") || 0}`}</Badge>
                   </div>
                   <div className="flex items-center">
                     <button onClick={props.installment} className="flex items-center text-sm mb-1 leading-none text-electron-300 hover:text-electron-700">

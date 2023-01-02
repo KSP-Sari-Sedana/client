@@ -1,4 +1,4 @@
-function Badge({ style, content }) {
+function Badge({ style, children }) {
   const clear = "text-clear-500 bg-clear-50";
   const magenta = "text-magenta-600 bg-magenta-200";
   const pippin = "text-pippin-700 bg-pippin-100";
@@ -11,7 +11,7 @@ function Badge({ style, content }) {
   else if (style === "rice") style = rice;
   else if (style === "buttercup") style = buttercup;
 
-  return <span className={`text-sm px-3.5 py-1 rounded-full mr-3 ${style}`}> {content} </span>;
+  return <span className={`text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit ${style}`}>{children}</span>;
 }
 
 export { Badge };

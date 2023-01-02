@@ -10,10 +10,10 @@ function Product(props) {
         <img src="/assets/placeholder.svg" alt="" className="mx-auto" />
         <div className="px-2">
           <p className="font-sourcecodepro font-bold text-2xl mt-2 mb-2">{product.name}</p>
-          <div className="flex">
-            <Badge style="clear" content={product.type} />
-            <Badge style="clear" content={`${product.interest}%`} />
-            <Badge style="clear" content={`${product.deposit}`} />
+          <div className="flex gap-x-2">
+            <Badge style="clear">{product.type}</Badge>
+            <Badge style="clear">{product.interest}%</Badge>
+            <Badge style="clear">{product.deposit}</Badge>
           </div>
           <p className={`text-sm mt-2 text-slate-600 font-normal ${isPreview && "h-11 overflow-hidden"}`}>{product.description}</p>
           <div className="flex items-center mt-2">
