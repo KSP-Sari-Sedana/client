@@ -4,9 +4,6 @@ import { Popover, Transition } from "@headlessui/react";
 
 import { Avatar } from "./Avatar";
 import { StarIcon } from "../icons/StarIcon";
-import { DashboardIcon } from "../icons/DashboardIcon";
-import { ProfileCircleIcon } from "../icons/ProfileCircleIcon";
-import { DoorIcon } from "../icons/DoorIcon";
 import { useAuthContext } from "../../context/authContext";
 import { useUserContext } from "../../context/userContext";
 
@@ -34,9 +31,9 @@ function UserMenu() {
         >
           <Popover.Panel>
             <div className="w-60 rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
-              <div className="flex items-center">
+              <div className="flex items-center gap-x-3">
                 <Avatar />
-                <div className="ml-3 grow">
+                <div className="grow">
                   <p className="font-medium leading-none">{`${me.firstName} ${me.lastName}`}</p>
                   <div className="flex items-center">
                     <StarIcon role={me.role} />
@@ -47,13 +44,11 @@ function UserMenu() {
               <hr className="my-3 h-px bg-gray-200 border-0"></hr>
               <Link to="/dashboard">
                 <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
-                  <DashboardIcon />
                   <span className="ml-2 text-sm">Dashboard</span>
                 </div>
               </Link>
               <Link to="/profile">
                 <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
-                  <ProfileCircleIcon />
                   <span className="ml-2 text-sm">Profil</span>
                 </div>
               </Link>
@@ -63,7 +58,6 @@ function UserMenu() {
                   logout();
                 }}
               >
-                <DoorIcon />
                 <span className="ml-2 text-sm">Keluar</span>
               </div>
             </div>
