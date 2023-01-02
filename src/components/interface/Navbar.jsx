@@ -13,28 +13,20 @@ function Navbar() {
         <div className="w-72">
           <Logo />
         </div>
-        <ul className="flex p-4 space-x-14">
-          <li className="w-14">
-            <a href="/#product" className="text-zinc-500 hover:text-zinc-800 text-sm">
-              Produk
-            </a>
-          </li>
-          <li className="w-14">
-            <a href="/#location" className="text-zinc-500 hover:text-zinc-800 text-sm">
-              Lokasi
-            </a>
-          </li>
-          <li className="w-14">
-            <a href="/#about" className="text-zinc-500 hover:text-zinc-800 text-sm">
-              Tentang
-            </a>
-          </li>
-          <li className="w-14">
-            <a href="/#footer" className="text-zinc-500 hover:text-zinc-800 text-sm">
-              Kontak
-            </a>
-          </li>
-        </ul>
+        <nav className="flex p-4 space-x-14 justify-between text-zinc-500 text-sm">
+          <a href="/#product" className="hover:text-zinc-800">
+            Produk
+          </a>
+          <a href="/#location" className="hover:text-zinc-800">
+            Lokasi
+          </a>
+          <a href="/#about" className="hover:text-zinc-800">
+            Tentang
+          </a>
+          <a href="/#footer" className="hover:text-zinc-800">
+            Kontak
+          </a>
+        </nav>
         <div className="w-72">
           {authContexts.isAuth ? (
             <div className="flex place-content-end">
