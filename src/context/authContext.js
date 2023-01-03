@@ -7,6 +7,11 @@ const authContext = createContext();
 function useAuthContext() {
   return useContext(authContext);
 }
+async function isTokenValid() {
+  let isToken = await authAPI.isTokenValid();
+  if (isToken) return true;
+  return false;
+}
 
 function AuthProvider({ children }) {
   const [email, setEmail] = useState("");
@@ -16,17 +21,8 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isTokenValid();
+    if (!!localStorage.getItem("token")) setIsLoggedIn(isTokenValid());
   }, []);
-
-  async function isTokenValid() {
-    let isToken = await authAPI.isTokenValid();
-    if (isToken) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }
 
   async function login() {
     let result = await authAPI.login(email, password);
