@@ -13,6 +13,23 @@ async function isTokenValid() {
   return false;
 }
 
+function getPayload() {
+  let token = localStorage.getItem("token");
+  if (!token) return null;
+  let payload = token.split(".")[1];
+  let decodedPayload = JSON.parse(window.atob(payload));
+  return decodedPayload;
+}
+
+function isTokenExpired() {
+  let decodedPayload = getPayload();
+  if (!decodedPayload) return false;
+  let exp = decodedPayload.exp;
+  let now = new Date().getTime() / 1000;
+  if (exp < now) return true;
+  return false;
+}
+
 function AuthProvider({ children }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +38,18 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!!localStorage.getItem("token")) setIsLoggedIn(isTokenValid());
+    let checkToken = undefined;
+    if (!!localStorage.getItem("token")) {
+      setIsLoggedIn(isTokenValid());
+      checkToken = setInterval(() => {
+        if (isTokenExpired()) {
+          logout();
+        }
+      }, 1000);
+    }
+    return () => {
+      clearInterval(checkToken);
+    };
   }, []);
 
   async function login() {
