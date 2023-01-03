@@ -9,8 +9,7 @@ import { StarIcon } from "../components/icons/StarIcon";
 import { useUserContext } from "../context/userContext";
 
 function ProfilePage() {
-  const { userContexts } = useUserContext();
-  const { me } = userContexts;
+  const { userCtx } = useUserContext();
 
   return (
     <Fragment>
@@ -21,14 +20,14 @@ function ProfilePage() {
           <Avatar></Avatar>
           <div className="flex mt-3 gap-x-2">
             <Badge style="clear">
-              <StarIcon role={me.role} />
-              {me.role}
+              <StarIcon role={userCtx.me.role} />
+              {userCtx.me.role}
             </Badge>
-            <Badge style="clear">{me.status}</Badge>
+            <Badge style="clear">{userCtx.me.status}</Badge>
           </div>
           <div className="mt-2 font-darkergrotesque text-4xl font-extrabold">
             <p>
-              {me.firstName} {me.lastName}
+              {userCtx.me.firstName} {userCtx.me.lastName}
             </p>
           </div>
         </div>

@@ -9,8 +9,7 @@ import { useUserContext } from "../../context/userContext";
 
 function UserMenu() {
   const { authCtx } = useAuthContext();
-  const { userContexts } = useUserContext();
-  const { me } = userContexts;
+  const { userCtx } = useUserContext();
 
   return (
     <Fragment>
@@ -32,10 +31,10 @@ function UserMenu() {
               <div className="flex items-center gap-x-3">
                 <Avatar />
                 <div className="grow">
-                  <p className="font-medium leading-none">{`${me.firstName} ${me.lastName}`}</p>
+                  <p className="font-medium leading-none">{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
                   <div className="flex items-center">
-                    <StarIcon role={me.role} />
-                    <p className="text-sm text-slate-500 leading-tight">{me.role}</p>
+                    <StarIcon role={userCtx.me.role} />
+                    <p className="text-sm text-slate-500 leading-tight">{userCtx.me.role}</p>
                   </div>
                 </div>
               </div>

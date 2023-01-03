@@ -23,12 +23,11 @@ const denpasar = ["Denpasar Barat", "Denpasar Selatan", "Denpasar Timur", "Denpa
 const subdistrict = [...badung, ...bangli, ...buleleng, ...gianyar, ...jembrana, ...karangasem, ...klungkung, ...tabanan, ...denpasar];
 
 function Profile() {
-  const { userContexts } = useUserContext();
-  const { me } = userContexts;
+  const { userCtx } = useUserContext();
 
-  const [selectedProvince, setSelectedProvince] = useState(me.province);
-  const [selectedDistrict, setSelectedDistrict] = useState(me.district);
-  const [selectedSubdistrict, setSelectedSubdistrict] = useState(me.subdistrict);
+  const [selectedProvince, setSelectedProvince] = useState(userCtx.me.province);
+  const [selectedDistrict, setSelectedDistrict] = useState(userCtx.me.district);
+  const [selectedSubdistrict, setSelectedSubdistrict] = useState(userCtx.me.subdistrict);
   const [query, setQuery] = useState("");
 
   const filteredProvince = query === "" ? province : province.filter((province) => province.toLowerCase().replace(/\s+/g, "").includes(query.toLowerCase().replace(/\s+/g, "")));
@@ -36,21 +35,21 @@ function Profile() {
   const filteredSubdistrict = query === "" ? subdistrict : subdistrict.filter((subdistrict) => subdistrict.toLowerCase().replace(/\s+/g, "").includes(query.toLowerCase().replace(/\s+/g, "")));
 
   useEffect(() => {
-    setSelectedProvince(me.province);
-    setSelectedDistrict(me.district);
-    setSelectedSubdistrict(me.subdistrict);
-  }, [me]);
+    setSelectedProvince(userCtx.me.province);
+    setSelectedDistrict(userCtx.me.district);
+    setSelectedSubdistrict(userCtx.me.subdistrict);
+  }, [userCtx.me]);
 
   return (
     <div>
       <div className="flex gap-x-4">
-        <Input label="Nama depan" value={me.firstName}></Input>
-        <Input label="Nama belakang" value={me.lastName}></Input>
-        <Input label="Username" value={me.username} icon="fingerPrint"></Input>
+        <Input label="Nama depan" value={userCtx.me.firstName}></Input>
+        <Input label="Nama belakang" value={userCtx.me.lastName}></Input>
+        <Input label="Username" value={userCtx.me.username} icon="fingerPrint"></Input>
       </div>
       <div className="flex gap-x-4">
-        <Input label="Alamat e-mail" value={me.email} icon="email"></Input>
-        <Input label="Nomor telepon" value={me.cellphone}></Input>
+        <Input label="Alamat e-mail" value={userCtx.me.email} icon="email"></Input>
+        <Input label="Nomor telepon" value={userCtx.me.cellphone}></Input>
       </div>
       <div className="flex gap-x-4">
         <div className="text-sm">
@@ -143,15 +142,15 @@ function Profile() {
       </div>
       <div className="text-sm mt-4">
         <p className="mb-2">Alamat lengkap</p>
-        <textarea className="border resize-none px-4 py-2 focus:outline-none border-gray-300 w-full rounded-lg" defaultValue={me.address || ""} cols="30" rows="4"></textarea>
+        <textarea className="border resize-none px-4 py-2 focus:outline-none border-gray-300 w-full rounded-lg" defaultValue={userCtx.me.address || ""} cols="30" rows="4"></textarea>
       </div>
       <div className="flex mt-4">
-        <Input label="NIP" icon="nin" value={me.nin} />
+        <Input label="NIP" icon="nin" value={userCtx.me.nin} />
       </div>
       <div className="flex gap-x-4">
-        <Input label="Pekerjaan" icon="job" value={me.job} placeHolder="Artist" type="text" />
-        <Input label="Gaji perbulan" icon="currency" value={me.salary} placeHolder="Artist" type="text" />
-        <Input label="Pengeluaran perbulan" icon="currency" value={me.expense} placeHolder="Artist" type="text" />
+        <Input label="Pekerjaan" icon="job" value={userCtx.me.job} placeHolder="Artist" type="text" />
+        <Input label="Gaji perbulan" icon="currency" value={userCtx.me.salary} placeHolder="Artist" type="text" />
+        <Input label="Pengeluaran perbulan" icon="currency" value={userCtx.me.expense} placeHolder="Artist" type="text" />
       </div>
       <div className="flex mb-32 mt-5">
         <Button style="electron" text="Simpan" height="py-2" width="px-6" round="rounded-md" />

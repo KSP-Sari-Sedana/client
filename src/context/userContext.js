@@ -14,22 +14,17 @@ function UserProvider({ children }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-
-  const [isLoading, setIsLoading] = useState({ register: false });
+  const [APIMessage, setAPIMessage] = useState("");
   const [me, setMe] = useState({});
-  const [APIResponse, setAPIResponse] = useState({});
 
   const navigate = useNavigate();
 
   async function register() {
-    setIsLoading({ ...isLoading, register: true });
     let result = await userAPI.register(username, email, firstName, lastName, password);
-    setAPIResponse(result);
+    setAPIMessage(result.message);
     if (result.status !== "OK") {
-      setIsLoading({ ...isLoading, register: false });
       return;
     }
-    setIsLoading({ ...isLoading, register: false });
     navigate("/login");
     window.location.reload();
   }
@@ -39,14 +34,13 @@ function UserProvider({ children }) {
     setMe(result.data.user);
   }
 
-  const userContexts = {
+  const userCtx = {
     username,
     email,
     firstName,
     lastName,
     password,
-    APIResponse,
-    isLoading,
+    APIMessage,
     me,
     setUsername,
     setEmail,
@@ -57,7 +51,7 @@ function UserProvider({ children }) {
     getMyProfile,
   };
 
-  const userContextValue = { userContexts };
+  const userContextValue = { userCtx };
 
   return <userContext.Provider value={userContextValue}>{children}</userContext.Provider>;
 }

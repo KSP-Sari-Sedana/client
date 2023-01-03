@@ -3,8 +3,7 @@ import { SwellArt } from "../art/SwellArt";
 import { useUserContext } from "../../context/userContext";
 
 function SavingCard() {
-  const { userContexts } = useUserContext();
-  const { me } = userContexts;
+  const { userCtx } = useUserContext();
 
   return (
     <div className="w-80 h-52 rounded-2xl border flex shadow-sm bg-white overflow-hidden relative">
@@ -26,7 +25,7 @@ function SavingCard() {
               <p>3090</p>
             </div>
           </div>
-          <p className="font-sourcecodepro font-medium tracking-tighter">{`${me.firstName} ${me.lastName}`}</p>
+          <p className="font-sourcecodepro font-medium tracking-tighter">{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
         </div>
       </div>
     </div>
