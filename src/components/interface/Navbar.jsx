@@ -5,7 +5,7 @@ import { UserMenu } from "./UserMenu";
 import { useAuthContext } from "../../context/authContext";
 
 function Navbar() {
-  const { authContexts } = useAuthContext();
+  const { authCtx } = useAuthContext();
 
   return (
     <div className="bg-pampas-50 px-2 py-2.5 fixed w-10/12 top-0 border-b border-slate-200 z-10">
@@ -28,7 +28,7 @@ function Navbar() {
           </a>
         </nav>
         <div className="w-72">
-          {authContexts.isAuth ? (
+          {authCtx.isLoggedIn ? (
             <div className="flex place-content-end">
               <div className="flex items-center space-x-8">
                 <Notification />

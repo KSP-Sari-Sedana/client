@@ -8,10 +8,8 @@ import { useAuthContext } from "../../context/authContext";
 import { useUserContext } from "../../context/userContext";
 
 function UserMenu() {
-  const { authContexts } = useAuthContext();
+  const { authCtx } = useAuthContext();
   const { userContexts } = useUserContext();
-
-  const { logout } = authContexts;
   const { me } = userContexts;
 
   return (
@@ -55,7 +53,7 @@ function UserMenu() {
               <div
                 className="inline-flex items-center cursor-pointer w-full hover:bg-bethlehem-600 hover:text-white p-2 rounded-md"
                 onClick={() => {
-                  logout();
+                  authCtx.logout();
                 }}
               >
                 <span className="ml-2 text-sm">Keluar</span>
