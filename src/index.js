@@ -6,7 +6,6 @@ import "./index.css";
 
 import App from "./App";
 
-import ToggleProvider from "./context/toggleContext";
 import AuthProvider from "./context/authContext";
 import UserProvider from "./context/userContext";
 import ProductProvider from "./context/productContext";
@@ -16,15 +15,13 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <div className="w-10/12 mx-auto">
-        <ToggleProvider>
-          <AuthProvider>
-            <UserProvider>
-              <ProductProvider>
-                <App />
-              </ProductProvider>
-            </UserProvider>
-          </AuthProvider>
-        </ToggleProvider>
+        <AuthProvider>
+          <UserProvider>
+            <ProductProvider>
+              <App />
+            </ProductProvider>
+          </UserProvider>
+        </AuthProvider>
       </div>
     </BrowserRouter>
   </React.StrictMode>
