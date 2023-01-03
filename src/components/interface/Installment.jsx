@@ -22,10 +22,10 @@ function Installment({ isOpen, closeModal, installment }) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-2xl max-h-96 overflow-scroll transform rounded-2xl bg-white p-6 text-left align-middle transition-all">
-                  <Dialog.Title as="h3" className="font-medium">
-                    Angsuran
-                  </Dialog.Title>
-                  <p className="text-sm text-gray-500">Angsuran yang harus dibayarkan</p>
+                  <div className="px-3">
+                    <Dialog.Title className="font-medium text-sm">Daftar Angsuran</Dialog.Title>
+                    <p className="text-sm text-gray-500">Angsuran yang harus dibayarkan</p>
+                  </div>
                   <div className="mt-3 border border-slate-200 rounded-xl">
                     <dl className="rounded-lg">
                       <div className="bg-clear-50 px-4 py-4 grid grid-cols-9 rounded-t-xl text-sm">
@@ -42,10 +42,10 @@ function Installment({ isOpen, closeModal, installment }) {
                             className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${installment.length === index + 1 && "rounded-b-2xl"} px-4 py-3 grid grid-cols-9 text-sm text-zinc-600`}
                           >
                             <dt>{index + 1}</dt>
-                            <dt className="col-span-2">Rp. {item.principal.toLocaleString("Id-id")}</dt>
-                            <dt className="col-span-2">Rp. {item.interest.toLocaleString("Id-id")}</dt>
-                            <dt className="col-span-2">Rp. {item.total.toLocaleString("Id-id")}</dt>
-                            <dt className="col-span-2">Rp. {item.loanBalance.toLocaleString("Id-id")}</dt>
+                            <dt className="col-span-2">Rp. {item?.principal?.toLocaleString("Id-id")}</dt>
+                            <dt className="col-span-2">Rp. {item?.interest?.toLocaleString("Id-id")}</dt>
+                            <dt className="col-span-2">Rp. {item?.total?.toLocaleString("Id-id")}</dt>
+                            <dt className="col-span-2">Rp. {item?.loanBalance?.toLocaleString("Id-id")}</dt>
                           </div>
                         );
                       })}
