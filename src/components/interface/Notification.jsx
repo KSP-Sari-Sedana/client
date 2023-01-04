@@ -23,11 +23,11 @@ function Notification() {
         >
           <Popover.Panel>
             <div className="w-96 h-96 overflow-auto rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
-              <p className="text-sm text-center">Notifikasi 10 hari terakhir:</p>
+              <p className="text-sm text-center">Notifikasi terakhir</p>
               <div>
-                <Announcement category="Transaksi" detail="Transaksi sebesar Rp.300.000 dilakukan pada produk SIPURA" isRead={true} />
-                <Announcement category="Pengajuan" detail="Selamat pengajuan produk SIPURA anda diterima" isRead={false} />
-                <Announcement category="Akun" detail="Selamat datang, lengkapi profil untuk memulai menikmati produk" isRead={false} />
+                <Announcement category="Transaksi" detail="Transaksi sebesar Rp.300.000 dilakukan pada produk SIPURA" isRead={true} date="12 Desember 2022" />
+                <Announcement category="Pengajuan" detail="Selamat pengajuan produk SIPURA anda diterima" isRead={false} date="12 Desember 2022" />
+                <Announcement category="Akun" detail="Selamat datang, lengkapi profil untuk memulai menikmati produk" isRead={false} date="12 Desember 2022" />
               </div>
             </div>
           </Popover.Panel>
