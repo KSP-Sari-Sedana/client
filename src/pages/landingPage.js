@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, Fragment, useState } from "react";
 
 import { About } from "../components/interface/About";
 import { Footer } from "../components/interface/Footer";
@@ -10,11 +10,16 @@ import { Heading } from "../components/interface/Heading";
 import { useProductContext } from "../context/productContext";
 
 function LandingPage() {
-  const { productContexts } = useProductContext();
+  const [products, setProducts] = useState([]);
+  const { prodCtx } = useProductContext();
 
   useEffect(() => {
-    productContexts.getProducts();
+    getProducts();
   }, []);
+
+  async function getProducts() {
+    setProducts(await prodCtx.getProducts());
+  }
 
   return (
     <div>
@@ -22,7 +27,7 @@ function LandingPage() {
       <Intro />
       <Heading text="Produk" id="product" />
       <div className="grid grid-cols-3 mx-20">
-        {productContexts.products.map((product) => {
+        {products.map((product) => {
           return (
             <Fragment key={product.id}>
               <Product product={product} isPreview={true} />

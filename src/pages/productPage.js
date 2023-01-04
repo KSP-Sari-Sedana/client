@@ -9,7 +9,8 @@ import { useProductContext } from "../context/productContext";
 
 function ProductPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const { productContexts } = useProductContext();
+  const [product, setProduct] = useState({});
+  const { prodCtx } = useProductContext();
   const { id } = useParams();
 
   function closeModal() {
@@ -21,21 +22,25 @@ function ProductPage() {
   }
 
   useEffect(() => {
-    productContexts.getById(id);
+    getProduct();
   }, [id]);
+
+  async function getProduct() {
+    setProduct(await prodCtx.getById(id));
+  }
 
   return (
     <div>
       <Navbar />
-      <Installment isOpen={isOpen} closeModal={closeModal} installment={productContexts.calculation.installment}/>
+      <Installment isOpen={isOpen} closeModal={closeModal} installment={prodCtx.calculation.installment} />
       <div className="mt-28 w-5/6 mx-auto">
-        <p className="font-sourcecodepro font-bold text-3xl mb-4">{productContexts.product.name}</p>
+        <p className="font-sourcecodepro font-bold text-3xl mb-4">{product.name}</p>
         <div className="flex space-x-6">
           <div>
-            <Product product={productContexts.product} />
+            <Product product={product} />
           </div>
           <div className="grow">
-            <Calculator id={id} product={productContexts.product} installment={openModal}/>
+            <Calculator id={id} product={product} installment={openModal} />
           </div>
         </div>
       </div>

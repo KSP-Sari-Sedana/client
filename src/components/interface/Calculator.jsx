@@ -84,12 +84,11 @@ function SavingResult({ calculation }) {
 
 function Calculator(props) {
   const { product, id } = props;
-  const { productContexts } = useProductContext();
-  const { tenor, installment, loanFund, interestType, calculate, setTenor, setLoanFund, setInterestType, setInstallment, calculation } = productContexts;
+  const { prodCtx } = useProductContext();
 
   useEffect(() => {
-    calculate(id, { tenor, installment, loanFund, interestType });
-  }, [tenor, installment, loanFund, interestType]);
+    prodCtx.calculate(id);
+  }, [prodCtx.tenor, prodCtx.installment, prodCtx.loanFund, prodCtx.interestType]);
 
   return (
     <Fragment>
@@ -104,31 +103,31 @@ function Calculator(props) {
           <div className="flex gap-x-10">
             <div>
               <p className="mb-2 text-sm">Tenor</p>
-              <Radio data={product?.tenor} cols={4} value={tenor} onChange={setTenor} />
+              <Radio data={product?.tenor} cols={4} value={prodCtx.tenor} onChange={prodCtx.setTenor} />
             </div>
             {product.type === "Pinjaman" && (
               <div className="w-40">
-                <Input value={loanFund} action={setLoanFund} icon="currency" label="Dana Pinjaman" type="number" placeHolder="10.000.000" />
+                <Input value={prodCtx.loanFund} action={prodCtx.setLoanFund} icon="currency" label="Dana Pinjaman" type="number" placeHolder="10.000.000" />
               </div>
             )}
             {product.type === "Pinjaman" && (
               <div className="">
                 <p className="mb-2 text-sm">Jenis Bunga</p>
-                <Radio value={interestType} onChange={setInterestType} data={interestAvilable}></Radio>
+                <Radio value={prodCtx.interestType} onChange={prodCtx.setInterestType} data={interestAvilable}></Radio>
               </div>
             )}
             {product.type === "Simpanan" && (
               <div>
                 <p>Angsuran</p>
                 <div className="flex items-center">
-                  <Radio value={installment} onChange={setInstallment} cols={3} data={product?.installment}></Radio>
+                  <Radio value={prodCtx.installment} onChange={prodCtx.setInstallment} cols={3} data={product?.installment}></Radio>
                 </div>
               </div>
             )}
           </div>
           <hr className="my-3 h-px bg-gray-200 border-0"></hr>
-          {product.type === "Simpanan" && <SavingResult calculation={calculation} />}
-          {product.type === "Pinjaman" && <LoanResult calculation={calculation} installment={props.installment} />}
+          {product.type === "Simpanan" && <SavingResult calculation={prodCtx.calculation} />}
+          {product.type === "Pinjaman" && <LoanResult calculation={prodCtx.calculation} installment={props.installment} />}
           <div className="mt-5 w-32">
             <Button text="Ajukan" style="cheerful" round="rounded-md" icon="arrow" />
           </div>
