@@ -71,6 +71,7 @@ function AuthProvider({ children }) {
   }
 
   function logout() {
+    setAPIMessage("");
     localStorage.removeItem("token");
     clearInterval(checkToken);
     setIsLoggedIn(false);
