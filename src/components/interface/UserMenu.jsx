@@ -4,6 +4,9 @@ import { Popover, Transition } from "@headlessui/react";
 
 import { Avatar } from "./Avatar";
 import { StarIcon } from "../icons/StarIcon";
+import { PresentationIcon } from "../icons/PresentationIcon";
+import { ProfileIcon } from "../icons/ProfileIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 import { useAuthContext } from "../../context/authContext";
 import { useUserContext } from "../../context/userContext";
 
@@ -40,21 +43,24 @@ function UserMenu() {
               </div>
               <hr className="my-3 h-px bg-gray-200 border-0"></hr>
               <Link to="/dashboard">
-                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
+                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-1.5 rounded-md">
+                  <PresentationIcon />
                   <span className="ml-2 text-sm">Dashboard</span>
                 </div>
               </Link>
               <Link to="/profile">
-                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-2 rounded-md">
+                <div className="inline-flex items-center cursor-pointer w-full hover:bg-electron-500 hover:text-white p-1.5 rounded-md">
+                  <ProfileIcon />
                   <span className="ml-2 text-sm">Profil</span>
                 </div>
               </Link>
               <div
-                className="inline-flex items-center cursor-pointer w-full hover:bg-bethlehem-600 hover:text-white p-2 rounded-md"
+                className="inline-flex items-center cursor-pointer w-full hover:bg-bethlehem-600 hover:text-white p-1.5 rounded-md"
                 onClick={() => {
                   authCtx.logout();
                 }}
               >
+                <CloseIcon />
                 <span className="ml-2 text-sm">Keluar</span>
               </div>
             </div>
