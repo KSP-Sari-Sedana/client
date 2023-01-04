@@ -43,7 +43,10 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!!localStorage.getItem("token")) {
-      setIsLoggedIn(isTokenValid());
+      async function validateToken() {
+        setIsLoggedIn(await isTokenValid());
+      }
+      validateToken();
       checkToken = setInterval(() => {
         if (isTokenExpired()) {
           logout();
