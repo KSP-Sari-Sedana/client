@@ -7,6 +7,9 @@ const authContext = createContext();
 function useAuthContext() {
   return useContext(authContext);
 }
+
+let checkToken = undefined;
+
 async function isTokenValid() {
   let isToken = await authAPI.isTokenValid();
   if (isToken) return true;
@@ -33,12 +36,12 @@ function isTokenExpired() {
 function AuthProvider({ children }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isRemember, setIsRemember] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [APIMessage, setAPIMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    let checkToken = undefined;
     if (!!localStorage.getItem("token")) {
       setIsLoggedIn(isTokenValid());
       checkToken = setInterval(() => {
@@ -53,7 +56,7 @@ function AuthProvider({ children }) {
   }, []);
 
   async function login() {
-    let result = await authAPI.login(email, password);
+    let result = await authAPI.login(email, password, isRemember);
     setAPIMessage(result.message);
     if (result.status !== "OK") {
       return;
@@ -66,6 +69,7 @@ function AuthProvider({ children }) {
 
   function logout() {
     localStorage.removeItem("token");
+    clearInterval(checkToken);
     setIsLoggedIn(false);
     navigate("/login");
   }
@@ -73,10 +77,12 @@ function AuthProvider({ children }) {
   const authCtx = {
     email,
     password,
+    isRemember,
     isLoggedIn,
     APIMessage,
     setEmail,
     setPassword,
+    setIsRemember,
     login,
     logout,
   };

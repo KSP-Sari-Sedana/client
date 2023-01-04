@@ -1,10 +1,10 @@
-async function login(email, password) {
+async function login(email, password, isRemember) {
   let res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, isRemember }),
   });
   res = await res.json();
   return res;
