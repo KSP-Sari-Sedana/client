@@ -118,7 +118,7 @@ function Calculator(props) {
             )}
             {product.type === "Simpanan" && (
               <div>
-                <p>Angsuran</p>
+                <p className='text-sm mb-2'>Angsuran</p>
                 <div className="flex items-center">
                   <Radio value={prodCtx.installment} onChange={prodCtx.setInstallment} cols={3} data={product?.installment}></Radio>
                 </div>
