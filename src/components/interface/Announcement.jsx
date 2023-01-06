@@ -3,13 +3,21 @@ import { Link } from "react-router-dom";
 import { StackIcon } from "../icons/StackIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { NotepadIcon } from "../icons/NotepadIcon";
+import { useNotifContext } from "../../context/notifContext";
 
-function Announcement({ category, detail, isRead, link, date }) {
+function Announcement({ id, category, detail, isRead, link, date }) {
+  const { notifCtx } = useNotifContext();
   date = new Date(date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" });
 
   return (
     <Link to={link}>
-      <div className={`my-2 py-1 px-4 rounded-md hover:bg-zinc-100 cursor-pointer ${isRead ? "bg-white" : "bg-green-50"}`}>
+      <div
+        onClick={() => {
+          notifCtx.markAsRead(id);
+          notifCtx.getByUser();
+        }}
+        className={`my-2 py-1 px-4 rounded-md hover:bg-zinc-100 cursor-pointer ${isRead ? "bg-white" : "bg-green-50"}`}
+      >
         <div className="flex items-center gap-x-3">
           <div>
             {category === "Transaksi" && <StackIcon />}

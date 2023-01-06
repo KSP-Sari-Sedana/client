@@ -6,18 +6,13 @@ import { TollerIcon } from "../icons/TollerIcon";
 import { useNotifContext } from "../../context/notifContext";
 
 function Notification() {
-  const [notifications, setNotifications] = useState([]);
   const { notifCtx } = useNotifContext();
 
-  async function getNotification() {
-    setNotifications(await notifCtx.getByUser());
-  }
-
   useEffect(() => {
-    getNotification();
+    notifCtx.getByUser();
   }, []);
 
-  const unreadNotif = notifications.filter((notif) => !notif.isRead);
+  const unreadNotif = notifCtx.notifs.filter((notif) => !notif.isRead);
 
   return (
     <Fragment>
@@ -43,8 +38,8 @@ function Notification() {
             <div className="w-96 h-96 overflow-auto rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
               <p className="text-sm text-center">Notifikasi terakhir</p>
               <div>
-                {notifications.map((notif, index) => {
-                  return <Announcement key={index} category={notif.category} detail={notif.detail} isRead={notif.isRead} date={notif.date} link={notif.link} />;
+                {notifCtx.notifs.map((notif, index) => {
+                  return <Announcement key={index} id={notif.id} category={notif.category} detail={notif.detail} isRead={notif.isRead} date={notif.date} link={notif.link} />;
                 })}
               </div>
             </div>
