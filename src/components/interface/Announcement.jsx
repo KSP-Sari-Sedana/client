@@ -5,6 +5,8 @@ import { ProfileIcon } from "../icons/ProfileIcon";
 import { NotepadIcon } from "../icons/NotepadIcon";
 
 function Announcement({ category, detail, isRead, link, date }) {
+  date = new Date(date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" });
+
   return (
     <Link to={link}>
       <div className={`my-2 py-1 px-4 rounded-md hover:bg-zinc-100 cursor-pointer ${isRead ? "bg-white" : "bg-green-50"}`}>
@@ -16,7 +18,7 @@ function Announcement({ category, detail, isRead, link, date }) {
           </div>
           <div className="grow">
             <p className="text-sm font-bold leading-tight">
-              {category} <date className="font-normal text-zinc-400">@{date}</date>
+              {category} <date className="font-normal text-zinc-400">@ {date}</date>
             </p>
             <p className="text-sm h-9 text-ellipsis overflow-hidden text-slate-600 leading-tight">{detail}</p>
           </div>

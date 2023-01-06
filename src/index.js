@@ -9,6 +9,7 @@ import App from "./App";
 import AuthProvider from "./context/authContext";
 import UserProvider from "./context/userContext";
 import ProductProvider from "./context/productContext";
+import NotifProvider from "./context/notifContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,7 +19,9 @@ root.render(
         <AuthProvider>
           <UserProvider>
             <ProductProvider>
-              <App />
+              <NotifProvider>
+                <App />
+              </NotifProvider>
             </ProductProvider>
           </UserProvider>
         </AuthProvider>
