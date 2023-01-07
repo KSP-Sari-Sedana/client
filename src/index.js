@@ -10,6 +10,7 @@ import AuthProvider from "./context/authContext";
 import UserProvider from "./context/userContext";
 import ProductProvider from "./context/productContext";
 import NotifProvider from "./context/notifContext";
+import SubmProvider from "./context/submContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,7 +21,9 @@ root.render(
           <UserProvider>
             <ProductProvider>
               <NotifProvider>
-                <App />
+                <SubmProvider>
+                  <App />
+                </SubmProvider>
               </NotifProvider>
             </ProductProvider>
           </UserProvider>
