@@ -10,8 +10,6 @@ function useNotifContext() {
 function NotifProvider({ children }) {
   const [notifs, setNotifs] = useState([]);
 
-  console.log(notifs);
-
   async function getByUser() {
     const result = await notifApi.getByUser();
     setNotifs(result.data.notifications);
