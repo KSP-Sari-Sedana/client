@@ -66,7 +66,8 @@ function AuthProvider({ children }) {
     }
     localStorage.setItem("token", result.data.token);
     setIsLoggedIn(true);
-    navigate("/dashboard");
+    navigate("/");
+    window.location.reload();
   }
 
   function logout() {
