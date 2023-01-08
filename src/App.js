@@ -20,6 +20,7 @@ export default function App() {
       <Route path="/profile" element={authCtx.isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
       <Route path="/dashboard" element={authCtx.isLoggedIn ? <DashboardPage.UserSummary /> : <Navigate to="/login" />} />
       <Route path="/dashboard/submission" element={authCtx.isLoggedIn ? <DashboardPage.UserSubmission /> : <Navigate to="/login" />} />
+      <Route path="/dashboard/submission/:type/:id" element={authCtx.isLoggedIn ? <DashboardPage.UserSubmissionDetail /> : <Navigate to="/login" />} />
       <Route path="/dashboard/saving" element={authCtx.isLoggedIn ? <DashboardPage.UserSaving /> : <Navigate to="/login" />} />
       <Route path="/dashboard/loan" element={authCtx.isLoggedIn ? <DashboardPage.UserLoan /> : <Navigate to="/login" />} />
       <Route path="/dashboard/admin" element={authCtx.isLoggedIn ? <DashboardPage.AdminSummary /> : <Navigate to="/login" />} />

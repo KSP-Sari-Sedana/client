@@ -7,12 +7,16 @@ import { DashboardMenu } from "../components/interface/DashboardMenu";
 function DashboardLayout({ children }) {
   return (
     <Fragment>
-      <Navbar />
-      <div className="mt-28 w-11/12 mx-auto">
-        <p className="ml-3 font-darkergrotesque font-extrabold text-3xl mb-4">Dashboard</p>
-        <div className="flex gap-x-5">
-          <DashboardMenu />
-          <div className="grow">{children}</div>
+      <div className="pb-36">
+        <Navbar />
+        <div className="mt-28 w-11/12 mx-auto">
+          <p className="ml-3 font-darkergrotesque font-extrabold text-3xl mb-4">Dashboard</p>
+          <div className="flex gap-x-5">
+            <div>
+              <DashboardMenu />
+            </div>
+            <div className="grow">{children}</div>
+          </div>
         </div>
       </div>
     </Fragment>
@@ -31,6 +35,14 @@ function UserSubmission() {
   return (
     <DashboardLayout>
       <Panel.UserSubmission />
+    </DashboardLayout>
+  );
+}
+
+function UserSubmissionDetail() {
+  return (
+    <DashboardLayout>
+      <Panel.UserSubmissionDetail />
     </DashboardLayout>
   );
 }
@@ -102,6 +114,7 @@ function TellerTransaction() {
 const DashboardPage = {
   UserSummary,
   UserSubmission,
+  UserSubmissionDetail,
   UserSaving,
   UserLoan,
   AdminSummary,
