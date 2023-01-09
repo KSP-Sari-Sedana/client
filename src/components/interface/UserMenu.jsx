@@ -32,12 +32,14 @@ function UserMenu() {
           <Popover.Panel>
             <div className="w-60 rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
               <div className="flex items-center gap-x-3">
-                <Avatar />
+                <div>
+                  <Avatar />
+                </div>
                 <div className="grow">
-                  <p className="font-medium leading-none">{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
+                  <p className="font-extrabold leading-none font-sourcecodepro uppercase">{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
                   <div className="flex items-center">
                     <StarIcon role={userCtx.me.role} />
-                    <p className="text-sm text-slate-500 leading-tight">{userCtx.me.role}</p>
+                    <p className="text-sm text-slate-500 leading-tight font-sourcecodepro font-medium">{userCtx.me.role}</p>
                   </div>
                 </div>
               </div>
