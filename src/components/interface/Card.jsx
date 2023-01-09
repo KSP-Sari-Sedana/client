@@ -19,8 +19,31 @@ function Submission({ submDate, productName, children }) {
   );
 }
 
+function Saving({ settleDate, accNumber, productName, balance }) {
+  const day = new Date(settleDate).toLocaleString("id-ID", { weekday: "short" });
+  const date = new Date(settleDate).toLocaleString("id-ID", { day: "numeric" });
+  const month = new Date(settleDate).toLocaleString("id-ID", { month: "short" });
+
+  return (
+    <div className="border rounded-xl bg-white w-72 h-20 text-sm leading-4 flex items-center py-6 px-5">
+      <div className="border-r w-16 pr-2">
+        <p>{day},</p>
+        <p>{`${date} ${month}`}</p>
+      </div>
+      <div className="pl-3 grow">
+        <div className="flex-col">
+          <p className="font-sourcecodepro text-lg font-extrabold leading-4">{productName}</p>
+          <p className="font-sourcecodepro font-semibold leading-4">{accNumber}</p>
+          <p className="font-darkergrotesque text-lg font-extrabold leading-4 mt-2 text-clear-600">Rp. {balance}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Card = {
   Submission,
+  Saving,
 };
 
 export { Card };
