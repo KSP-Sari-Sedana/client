@@ -27,4 +27,16 @@ async function calculate(id, { tenor, installment, loanFund, interestType }) {
   return res;
 }
 
-export default { get, getById, calculate };
+async function getConsumedProducts(type) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/consumed/${type}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  res = await res.json();
+  return res;
+}
+
+export default { get, getById, calculate, getConsumedProducts };

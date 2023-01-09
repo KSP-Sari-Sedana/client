@@ -8,6 +8,7 @@ import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
+import { useProductContext } from "../../context/productContext";
 
 function UserSummary() {
   return <div></div>;
@@ -27,7 +28,7 @@ function UserSubmission() {
 
   return (
     <div>
-      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar pengajuan</p>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Pengajuan</p>
       <div className="flex flex-wrap justify-between gap-y-6">
         {subms.map((subm, index) => {
           return (
@@ -146,7 +147,27 @@ function UserSubmissionDetail() {
 }
 
 function UserSaving() {
-  return <div></div>;
+  const [consumedProducts, setConsumedProducts] = useState([]);
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    getConsumedProducts();
+  }, []);
+
+  async function getConsumedProducts() {
+    setConsumedProducts(await prodCtx.getConsumedProducts("saving"));
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Simpanan</p>
+      <div className="flex flex-wrap justify-between gap-y-6">
+        {consumedProducts.map((product, index) => {
+          return <Card.Saving key={index} settleDate={product.settleDate} productName={product.productName} accNumber={product.accNumber} balance={product.balance.toLocaleString("ID-id")} />;
+        })}
+      </div>
+    </div>
+  );
 }
 
 function UserLoan() {
