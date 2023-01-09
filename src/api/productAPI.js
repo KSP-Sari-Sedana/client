@@ -39,4 +39,16 @@ async function getConsumedProducts(type) {
   return res;
 }
 
-export default { get, getById, calculate, getConsumedProducts };
+async function getConsumedProductById(id, type) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/consumed/${type}/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  res = await res.json();
+  return res;
+}
+
+export default { get, getById, calculate, getConsumedProducts, getConsumedProductById };

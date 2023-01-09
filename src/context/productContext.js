@@ -49,6 +49,14 @@ function ProductProvider({ children }) {
     return result.data.consumedProducts || [];
   }
 
+  async function getConsumedProductById(id, type) {
+    let result = await productAPI.getConsumedProductById(id, type);
+    if (result.status !== "OK") {
+      return {};
+    }
+    return result.data.consumedProduct || {};
+  }
+
   const prodCtx = {
     tenor,
     installment,
@@ -62,6 +70,7 @@ function ProductProvider({ children }) {
     getProducts,
     getById,
     getConsumedProducts,
+    getConsumedProductById,
     calculate,
   };
 

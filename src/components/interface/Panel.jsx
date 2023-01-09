@@ -187,8 +187,80 @@ function UserSaving() {
       ) : (
         <div className="flex flex-wrap justify-between gap-y-6">
           {consumedProducts.map((product, index) => {
-            return <Card.Saving key={index} settleDate={product.settleDate} productName={product.productName} accNumber={product.accNumber} balance={product.balance.toLocaleString("ID-id")} />;
+            return (
+              <Link to={`/dashboard/saving/${product.id}`}>
+                <Card.Saving key={index} settleDate={product.settleDate} productName={product.productName} accNumber={product.accNumber} balance={product.balance.toLocaleString("ID-id")} />
+              </Link>
+            );
           })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function UserSavingDetail() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [consumedProduct, setConsumedProduct] = useState({});
+  const { id } = useParams();
+  const { prodCtx } = useProductContext();
+
+  async function getConsumedProduct() {
+    setConsumedProduct(await prodCtx.getConsumedProductById(id, "saving"));
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    getConsumedProduct();
+  }, []);
+
+  return (
+    <div>
+      {isLoading ? (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi</p>
+          <div className="text-sm flex items-center text-zinc-500">
+            <SpinnerIcon /> Mengambil data
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
+          <Card.Saving
+            settleDate={consumedProduct.settleDate}
+            productName={consumedProduct.productName}
+            accNumber={consumedProduct.accNumber}
+            balance={consumedProduct.balance.toLocaleString("Id-id")}
+          />
+          <div className="mt-4">
+            <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
+            <div className="border rounded-2xl bg-white text-sm">
+              <div className="px-6 py-4 bg-clear-50 rounded-t-2xl border-b border-gray-200">
+                <div className="grid grid-cols-5 font-medium">
+                  <p>Tanggal</p>
+                  <p>Sandi</p>
+                  <p>Debit</p>
+                  <p>Kredit</p>
+                  <p>Saldo</p>
+                </div>
+              </div>
+              <div>
+                {consumedProduct.transDetail.map((trans, index) => {
+                  return (
+                    <div
+                      className={`grid grid-cols-5 py-[10px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${consumedProduct.transDetail.length === index + 1 && "rounded-b-2xl"}`}
+                    >
+                      <p>{new Date(trans.date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
+                      <Badge style={`${trans.code === "Debit" ? "rice" : "pippin"}`}>{trans.code}</Badge>
+                      <p>{`${trans.debit ? `Rp. ${trans.debit.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.credit ? `Rp. ${trans.credit.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.balance ? `Rp. ${trans.balance.toLocaleString("ID-id")}` : ""}`}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -228,6 +300,7 @@ const Panel = {
   UserSubmission,
   UserSubmissionDetail,
   UserSaving,
+  UserSavingDetail,
   UserLoan,
   AdminSummary,
   AdminSubmission,
