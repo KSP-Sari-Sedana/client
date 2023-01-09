@@ -188,8 +188,14 @@ function UserSaving() {
         <div className="flex flex-wrap justify-between gap-y-6">
           {consumedProducts.map((product, index) => {
             return (
-              <Link to={`/dashboard/saving/${product.id}`}>
-                <Card.Saving key={index} settleDate={product.settleDate} productName={product.productName} accNumber={product.accNumber} balance={product.balance.toLocaleString("ID-id")} />
+              <Link key={index} to={`${product.id}`}>
+                <Card.Consumed
+                  settleDate={product.settleDate}
+                  productName={product.productName}
+                  productType={product.productType}
+                  accNumber={product.accNumber}
+                  balance={product.balance.toLocaleString("ID-id")}
+                />
               </Link>
             );
           })}
@@ -226,9 +232,10 @@ function UserSavingDetail() {
       ) : (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
-          <Card.Saving
+          <Card.Consumed
             settleDate={consumedProduct.settleDate}
             productName={consumedProduct.productName}
+            productType={consumedProduct.productType}
             accNumber={consumedProduct.accNumber}
             balance={consumedProduct.balance.toLocaleString("Id-id")}
           />
@@ -268,7 +275,45 @@ function UserSavingDetail() {
 }
 
 function UserLoan() {
-  return <div></div>;
+  const [consumedProducts, setConsumedProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    getConsumedProducts();
+  }, []);
+
+  async function getConsumedProducts() {
+    setConsumedProducts(await prodCtx.getConsumedProducts("loan"));
+    setIsLoading(false);
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Pinjaman</p>
+      {isLoading ? (
+        <div className="text-sm flex items-center text-zinc-500">
+          <SpinnerIcon /> Mengambil data
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-between gap-y-6">
+          {consumedProducts.map((product, index) => {
+            return (
+              <Link key={index} to={`${product.id}`}>
+                <Card.Consumed
+                  settleDate={product.settleDate}
+                  productName={product.productName}
+                  productType={product.productType}
+                  accNumber={product.accNumber}
+                  balance={product.loanBalance.toLocaleString("ID-id")}
+                />
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function AdminSummary() {

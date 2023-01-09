@@ -19,7 +19,7 @@ function Submission({ submDate, productName, children }) {
   );
 }
 
-function Saving({ settleDate, accNumber, productName, balance }) {
+function Consumed({ settleDate, accNumber, productName, productType, balance }) {
   const day = new Date(settleDate).toLocaleString("id-ID", { weekday: "short" });
   const date = new Date(settleDate).toLocaleString("id-ID", { day: "numeric" });
   const month = new Date(settleDate).toLocaleString("id-ID", { month: "short" });
@@ -43,7 +43,7 @@ function Saving({ settleDate, accNumber, productName, balance }) {
         <div className="flex-col">
           <p className="font-sourcecodepro text-lg font-extrabold leading-4">{productName}</p>
           <p className="font-sourcecodepro font-semibold leading-4">rek: {formatedAccNumber}</p>
-          <p className="font-darkergrotesque text-lg font-extrabold leading-4 mt-1 text-clear-600">Rp. {balance}</p>
+          <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>Rp. {balance}</p>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@ function Saving({ settleDate, accNumber, productName, balance }) {
 
 const Card = {
   Submission,
-  Saving,
+  Consumed,
 };
 
 export { Card };
