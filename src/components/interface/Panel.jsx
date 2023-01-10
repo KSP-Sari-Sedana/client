@@ -1,12 +1,14 @@
 import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { Tab } from "@headlessui/react";
 
 import { Card } from "./Card";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { SpinnerIcon } from "../icons/SpinnerIcon";
+import { StarIcon } from "../icons/StarIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
@@ -392,7 +394,156 @@ function AdminSummary() {
 }
 
 function AdminSubmission() {
-  return <div></div>;
+  const [isLoading, setIsLoading] = useState(true);
+  const [submSaving, setSubmSaving] = useState([]);
+  const [submLoan, setSubmLoan] = useState([]);
+  const { submCtx } = useSubmContext();
+
+  useEffect(() => {
+    getSubmSaving();
+  }, []);
+
+  async function getSubmSaving() {
+    setSubmSaving(await submCtx.get("saving"));
+    setSubmLoan(await submCtx.get("loan"));
+    setIsLoading(false);
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Semua Pengajuan</p>
+      <Tab.Group>
+        <Tab.List>
+          <Tab className="mr-3 py-1 px-3 border rounded-md">Simpanan</Tab>
+          <Tab className="mr-3 py-1 px-3 border rounded-md">Pinjaman</Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <div>
+            <Tab.Panel>
+              <div className="mt-4 min-w-max">
+                <div className="border rounded-2xl bg-white text-sm">
+                  <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
+                    <div className="flex font-medium">
+                      <p className="w-[26%]">Nama</p>
+                      <p className="w-[26%]">Produk</p>
+                      <p className="w-[20%]">Tanggal</p>
+                      <p className="w-[23%]">Angsuran</p>
+                      <p className="w-[20%]">Tenor</p>
+                      <p className="w-[20%]">Status</p>
+                    </div>
+                  </div>
+                  <div>
+                    {isLoading ? (
+                      <div className={`py-[10px] px-6 items-center justify-items-center`}>
+                        <div className="place-content-center flex items-center">
+                          <SpinnerIcon /> Mengambil data
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        {submSaving.map((subm, index) => {
+                          return (
+                            <Link
+                              onClick={() => {
+                                alert(subm.submId);
+                              }}
+                              className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
+                                submSaving.length === index + 1 && "rounded-b-2xl"
+                              }`}
+                            >
+                              <div className="flex items-center gap-x-2 col-span-2 w-[26%] ">
+                                <div>
+                                  <p className="leading-none font-medium">{subm.fullName}</p>
+                                  <div className="flex items-center">
+                                    <StarIcon role={subm.role} />
+                                    <p className="font-sourcecodepro text-xs text-gray-600">{subm.role}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <p className=" w-[26%] font-sourcecodepro font-bold">{subm.productName}</p>
+                              <p className=" w-[20%] ">{new Date(subm.submDate).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
+                              <p className=" w-[23%] ">Rp. {subm.installment.toLocaleString("ID-id")}</p>
+                              <p className=" w-[20%] ">{subm.tenor ? subm.tenor + " bulan" : ""}</p>
+                              <div className=" w-[20%] ">
+                                <Badge style={`${subm.status === "Diterima" ? "rice" : subm.status === "Ditinjau" ? "buttercup" : "pippin"}`}>{subm.status}</Badge>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>
+              <div className="mt-4 min-w-max">
+                <div className="border rounded-2xl bg-white text-sm">
+                  <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
+                    <div className="flex font-medium">
+                      <p className="w-[23%]">Nama</p>
+                      <p className="w-[20%]">Produk</p>
+                      <p className="w-[20%]">Tanggal</p>
+                      <p className="w-[24%]">Pinjaman</p>
+                      <p className="w-[20%]">Tenor</p>
+                      <p className="w-[20%]">Jaminan</p>
+                      <p className="w-[20%]">Status</p>
+                    </div>
+                  </div>
+                  <div>
+                    {isLoading ? (
+                      <div className={`py-[10px] px-6 items-center justify-items-center`}>
+                        <div className="place-content-center flex items-center">
+                          <SpinnerIcon /> Mengambil data
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        {submLoan.map((subm, index) => {
+                          return (
+                            <Link
+                              onClick={() => {
+                                alert(subm.submId);
+                              }}
+                              className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
+                                submLoan.length === index + 1 && "rounded-b-2xl"
+                              }`}
+                            >
+                              <div className="flex items-center gap-x-2 col-span-2 w-[23%] ">
+                                <div>
+                                  <p className="leading-none font-medium">{subm.fullName}</p>
+                                  <div className="flex items-center">
+                                    <StarIcon role={subm.role} />
+                                    <p className="font-sourcecodepro text-xs text-gray-600">{subm.role}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="w-[20%] font-sourcecodepro font-bold uppercase">
+                                <span>
+                                  {subm.productName} <br /> <p className="leading-none">{subm.interestType}</p>{" "}
+                                </span>
+                              </div>
+                              <p className="w-[20%]">{new Date(subm.submDate).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
+                              <p className="w-[24%]">Rp. {subm.loanFund.toLocaleString("ID-id")}</p>
+                              <p className="w-[20%]">{subm.tenor ? subm.tenor + " bulan" : ""}</p>
+                              <p className="w-[20%]">{subm.collateral}</p>
+                              <div className=" w-[20%] ">
+                                <Badge style={`${subm.status === "Diterima" ? "rice" : subm.status === "Ditinjau" ? "buttercup" : "pippin"}`}>{subm.status}</Badge>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Tab.Panel>
+          </div>
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
+  );
 }
 
 function AdminTransaction() {

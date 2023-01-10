@@ -9,6 +9,11 @@ function useSubmContext() {
 }
 
 function SubmProvider({ children }) {
+  async function get(type) {
+    let res = await submAPI.get(type);
+    return res.data.subms;
+  }
+
   async function getByUser() {
     let res = await submAPI.getByUser();
     return res.data.subm;
@@ -19,7 +24,7 @@ function SubmProvider({ children }) {
     return res.data.subm;
   }
 
-  const submCtx = { getByUser, getSubmById };
+  const submCtx = { get, getByUser, getSubmById };
   const submContextValue = { submCtx };
 
   return <submContext.Provider value={submContextValue}>{children}</submContext.Provider>;
