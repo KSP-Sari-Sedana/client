@@ -316,6 +316,77 @@ function UserLoan() {
   );
 }
 
+function UserLoanDetail() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [consumedProduct, setConsumedProduct] = useState({});
+  const { id } = useParams();
+  const { prodCtx } = useProductContext();
+
+  async function getConsumedProduct() {
+    setConsumedProduct(await prodCtx.getConsumedProductById(id, "loan"));
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    getConsumedProduct();
+  }, []);
+
+  return (
+    <div>
+      {isLoading ? (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi</p>
+          <div className="text-sm flex items-center text-zinc-500">
+            <SpinnerIcon /> Mengambil data
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
+          <Card.Consumed
+            settleDate={consumedProduct.settleDate}
+            productName={consumedProduct.productName}
+            productType={consumedProduct.productType}
+            accNumber={consumedProduct.accNumber}
+            balance={consumedProduct.loanBalance.toLocaleString("Id-id")}
+          />
+          <div className="mt-4 min-w-max">
+            <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
+            <div className="border rounded-2xl bg-white text-sm">
+              <div className="px-6 py-4 bg-clear-50 rounded-t-2xl border-b border-gray-200">
+                <div className="grid grid-cols-6 font-medium">
+                  <p>Tanggal</p>
+                  <p>Pokok</p>
+                  <p>Bunga</p>
+                  <p>Denda</p>
+                  <p>Total</p>
+                  <p>Sisa Pinjaman</p>
+                </div>
+              </div>
+              <div>
+                {consumedProduct.transDetail.map((trans, index) => {
+                  return (
+                    <div
+                      className={`grid grid-cols-6 py-[10px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${consumedProduct.transDetail.length === index + 1 && "rounded-b-2xl"}`}
+                    >
+                      <p>{new Date(trans.date).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
+                      <p>{`${trans.principal ? `Rp. ${trans.principal.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.interest ? `Rp. ${trans.interest.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.penaltyFee ? `Rp. ${trans.penaltyFee.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.total ? `Rp. ${trans.total.toLocaleString("ID-id")}` : ""}`}</p>
+                      <p>{`${trans.loanBalance ? `Rp. ${trans.loanBalance.toLocaleString("ID-id")}` : ""}`}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AdminSummary() {
   return <div></div>;
 }
@@ -347,6 +418,7 @@ const Panel = {
   UserSaving,
   UserSavingDetail,
   UserLoan,
+  UserLoanDetail,
   AdminSummary,
   AdminSubmission,
   AdminTransaction,

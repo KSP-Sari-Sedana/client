@@ -71,6 +71,14 @@ function UserLoan() {
   );
 }
 
+function UserLoanDetail() {
+  return (
+    <DashboardLayout>
+      <Panel.UserLoanDetail />
+    </DashboardLayout>
+  );
+}
+
 function AdminSummary() {
   return (
     <DashboardLayout>
@@ -126,6 +134,7 @@ const DashboardPage = {
   UserSaving,
   UserSavingDetail,
   UserLoan,
+  UserLoanDetail,
   AdminSummary,
   AdminSubmission,
   AdminTransaction,
