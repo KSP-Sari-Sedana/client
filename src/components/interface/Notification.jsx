@@ -22,6 +22,7 @@ function Notification() {
           {unreadNotif.length > 0 && (
             <div className="absolute flex top-1">
               <div className="absolute h-3 w-3 bg-bethlehem-700 ml-2 rounded-full border-2 border-white"></div>
+              <div className="absolute h-3 w-3 bg-bethlehem-700 ml-2 rounded-full border-2 border-white animate-ping"></div>
             </div>
           )}
         </Popover.Button>
