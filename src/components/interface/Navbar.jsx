@@ -8,12 +8,12 @@ function Navbar() {
   const { authCtx } = useAuthContext();
 
   return (
-    <div className="bg-pampas-50 px-2 py-2.5 fixed w-10/12 top-0 border-b border-slate-200 z-10">
+    <div className="bg-pampas-50 px-2 py-2.5 fixed w-10/12 top-0 border-b border-slate-200 z-10 min-w-min">
       <div className="flex items-center justify-between">
         <div className="w-72">
           <Logo />
         </div>
-        <nav className="flex p-4 space-x-14 justify-between text-zinc-500 text-sm">
+        <nav className="flex grow px-36 p-4 space-x-14 justify-between text-zinc-500 text-sm">
           <a href="/#product" className="hover:text-zinc-800">
             Produk
           </a>
