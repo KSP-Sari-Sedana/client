@@ -9,6 +9,8 @@ import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { SpinnerIcon } from "../icons/SpinnerIcon";
 import { StarIcon } from "../icons/StarIcon";
+import { WhatsAppIcon } from "../icons/WhatsAppIcon";
+import { ArrowIcon } from "../icons/ArrowIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
@@ -424,7 +426,7 @@ function AdminSubmission() {
                 <div className="border rounded-2xl bg-white text-sm">
                   <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                     <div className="flex font-medium">
-                      <p className="w-[26%]">Nama</p>
+                      <p className="w-[37%]">Nama</p>
                       <p className="w-[26%]">Produk</p>
                       <p className="w-[20%]">Tanggal</p>
                       <p className="w-[23%]">Angsuran</p>
@@ -444,14 +446,15 @@ function AdminSubmission() {
                         {submSaving.map((subm, index) => {
                           return (
                             <Link
-                              onClick={() => {
-                                alert(subm.submId);
-                              }}
+                              to={`saving/${subm.submId}`}
                               className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
                                 submSaving.length === index + 1 && "rounded-b-2xl"
                               }`}
                             >
-                              <div className="flex items-center gap-x-2 col-span-2 w-[26%] ">
+                              <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
+                                <div>
+                                  <Avatar dimension="w-7 h-7" src={subm.image} />
+                                </div>
                                 <div>
                                   <p className="leading-none font-medium">{subm.fullName}</p>
                                   <div className="flex items-center">
@@ -481,7 +484,7 @@ function AdminSubmission() {
                 <div className="border rounded-2xl bg-white text-sm">
                   <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                     <div className="flex font-medium">
-                      <p className="w-[23%]">Nama</p>
+                      <p className="w-[37%]">Nama</p>
                       <p className="w-[20%]">Produk</p>
                       <p className="w-[20%]">Tanggal</p>
                       <p className="w-[24%]">Pinjaman</p>
@@ -502,14 +505,15 @@ function AdminSubmission() {
                         {submLoan.map((subm, index) => {
                           return (
                             <Link
-                              onClick={() => {
-                                alert(subm.submId);
-                              }}
+                              to={`loan/${subm.submId}`}
                               className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
                                 submLoan.length === index + 1 && "rounded-b-2xl"
                               }`}
                             >
-                              <div className="flex items-center gap-x-2 col-span-2 w-[23%] ">
+                              <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
+                                <div>
+                                  <Avatar dimension="w-7 h-7" src={subm.image} />
+                                </div>
                                 <div>
                                   <p className="leading-none font-medium">{subm.fullName}</p>
                                   <div className="flex items-center">
@@ -546,6 +550,142 @@ function AdminSubmission() {
   );
 }
 
+function AdminSubmissionDetail() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [subm, setSubm] = useState({});
+
+  const { submCtx } = useSubmContext();
+  const { type, id } = useParams();
+
+  useEffect(() => {
+    getSubm();
+  }, []);
+
+  async function getSubm() {
+    setSubm(await submCtx.getSubmById(id, type));
+    setIsLoading(false);
+  }
+
+  return (
+    <div>
+      {isLoading ? (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Pengajuan</p>
+          <div className="text-sm flex items-center text-zinc-500">
+            <SpinnerIcon /> Mengambil data
+          </div>
+        </div>
+      ) : (
+        <div className="grow">
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">
+            Detail Pengajuan {subm.productName} oleh {subm.firstName} {subm.lastName}
+          </p>
+          <div>
+            <div className="flex gap-x-3">
+              <div className="flex items-center gap-x-3">
+                <div>
+                  <Avatar src={subm.image} />
+                </div>
+                <div className="grow">
+                  <p className="font-extrabold leading-none font-sourcecodepro uppercase">{`${subm.firstName} ${subm.lastName}`}</p>
+                  <div className="flex items-center">
+                    <StarIcon role={subm.role} />
+                    <p className="text-sm text-slate-500 leading-tight font-sourcecodepro font-medium">{subm.role}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex px-6 mt-5 text-sm font-medium min-w-max w-full">
+              <p className="w-[20%] min-w-max">Nama depan</p>
+              <p className="w-[20%] min-w-max">Nama belakang</p>
+              <p className="w-[30%]">E-mail</p>
+              <p className="w-[23%] min-w-max">Whats App</p>
+              <p className="w-[20%] min-w-max">Status keanggotaan</p>
+            </div>
+            <div className="flex px-6 text-sm text-gray-500 items-center w-full">
+              <p className="w-[20%]">{subm.firstName}</p>
+              <p className="w-[20%]">{subm.lastName}</p>
+              <p className="w-[30%]">{subm.email}</p>
+              <div className="flex items-center gap-x-1 w-[23%]">
+                <WhatsAppIcon />
+                <a className="text-gray-500 hover:text-clear-700 flex items-center" href={`https://wa.me/${subm?.cellphone?.substring(1)}`} target="_blank">
+                  {subm.cellphone}
+                  <ArrowIcon aim="rightTop" />
+                </a>
+              </div>
+              <div className="w-[20%]">
+                <Badge style={`${subm.userStatus === "Aktif" ? "clear" : subm.userStatus === "Ditinjau" ? "buttercup" : "pippin"}`}>{subm.userStatus}</Badge>
+              </div>
+            </div>
+          </div>
+          <div className="border rounded-2xl bg-white text-sm mt-6">
+            <div className="px-6 py-3 rounded-t-2xl border-b border-gray-200 text-base flex items-center justify-between">
+              <div>
+                <p className="font-medium">
+                  Detail Pengajuan Produk{" "}
+                  <span className="font-sourcecodepro font-bold uppercase">
+                    {subm.productName} {subm.interestType}
+                  </span>
+                </p>
+                <p className="-mt-1 text-sm text-gray-500">@ {new Date(subm.submDate).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
+              </div>
+              <div>
+                <Badge style={subm.status === "Ditinjau" ? "buttercup" : subm.status === "Diterima" ? "rice" : "pippin"}>{subm.status}</Badge>
+              </div>
+            </div>
+            <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+              <p className="w-1/2">Nama produk</p>
+              <p className="w-1/2 font-sourcecodepro font-bold uppercase">
+                {subm.productName} {subm.interestType}
+              </p>
+            </div>
+            <div className="h-11 px-6 bg-white border-b flex items-center">
+              <p className="w-1/2">Tipe produk</p>
+              <Badge style="clear">{subm.productType}</Badge>
+            </div>
+            {type === "saving" && (
+              <Fragment>
+                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                  <p className="w-1/2">Angsuran</p>
+                  <p className="w-1/2">Rp. {subm?.installment?.toLocaleString("ID-id")}</p>
+                </div>
+                <div className="h-11 px-6 bg-white rounded-b-2xl flex items-center">
+                  <p className="w-1/2">Tenor</p>
+                  <p className="w-1/2">{`${subm.deposit === "Sekali" ? "Hanya dibayarkan sekali" : `${subm.tenor ? subm.tenor + " bulan" : "Selama menjadi anggota koperasi"}`}`}</p>
+                </div>
+              </Fragment>
+            )}
+            {type === "loan" && (
+              <Fragment>
+                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                  <p className="w-1/2">Dana pinjaman</p>
+                  <p className="w-1/2">Rp. {subm?.loanFund?.toLocaleString("ID-id")}</p>
+                </div>
+                <div className="h-11 px-6 bg-white border-b flex items-center">
+                  <p className="w-1/2">Bunga pinjaman</p>
+                  <p className="w-1/2">{subm.interest}%</p>
+                </div>
+                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                  <p className="w-1/2">Tenor</p>
+                  <p className="w-1/2">{subm.tenor} bulan</p>
+                </div>
+                <div className="h-11 px-6 bg-white border-b flex items-center">
+                  <p className="w-1/2">Jaminan</p>
+                  <p className="w-1/2">{subm.collateral}</p>
+                </div>
+                <div className="h-11 px-6 py-7 rounded-b-2xl bg-gray-50 flex items-center">
+                  <p className="w-1/2">Catatan</p>
+                  <p className="w-1/2">{subm.note}</p>
+                </div>
+              </Fragment>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AdminTransaction() {
   return <div></div>;
 }
@@ -572,6 +712,7 @@ const Panel = {
   UserLoanDetail,
   AdminSummary,
   AdminSubmission,
+  AdminSubmissionDetail,
   AdminTransaction,
   AdminProduct,
   AdminUser,

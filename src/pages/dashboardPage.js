@@ -95,6 +95,14 @@ function AdminSubmission() {
   );
 }
 
+function AdminSubmissionDetail() {
+  return (
+    <DashboardLayout>
+      <Panel.AdminSubmissionDetail />
+    </DashboardLayout>
+  );
+}
+
 function AdminTransaction() {
   return (
     <DashboardLayout>
@@ -137,6 +145,7 @@ const DashboardPage = {
   UserLoanDetail,
   AdminSummary,
   AdminSubmission,
+  AdminSubmissionDetail,
   AdminTransaction,
   AdminProduct,
   AdminUser,
