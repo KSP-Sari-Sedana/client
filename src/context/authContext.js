@@ -47,12 +47,14 @@ function AuthProvider({ children }) {
         setIsLoggedIn(await isTokenValid());
       }
       validateToken();
-      checkToken = setInterval(() => {
-        if (isTokenExpired()) {
-          logout();
-        }
-      }, 1000);
     }
+
+    checkToken = setInterval(() => {
+      if (isTokenExpired()) {
+        logout();
+      }
+    }, 1000);
+
     return () => {
       clearInterval(checkToken);
     };
@@ -70,12 +72,22 @@ function AuthProvider({ children }) {
     window.location.reload();
   }
 
+  async function getIsLoggedIn() {
+    const isValid = await isTokenValid();
+    const isExpired = isTokenExpired();
+    if (isValid && !isExpired) {
+      return true;
+    }
+    return false;
+  }
+
   function logout() {
     setAPIMessage("");
     localStorage.removeItem("token");
     clearInterval(checkToken);
     setIsLoggedIn(false);
     navigate("/login");
+    window.location.reload();
   }
 
   const authCtx = {
@@ -88,6 +100,7 @@ function AuthProvider({ children }) {
     setPassword,
     setIsRemember,
     login,
+    getIsLoggedIn,
     logout,
   };
 
