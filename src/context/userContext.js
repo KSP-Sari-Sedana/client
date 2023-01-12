@@ -34,6 +34,11 @@ function UserProvider({ children }) {
     setMe(result.data.user);
   }
 
+  async function getByUsername(username) {
+    let result = await userAPI.getByUsername(username);
+    return result?.data?.user || {};
+  }
+
   const userCtx = {
     username,
     email,
@@ -49,6 +54,7 @@ function UserProvider({ children }) {
     setPassword,
     register,
     getMyProfile,
+    getByUsername,
   };
 
   const userContextValue = { userCtx };

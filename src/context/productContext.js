@@ -41,8 +41,8 @@ function ProductProvider({ children }) {
     setCalculation(result.data || {});
   }
 
-  async function getConsumedProducts(type) {
-    let result = await productAPI.getConsumedProducts(type);
+  async function getConsumedProducts(type, username) {
+    let result = await productAPI.getConsumedProducts(type, username);
     if (result.status !== "OK") {
       return [];
     }

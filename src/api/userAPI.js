@@ -24,4 +24,17 @@ async function getMyProfile() {
   return result;
 }
 
-export default { register, getMyProfile };
+async function getByUsername(username) {
+  let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  result = await result.json();
+  return result;
+}
+
+export default { register, getMyProfile, getByUsername };

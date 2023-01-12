@@ -27,8 +27,8 @@ async function calculate(id, { tenor, installment, loanFund, interestType }) {
   return res;
 }
 
-async function getConsumedProducts(type) {
-  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/consumed/${type}`, {
+async function getConsumedProducts(type, username) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/consumed/${type}${username ? `?username=${username}` : ""}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

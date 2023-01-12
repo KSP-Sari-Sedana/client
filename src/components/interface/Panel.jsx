@@ -1,12 +1,13 @@
 import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { Tab } from "@headlessui/react";
+import { Tab, RadioGroup } from "@headlessui/react";
 
 import { Card } from "./Card";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Avatar } from "./Avatar";
+import { Input } from "./Input";
 import { SpinnerIcon } from "../icons/SpinnerIcon";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
@@ -687,7 +688,124 @@ function AdminSubmissionDetail() {
 }
 
 function AdminTransaction() {
-  return <div></div>;
+  const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState({});
+  const [consumedProducts, setConsumedProducts] = useState([]);
+  const { userCtx } = useUserContext();
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    getTransactionDetail();
+  }, [username]);
+
+  async function getTransactionDetail() {
+    if (!username) return;
+
+    setIsLoading(true);
+    const user = await userCtx.getByUsername(username);
+    setUser(user);
+
+    if (user.username) {
+      const saving = await prodCtx.getConsumedProducts("saving", user.username);
+      setConsumedProducts(saving);
+      const loan = await prodCtx.getConsumedProducts("loan", user.username);
+      setConsumedProducts((prev) => [...prev, ...loan]);
+    } else {
+      setConsumedProducts([]);
+    }
+
+    setIsLoading(false);
+  }
+
+  return (
+    <div className="text-sm">
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Tambah Transaksi</p>
+      <p className="mb-1">Username</p>
+      <div className="flex items-center gap-x-3">
+        <Input placeHolder="bagussuprapta" icon="fingerPrint" action={setUsername} />
+        {isLoading ? (
+          <div className="flex items-center mb-2">
+            <SpinnerIcon />
+            <p>Mencari User</p>
+          </div>
+        ) : (
+          <div>
+            {user.username ? (
+              <div className="flex items-center gap-x-2 mb-2">
+                <div>
+                  <Avatar dimension="w-8 h-8" src={user.image || "https://source.boringavatars.com/pixel/120?square"} />
+                </div>
+                <div className="grow">
+                  <p className="font-extrabold leading-none font-sourcecodepro uppercase">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <div className="flex items-center">
+                    <StarIcon role={user.role} />
+                    <p className="text-sm text-slate-500 leading-tight font-sourcecodepro font-medium">{user.role}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {username && (
+                  <div className="mb-2">
+                    <p className="text-bethlehem-600">User tidak ditemukan</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      {user.username && (
+        <div>
+          {consumedProducts.length === 0 ? (
+            <div>
+              <p className="ml-2">
+                {user.firstName} {user.lastName} tidak menikmati produk apapun
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className="ml-2 mb-3">
+                Pilih produk yang dinikmati oleh {user.firstName} {user.lastName}
+              </p>
+              <div>
+                <div className="flex flex-wrap justify-between gap-y-6">
+                  {consumedProducts.map((product, index) => {
+                    let formatedAccNumber = "";
+                    for (let i = 0; i < product.accNumber?.toString().length; i++) {
+                      if (i > 0 && (i + 1) % 3 === 0) {
+                        formatedAccNumber += " ";
+                      }
+                      formatedAccNumber += product.accNumber?.toString()[i];
+                    }
+
+                    return (
+                      <div key={index}>
+                        <div className={`border rounded-xl cursor-pointer bg-white w-52 h-20 text-sm leading-4 flex items-center py-6 px-5`}>
+                          <div className="grow">
+                            <div className="flex-col">
+                              <p className="font-sourcecodepro text-lg font-extrabold leading-4">{product.productName}</p>
+                              <p className="font-sourcecodepro font-semibold leading-4">rek: {formatedAccNumber}</p>
+                              <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${product.productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>
+                                Rp. {product.loanBalance?.toLocaleString("ID-id") || product.balance?.toLocaleString("ID-id")}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function AdminProduct() {
