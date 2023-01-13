@@ -11,6 +11,7 @@ import UserProvider from "./context/userContext";
 import ProductProvider from "./context/productContext";
 import NotifProvider from "./context/notifContext";
 import SubmProvider from "./context/submContext";
+import HelperProvider from "./context/helperContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,7 +23,9 @@ root.render(
             <ProductProvider>
               <NotifProvider>
                 <SubmProvider>
-                  <App />
+                  <HelperProvider>
+                    <App />
+                  </HelperProvider>
                 </SubmProvider>
               </NotifProvider>
             </ProductProvider>
