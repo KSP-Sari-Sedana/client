@@ -8,6 +8,7 @@ import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { Input } from "./Input";
+import { Spinner } from "./Spinner";
 import { SpinnerIcon } from "../icons/SpinnerIcon";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
@@ -15,6 +16,7 @@ import { ArrowIcon } from "../icons/ArrowIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
+import { useHelperContext } from "../../context/helperContext";
 
 function UserSummary() {
   return <div></div>;
@@ -38,18 +40,13 @@ function UserSubmission() {
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Pengajuan</p>
       {isLoading ? (
-        <div className="text-sm flex items-center text-zinc-500">
-          <SpinnerIcon /> Mengambil data
-        </div>
+        <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
         <div className="flex flex-wrap justify-between gap-y-6">
           {subms.map((subm, index) => {
             return (
               <Link to={`${subm.productType === "Simpanan" ? "saving" : "loan"}/${subm.submId}`}>
-                <Card.Submission key={index} submDate={subm.submDate} productName={subm.productName}>
-                  <Badge style={subm.status === "Ditinjau" ? "buttercup" : subm.status === "Diterima" ? "rice" : "pippin"}>{subm.status}</Badge>
-                  <Badge style="clear">{subm.productType}</Badge>
-                </Card.Submission>
+                <Card.Submission key={index} submDate={subm.submDate} productName={subm.productName} productType={subm.productType} status={subm.status} />
               </Link>
             );
           })}
@@ -61,10 +58,10 @@ function UserSubmission() {
 
 function UserSubmissionDetail() {
   const [subm, setSubm] = useState({});
-  const [isLoding, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const { id, type } = useParams();
   const { submCtx } = useSubmContext();
-  const { userCtx } = useUserContext();
+  const { helpCtx } = useHelperContext();
 
   useEffect(() => {
     getSubm();
@@ -77,32 +74,24 @@ function UserSubmissionDetail() {
 
   return (
     <div>
-      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">
-        Detail pengajuan {subm.productName} oleh {userCtx.me.firstName} {userCtx.me.lastName}
-      </p>
-      {isLoding ? (
-        <div className="text-sm flex items-center text-zinc-500">
-          <SpinnerIcon /> Mengambil data
-        </div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Pengajuan Anda</p>
+      {isLoading ? (
+        <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
         <div className="flex gap-x-4">
-          <Card.Submission submDate={subm.submDate} productName={subm.productName}>
-            <Button text="Batalkan Pengajuan" style="bethlehem" round="rounded-full" height="py-1" width="px-4" isDisable={subm.status === "Diterima" ? true : false} />
-          </Card.Submission>
-          <div className="grow">
+          <div>
+            <Card.Submission submDate={subm.submDate} productName={subm.productName} productType={subm.productType} status={subm.status} />
+            <div className="flex mt-3 ml-3">
+              <Button text="Batalkan" style="bethlehem" round="rounded-full" height="py-1" width="px-4" isDisable={subm.status === "Diterima" ? true : false} />
+            </div>
+          </div>
+          <div className="grow min-w-max">
             <div className="border rounded-2xl bg-white text-sm">
-              <div className="px-6 py-3 bg-clear-50 rounded-t-2xl border-b border-gray-200 text-base">
+              <div className="px-6 py-3 bg-white rounded-t-2xl border-b border-gray-200">
                 <p className="font-medium">
                   Detail Pengajuan Produk <span className="font-sourcecodepro font-bold">{subm.productName}</span>
                 </p>
                 <p className="-mt-1 text-sm text-gray-500">@ {new Date(subm.submDate).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
-              </div>
-              <div className="h-11 px-6 bg-white border-b flex items-center">
-                <p className="w-1/2">Nama</p>
-                <div className="w-1/2 flex items-center gap-x-2">
-                  <Avatar dimension="w-6 h-6" />
-                  <p>{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
-                </div>
               </div>
               <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
                 <p className="w-1/2">Nama produk</p>
@@ -116,7 +105,7 @@ function UserSubmissionDetail() {
                 <Fragment>
                   <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
                     <p className="w-1/2">Angsuran</p>
-                    <p className="w-1/2">Rp. {subm?.installment?.toLocaleString("ID-id")}</p>
+                    <p className="w-1/2">{helpCtx.formatRupiah(subm.installment)}</p>
                   </div>
                   <div className="h-11 px-6 bg-white border-b flex items-center">
                     <p className="w-1/2">Tenor</p>
@@ -186,14 +175,12 @@ function UserSaving() {
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Simpanan</p>
       {isLoding ? (
-        <div className="text-sm flex items-center text-zinc-500">
-          <SpinnerIcon /> Mengambil data
-        </div>
+        <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
         <div className="flex flex-wrap justify-between gap-y-6">
           {consumedProducts.map((product, index) => {
             return (
-              <Link key={index} to={`${product.id}`}>
+              <Link key={index} to={`${product.submId}`}>
                 <Card.Consumed
                   settleDate={product.settleDate}
                   productName={product.productName}
@@ -230,9 +217,7 @@ function UserSavingDetail() {
       {isLoading ? (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi</p>
-          <div className="text-sm flex items-center text-zinc-500">
-            <SpinnerIcon /> Mengambil data
-          </div>
+          <Spinner text="Loading" className="text-slate-700 place-content-center" />
         </div>
       ) : (
         <div>
@@ -297,14 +282,12 @@ function UserLoan() {
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Pinjaman</p>
       {isLoading ? (
-        <div className="text-sm flex items-center text-zinc-500">
-          <SpinnerIcon /> Mengambil data
-        </div>
+        <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
         <div className="flex flex-wrap justify-between gap-y-6">
           {consumedProducts.map((product, index) => {
             return (
-              <Link key={index} to={`${product.id}`}>
+              <Link key={index} to={`${product.submId}`}>
                 <Card.Consumed
                   settleDate={product.settleDate}
                   productName={product.productName}
@@ -341,9 +324,7 @@ function UserLoanDetail() {
       {isLoading ? (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi</p>
-          <div className="text-sm flex items-center text-zinc-500">
-            <SpinnerIcon /> Mengambil data
-          </div>
+          <Spinner text="Loading" className="text-slate-700 place-content-center" />
         </div>
       ) : (
         <div>
@@ -438,9 +419,7 @@ function AdminSubmission() {
                   <div>
                     {isLoading ? (
                       <div className={`py-[10px] px-6 items-center justify-items-center`}>
-                        <div className="place-content-center flex items-center">
-                          <SpinnerIcon /> Mengambil data
-                        </div>
+                        <Spinner text="Loading" className="text-slate-700 place-content-center" />
                       </div>
                     ) : (
                       <div>
@@ -497,9 +476,7 @@ function AdminSubmission() {
                   <div>
                     {isLoading ? (
                       <div className={`py-[10px] px-6 items-center justify-items-center`}>
-                        <div className="place-content-center flex items-center">
-                          <SpinnerIcon /> Mengambil data
-                        </div>
+                        <Spinner text="Loading" className="text-slate-700 place-content-center" />
                       </div>
                     ) : (
                       <div>
@@ -572,9 +549,7 @@ function AdminSubmissionDetail() {
       {isLoading ? (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Pengajuan</p>
-          <div className="text-sm flex items-center text-zinc-500">
-            <SpinnerIcon /> Mengambil data
-          </div>
+          <Spinner text="Loading" className="text-slate-700 place-content-center" />
         </div>
       ) : (
         <div className="grow">
@@ -692,8 +667,10 @@ function AdminTransaction() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState({});
   const [consumedProducts, setConsumedProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState();
   const { userCtx } = useUserContext();
   const { prodCtx } = useProductContext();
+  const { helpCtx } = useHelperContext();
 
   useEffect(() => {
     getTransactionDetail();
@@ -703,15 +680,25 @@ function AdminTransaction() {
     if (!username) return;
 
     setIsLoading(true);
+
     const user = await userCtx.getByUsername(username);
-    setUser(user);
+    if (user !== {}) setUser(user);
 
     if (user.username) {
       const saving = await prodCtx.getConsumedProducts("saving", user.username);
-      setConsumedProducts(saving);
       const loan = await prodCtx.getConsumedProducts("loan", user.username);
-      setConsumedProducts((prev) => [...prev, ...loan]);
+      const consumedProducts = [...saving, ...loan];
+
+      for (var i = 0; i < consumedProducts.length; i++) {
+        consumedProducts[i].id = i;
+      }
+
+      if (consumedProducts.length > 0) {
+        setSelectedProduct(consumedProducts[0].id);
+        setConsumedProducts(consumedProducts);
+      }
     } else {
+      setUser({});
       setConsumedProducts([]);
     }
 
@@ -725,10 +712,7 @@ function AdminTransaction() {
       <div className="flex items-center gap-x-3">
         <Input placeHolder="bagussuprapta" icon="fingerPrint" action={setUsername} />
         {isLoading ? (
-          <div className="flex items-center mb-2">
-            <SpinnerIcon />
-            <p>Mencari User</p>
-          </div>
+          <Spinner text="Mencari pengguna" className="text-slate-700 place-content-center mb-2" />
         ) : (
           <div>
             {user.username ? (
@@ -772,33 +756,31 @@ function AdminTransaction() {
                 Pilih produk yang dinikmati oleh {user.firstName} {user.lastName}
               </p>
               <div>
-                <div className="flex flex-wrap justify-between gap-y-6">
-                  {consumedProducts.map((product, index) => {
-                    let formatedAccNumber = "";
-                    for (let i = 0; i < product.accNumber?.toString().length; i++) {
-                      if (i > 0 && (i + 1) % 3 === 0) {
-                        formatedAccNumber += " ";
-                      }
-                      formatedAccNumber += product.accNumber?.toString()[i];
-                    }
-
-                    return (
-                      <div key={index}>
-                        <div className={`border rounded-xl cursor-pointer bg-white w-52 h-20 text-sm leading-4 flex items-center py-6 px-5`}>
-                          <div className="grow">
-                            <div className="flex-col">
-                              <p className="font-sourcecodepro text-lg font-extrabold leading-4">{product.productName}</p>
-                              <p className="font-sourcecodepro font-semibold leading-4">rek: {formatedAccNumber}</p>
-                              <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${product.productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>
-                                Rp. {product.loanBalance?.toLocaleString("ID-id") || product.balance?.toLocaleString("ID-id")}
-                              </p>
-                            </div>
-                          </div>
+                <RadioGroup value={selectedProduct} onChange={setSelectedProduct}>
+                  <div className="flex flex-wrap justify-between gap-y-6">
+                    {consumedProducts.map((product, index) => {
+                      return (
+                        <div key={index}>
+                          <RadioGroup.Option key={product.id} value={product.id}>
+                            {({ active, checked }) => (
+                              <div className={`border rounded-xl cursor-pointer ${checked ? "bg-clear-50" : "bg-white"} w-52 h-20 text-sm leading-4 flex items-center py-6 px-5`}>
+                                <div className="grow">
+                                  <div className="flex-col">
+                                    <p className="font-sourcecodepro text-lg font-extrabold leading-4">{product.productName}</p>
+                                    <p className="font-sourcecodepro font-semibold leading-4">rek: {helpCtx.formatAccNumber(product.accNumber)}</p>
+                                    <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${product.productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>
+                                      Rp. {product.loanBalance?.toLocaleString("ID-id") || product.balance?.toLocaleString("ID-id")}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </RadioGroup.Option>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                </RadioGroup>
               </div>
             </div>
           )}
