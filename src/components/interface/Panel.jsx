@@ -400,15 +400,34 @@ function AdminSubmission() {
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Semua Pengajuan</p>
       <Tab.Group>
-        <Tab.List>
-          <Tab className="mr-3 py-1 px-3 border rounded-md">Simpanan</Tab>
-          <Tab className="mr-3 py-1 px-3 border rounded-md">Pinjaman</Tab>
-        </Tab.List>
+        <div className="flex items-center text-sm mb-3 ml-3">
+          <p>Produk: </p>
+          <Tab.List className="flex gap-x-2 ml-2">
+            <Tab
+              className={({ selected }) =>
+                selected
+                  ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-clear-500 bg-clear-50"
+                  : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
+              }
+            >
+              Simpanan
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                selected
+                  ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-clear-500 bg-clear-50"
+                  : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
+              }
+            >
+              Pinjaman
+            </Tab>
+          </Tab.List>
+        </div>
         <Tab.Panels>
           <div>
             <Tab.Panel>
-              <div className="mt-4 min-w-max">
-                <div className="border rounded-2xl bg-white text-sm">
+              <div className=" min-w-max">
+                <div className="border rounded-2xl overflow-hidden bg-white text-sm">
                   <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                     <div className="flex font-medium">
                       <p className="w-[37%]">Nama</p>
@@ -428,12 +447,7 @@ function AdminSubmission() {
                       <div>
                         {submSaving.map((subm, index) => {
                           return (
-                            <Link
-                              to={`saving/${subm.submId}`}
-                              className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
-                                submSaving.length === index + 1 && "rounded-b-2xl"
-                              }`}
-                            >
+                            <Link key={index} to={`saving/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
                               <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
                                 <div>
                                   <Avatar dimension="w-7 h-7" src={subm.image} />
@@ -463,8 +477,8 @@ function AdminSubmission() {
               </div>
             </Tab.Panel>
             <Tab.Panel>
-              <div className="mt-4 min-w-max">
-                <div className="border rounded-2xl bg-white text-sm">
+              <div className="min-w-max">
+                <div className="border rounded-2xl bg-white text-sm overflow-hidden">
                   <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                     <div className="flex font-medium">
                       <p className="w-[37%]">Nama</p>
@@ -485,12 +499,7 @@ function AdminSubmission() {
                       <div>
                         {submLoan.map((subm, index) => {
                           return (
-                            <Link
-                              to={`loan/${subm.submId}`}
-                              className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
-                                submLoan.length === index + 1 && "rounded-b-2xl"
-                              }`}
-                            >
+                            <Link key={index} to={`loan/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
                               <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
                                 <div>
                                   <Avatar dimension="w-7 h-7" src={subm.image} />
