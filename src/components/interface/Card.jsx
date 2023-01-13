@@ -4,7 +4,7 @@ import { useHelperContext } from "../../context/helperContext";
 function Submission({ submDate, productName, status, productType }) {
   const { helpCtx } = useHelperContext();
   return (
-    <div className="border rounded-xl bg-white w-72 h-20 text-sm leading-4 flex items-center py-6 px-5">
+    <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center py-6 px-5">
       <div className="border-r pr-2">
         <p>{helpCtx.getDay(submDate, "short")},</p>
         <p>{`${helpCtx.getDate(submDate, "numeric")} ${helpCtx.getMonth(submDate, "short")}`}</p>
@@ -25,7 +25,7 @@ function Submission({ submDate, productName, status, productType }) {
 function Consumed({ settleDate, accNumber, productName, productType, balance }) {
   const { helpCtx } = useHelperContext();
   return (
-    <div className="border rounded-xl bg-white w-72 h-20 text-sm leading-4 flex items-center py-6 px-5">
+    <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center py-6 px-5">
       <div className="border-r w-16 pr-2">
         <p>{helpCtx.getDay(settleDate, "short")},</p>
         <p>{`${helpCtx.getDate(settleDate, "numeric")} ${helpCtx.getMonth(settleDate, "short")}`}</p>

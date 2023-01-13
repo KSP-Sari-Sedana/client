@@ -9,7 +9,6 @@ import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { Input } from "./Input";
 import { Spinner } from "./Spinner";
-import { SpinnerIcon } from "../icons/SpinnerIcon";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
 import { ArrowIcon } from "../icons/ArrowIcon";
@@ -37,12 +36,12 @@ function UserSubmission() {
   }
 
   return (
-    <div>
+    <Fragment>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Pengajuan</p>
       {isLoading ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="flex flex-wrap justify-between gap-y-6">
+        <div className="grid grid-cols-3 gap-3 min-w-max">
           {subms.map((subm, index) => {
             return (
               <Link to={`${subm.productType === "Simpanan" ? "saving" : "loan"}/${subm.submId}`}>
@@ -52,7 +51,7 @@ function UserSubmission() {
           })}
         </div>
       )}
-    </div>
+    </Fragment>
   );
 }
 
@@ -177,7 +176,7 @@ function UserSaving() {
       {isLoding ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="flex flex-wrap justify-between gap-y-6">
+        <div className="grid grid-cols-3 gap-3 min-w-max">
           {consumedProducts.map((product, index) => {
             return (
               <Link key={index} to={`${product.submId}`}>
@@ -222,13 +221,15 @@ function UserSavingDetail() {
       ) : (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
-          <Card.Consumed
-            settleDate={consumedProduct.settleDate}
-            productName={consumedProduct.productName}
-            productType={consumedProduct.productType}
-            accNumber={consumedProduct.accNumber}
-            balance={consumedProduct.balance.toLocaleString("Id-id")}
-          />
+          <div className="flex">
+            <Card.Consumed
+              settleDate={consumedProduct.settleDate}
+              productName={consumedProduct.productName}
+              productType={consumedProduct.productType}
+              accNumber={consumedProduct.accNumber}
+              balance={consumedProduct.balance.toLocaleString("Id-id")}
+            />
+          </div>
           <div className="mt-4">
             <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
             <div className="border rounded-2xl bg-white text-sm">
@@ -284,7 +285,7 @@ function UserLoan() {
       {isLoading ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="flex flex-wrap justify-between gap-y-6">
+        <div className="grid grid-cols-3 gap-3 min-w-max">
           {consumedProducts.map((product, index) => {
             return (
               <Link key={index} to={`${product.submId}`}>
@@ -329,13 +330,15 @@ function UserLoanDetail() {
       ) : (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
-          <Card.Consumed
-            settleDate={consumedProduct.settleDate}
-            productName={consumedProduct.productName}
-            productType={consumedProduct.productType}
-            accNumber={consumedProduct.accNumber}
-            balance={consumedProduct.loanBalance.toLocaleString("Id-id")}
-          />
+          <div className="flex">
+            <Card.Consumed
+              settleDate={consumedProduct.settleDate}
+              productName={consumedProduct.productName}
+              productType={consumedProduct.productType}
+              accNumber={consumedProduct.accNumber}
+              balance={consumedProduct.loanBalance.toLocaleString("Id-id")}
+            />
+          </div>
           <div className="mt-4 min-w-max">
             <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
             <div className="border rounded-2xl bg-white text-sm">
@@ -694,7 +697,6 @@ function AdminTransaction() {
       }
 
       if (consumedProducts.length > 0) {
-        setSelectedProduct(consumedProducts[0].id);
         setConsumedProducts(consumedProducts);
       }
     } else {
@@ -757,13 +759,13 @@ function AdminTransaction() {
               </p>
               <div>
                 <RadioGroup value={selectedProduct} onChange={setSelectedProduct}>
-                  <div className="flex flex-wrap justify-between gap-y-6">
+                  <div className="grid grid-cols-4 gap-3 min-w-max">
                     {consumedProducts.map((product, index) => {
                       return (
                         <div key={index}>
                           <RadioGroup.Option key={product.id} value={product.id}>
                             {({ active, checked }) => (
-                              <div className={`border rounded-xl cursor-pointer ${checked ? "bg-clear-50" : "bg-white"} w-52 h-20 text-sm leading-4 flex items-center py-6 px-5`}>
+                              <div className={`border rounded-xl cursor-pointer ${checked ? "bg-clear-50" : "bg-white"} h-20 text-sm leading-4 flex items-center py-6 px-5`}>
                                 <div className="grow">
                                   <div className="flex-col">
                                     <p className="font-sourcecodepro text-lg font-extrabold leading-4">{product.productName}</p>
