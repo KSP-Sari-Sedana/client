@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import { SpinnerIcon } from "./components/icons/SpinnerIcon";
 import { Logo } from "./components/interface/Logo";
+import { Spinner } from "./components/interface/Spinner";
 import { LandingPage } from "./pages/landingPage";
 import { NotFoundPage } from "./pages/notFoundPage";
 import { RegisterPage } from "./pages/registerPage";
@@ -33,10 +33,7 @@ export default function App() {
           <div className="flex items-center justify-center h-screen">
             <div>
               <Logo />
-              <div className="flex items-center justify-center">
-                <SpinnerIcon />
-                Loading
-              </div>
+              <Spinner text="Loading" className="text-slate-700 place-content-center mt-3" />
             </div>
           </div>
         </div>
