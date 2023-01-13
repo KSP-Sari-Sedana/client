@@ -1,4 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Tab, RadioGroup } from "@headlessui/react";
@@ -8,6 +9,7 @@ import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { Input } from "./Input";
+import { Modal } from "./Modal";
 import { Spinner } from "./Spinner";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
@@ -44,8 +46,8 @@ function UserSubmission() {
         <div className="grid grid-cols-3 gap-3 min-w-max">
           {subms.map((subm, index) => {
             return (
-              <Link to={`${subm.productType === "Simpanan" ? "saving" : "loan"}/${subm.submId}`}>
-                <Card.Submission key={index} submDate={subm.submDate} productName={subm.productName} productType={subm.productType} status={subm.status} />
+              <Link key={index} to={`${subm.productType === "Simpanan" ? "saving" : "loan"}/${subm.submId}`}>
+                <Card.Submission submDate={subm.submDate} productName={subm.productName} productType={subm.productType} status={subm.status} />
               </Link>
             );
           })}
@@ -58,9 +60,11 @@ function UserSubmission() {
 function UserSubmissionDetail() {
   const [subm, setSubm] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { id, type } = useParams();
   const { submCtx } = useSubmContext();
   const { helpCtx } = useHelperContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getSubm();
@@ -69,6 +73,12 @@ function UserSubmissionDetail() {
   async function getSubm() {
     setSubm(await submCtx.getSubmById(id, type));
     setIsLoading(false);
+  }
+
+  async function cancelSubm() {
+    await submCtx.cancelSubm(id, type);
+    navigate("/dashboard/submission");
+    window.location.reload();
   }
 
   return (
@@ -81,7 +91,47 @@ function UserSubmissionDetail() {
           <div>
             <Card.Submission submDate={subm.submDate} productName={subm.productName} productType={subm.productType} status={subm.status} />
             <div className="flex mt-3 ml-3">
-              <Button text="Batalkan" style="bethlehem" round="rounded-full" height="py-1" width="px-4" isDisable={subm.status === "Diterima" ? true : false} />
+              <Button
+                action={() => {
+                  setIsOpen(true);
+                }}
+                text={subm.status === "Ditinjau" ? "Batalkan" : subm.status === "Ditolak" ? "Hapus" : "Batalkan"}
+                style="bethlehem"
+                round="rounded-full"
+                height="py-1"
+                width="px-4"
+                isDisable={subm.status === "Diterima" ? true : false}
+              />
+              <Modal.Confirm show={isOpen} onClose={setIsOpen} className="text-sm">
+                <p className="text-sm">
+                  Yakin ingin {subm.status === "Ditinjau" ? "membatalkan" : subm.status === "Ditolak" && "menghapus"} pengajuan{" "}
+                  <span className="font-sourcecodepro font-bold">{subm.productName} </span>
+                  {helpCtx.getFullDate(subm.submDate)}?
+                </p>
+                <div className="flex justify-center mt-3 gap-x-3">
+                  <Button
+                    action={() => {
+                      setIsOpen(false);
+                    }}
+                    text="Tidak"
+                    style="electron"
+                    round="rounded-full"
+                    height="py-1"
+                    width="px-4"
+                  />
+                  <Button
+                    action={() => {
+                      setIsOpen(false);
+                      cancelSubm();
+                    }}
+                    text={subm.status === "Ditinjau" ? "Batalkan" : subm.status === "Ditolak" ? "Hapus" : "Batalkan"}
+                    style="bethlehem"
+                    round="rounded-full"
+                    height="py-1"
+                    width="px-4"
+                  />
+                </div>
+              </Modal.Confirm>
             </div>
           </div>
           <div className="grow min-w-max">

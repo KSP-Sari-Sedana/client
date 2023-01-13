@@ -34,4 +34,16 @@ async function getSubmById(id, type) {
   return res;
 }
 
-export default { get, getByUser, getSubmById };
+async function cancelSubm(id, type) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm/${type}/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  res = await res.json();
+  return res;
+}
+
+export default { get, getByUser, getSubmById, cancelSubm };
