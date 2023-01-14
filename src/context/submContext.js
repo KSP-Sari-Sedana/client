@@ -19,6 +19,11 @@ function SubmProvider({ children }) {
     return res.data.subms;
   }
 
+  async function update(type, id, data) {
+    let res = await submAPI.update(type, id, data);
+    return res.data.subm;
+  }
+
   async function getByUser() {
     let res = await submAPI.getByUser();
     return res.data.subm;
@@ -34,7 +39,7 @@ function SubmProvider({ children }) {
     return res.data.subm;
   }
 
-  const submCtx = { create, get, getByUser, getSubmById, cancelSubm };
+  const submCtx = { create, get, update, getByUser, getSubmById, cancelSubm };
   const submContextValue = { submCtx };
 
   return <submContext.Provider value={submContextValue}>{children}</submContext.Provider>;

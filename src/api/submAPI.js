@@ -24,6 +24,20 @@ async function get(type) {
   return res;
 }
 
+async function update(type, id, data) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm/${type}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ ...data }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  res = await res.json();
+  return res;
+}
+
 async function getByUser() {
   let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm`, {
     method: "GET",
@@ -60,4 +74,4 @@ async function cancelSubm(id, type) {
   return res;
 }
 
-export default { create, get, getByUser, getSubmById, cancelSubm };
+export default { create, get, update, getByUser, getSubmById, cancelSubm };

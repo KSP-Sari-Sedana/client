@@ -343,7 +343,7 @@ function UserLoan() {
                   productName={product.productName}
                   productType={product.productType}
                   accNumber={product.accNumber}
-                  balance={product.loanBalance.toLocaleString("ID-id")}
+                  balance={product.loanBalance?.toLocaleString("ID-id")}
                 />
               </Link>
             );
@@ -385,7 +385,7 @@ function UserLoanDetail() {
               productName={consumedProduct.productName}
               productType={consumedProduct.productType}
               accNumber={consumedProduct.accNumber}
-              balance={consumedProduct.loanBalance.toLocaleString("Id-id")}
+              balance={consumedProduct.loanBalance?.toLocaleString("Id-id")}
             />
           </div>
           <div className="mt-4 min-w-max">
@@ -591,9 +591,15 @@ function AdminSubmission() {
 
 function AdminSubmissionDetail() {
   const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState("");
   const [subm, setSubm] = useState({});
+  const [user, setUser] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModalCancel, setIsModalCancel] = useState(false);
+  const [isModalAccept, setIsModalAccept] = useState(false);
 
   const { submCtx } = useSubmContext();
+  const { userCtx } = useUserContext();
   const { type, id } = useParams();
 
   useEffect(() => {
@@ -603,6 +609,20 @@ function AdminSubmissionDetail() {
   async function getSubm() {
     setSubm(await submCtx.getSubmById(id, type));
     setIsLoading(false);
+  }
+
+  async function getUser() {
+    setUser(await userCtx.getByUsername(subm.username));
+  }
+
+  async function updateStatus() {
+    const payload = {
+      status,
+    };
+    await submCtx.update(type, subm.submId, payload);
+    setIsModalAccept(false);
+    setIsModalCancel(false);
+    getSubm();
   }
 
   return (
@@ -630,6 +650,65 @@ function AdminSubmissionDetail() {
                     <p className="text-sm text-slate-500 leading-tight font-sourcecodepro font-medium">{subm.role}</p>
                   </div>
                 </div>
+                <div>
+                  <div
+                    onClick={() => {
+                      setIsOpen(true);
+                      getUser();
+                    }}
+                    className="hover:text-clear-700 cursor-pointer"
+                  >
+                    <ArrowIcon aim="rightTop" />
+                  </div>
+                  <Modal.Confirm show={isOpen} onClose={setIsOpen}>
+                    <div className="text-sm">
+                      <p className="text-center font-medium mb-3">Detail Pengaju</p>
+                      <hr className="my-3 h-px bg-gray-200 border-0"></hr>
+                      <div>
+                        <div className="flex items-center gap-x-2 mb-2">
+                          <div>
+                            <Avatar dimension="w-8 h-8" src={user.image || "https://source.boringavatars.com/pixel/120?square"} />
+                          </div>
+                          <div className="grow">
+                            <p className="font-extrabold leading-none font-sourcecodepro uppercase">
+                              {user.firstName} {user.lastName}
+                            </p>
+                            <div className="flex items-center">
+                              <StarIcon role={user.role} />
+                              <p className="text-sm text-slate-500 leading-tight font-sourcecodepro font-medium">{user.role}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-5 gap-y-1 mt-3">
+                          <span className="text-gray-500">
+                            Provinsi : <span className="text-gray-900">{user.province}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Kabupaten : <span className="text-gray-900">{user.district}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Kecamatan : <span className="text-gray-900">{user.subdistrict}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Alamat : <span className="text-gray-900">{user.address}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            NIP : <span className="text-gray-900">{user.nin}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Pekerjaan : <span className="text-gray-900">{user.job}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Gaji : <span className="text-gray-900">Rp. {user.salary?.toLocaleString("ID-id")}</span>
+                          </span>
+                          <span className="text-gray-500">
+                            Pengeluaran : <span className="text-gray-900">Rp. {user.expense?.toLocaleString("ID-id")}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal.Confirm>
+                </div>
               </div>
             </div>
             <div className="flex px-6 mt-5 text-sm font-medium min-w-max w-full">
@@ -655,67 +734,140 @@ function AdminSubmissionDetail() {
               </div>
             </div>
           </div>
-          <div className="border rounded-2xl bg-white text-sm mt-6">
-            <div className="px-6 py-3 rounded-t-2xl border-b border-gray-200 text-base flex items-center justify-between">
-              <div>
-                <p className="font-medium">
-                  Detail Pengajuan Produk{" "}
-                  <span className="font-sourcecodepro font-bold uppercase">
-                    {subm.productName} {subm.interestType}
-                  </span>
+          <div className="flex mt-6 gap-x-8">
+            <div className="text-sm">
+              {subm.status === "Diterima" ? (
+                <p className="mb-3">Pengajuan ini sudah diterima</p>
+              ) : subm.status === "Ditolak" ? (
+                <p className="mb-3">Pengajuan ini sudah ditolak</p>
+              ) : (
+                <p className="mb-3">Terima pengajuan ini?</p>
+              )}
+              <div className="flex gap-x-2">
+                <Button
+                  action={() => {
+                    setIsModalAccept(true);
+                    setStatus("Diterima");
+                  }}
+                  isDisable={subm.status === "Diterima" || subm.status === "Ditolak" ? true : false}
+                  text="Terima"
+                  style="electron"
+                  round="rounded-full"
+                  height="py-1"
+                  width="px-4"
+                ></Button>
+                <Button
+                  action={() => {
+                    setIsModalCancel(true);
+                    setStatus("Ditolak");
+                  }}
+                  isDisable={subm.status === "Diterima" || subm.status === "Ditolak" ? true : false}
+                  text="Tolak"
+                  style="bethlehem"
+                  round="rounded-full"
+                  height="py-1"
+                  width="px-4"
+                ></Button>
+              </div>
+              <Modal.Confirm show={isModalAccept} onClose={setIsModalAccept}>
+                <div className="text-sm">
+                  <p>Anda yakin ingin menerima?</p>
+                  <div className="flex place-content-center mt-3">
+                    <Button
+                      action={() => {
+                        setIsModalAccept(false);
+                        updateStatus();
+                      }}
+                      text="Terima"
+                      style="electron"
+                      round="rounded-full"
+                      height="py-1"
+                      width="px-4"
+                    ></Button>
+                  </div>
+                </div>
+              </Modal.Confirm>
+              <Modal.Confirm show={isModalCancel} onClose={setIsModalCancel}>
+                <div className="text-sm">
+                  <p>Anda yakin ingin menolak?</p>
+                  <div className="flex place-content-center mt-3">
+                    <Button
+                      action={() => {
+                        setIsModalCancel(false);
+                        updateStatus();
+                      }}
+                      text="Tolak"
+                      style="bethlehem"
+                      round="rounded-full"
+                      height="py-1"
+                      width="px-4"
+                    ></Button>
+                  </div>
+                </div>
+              </Modal.Confirm>
+            </div>
+            <div className="border rounded-2xl bg-white text-sm grow">
+              <div className="px-6 py-3 rounded-t-2xl border-b border-gray-200 text-base flex items-center justify-between">
+                <div className="text-sm">
+                  <p className="font-medium">
+                    Detail Pengajuan Produk{" "}
+                    <span className="font-sourcecodepro font-bold uppercase">
+                      {subm.productName} {subm.interestType}
+                    </span>
+                  </p>
+                  <p className="-mt-1 text-sm text-gray-500">@ {new Date(subm.submDate).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
+                </div>
+                <div>
+                  <Badge style={subm.status === "Ditinjau" ? "buttercup" : subm.status === "Diterima" ? "rice" : "pippin"}>{subm.status}</Badge>
+                </div>
+              </div>
+              <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                <p className="w-1/2">Nama produk</p>
+                <p className="w-1/2 font-sourcecodepro font-bold uppercase">
+                  {subm.productName} {subm.interestType}
                 </p>
-                <p className="-mt-1 text-sm text-gray-500">@ {new Date(subm.submDate).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
               </div>
-              <div>
-                <Badge style={subm.status === "Ditinjau" ? "buttercup" : subm.status === "Diterima" ? "rice" : "pippin"}>{subm.status}</Badge>
+              <div className="h-11 px-6 bg-white border-b flex items-center">
+                <p className="w-1/2">Tipe produk</p>
+                <Badge style="clear">{subm.productType}</Badge>
               </div>
+              {type === "saving" && (
+                <Fragment>
+                  <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                    <p className="w-1/2">Angsuran</p>
+                    <p className="w-1/2">Rp. {subm?.installment?.toLocaleString("ID-id")}</p>
+                  </div>
+                  <div className="h-11 px-6 bg-white rounded-b-2xl flex items-center">
+                    <p className="w-1/2">Tenor</p>
+                    <p className="w-1/2">{`${subm.deposit === "Sekali" ? "Hanya dibayarkan sekali" : `${subm.tenor ? subm.tenor + " bulan" : "Selama menjadi anggota koperasi"}`}`}</p>
+                  </div>
+                </Fragment>
+              )}
+              {type === "loan" && (
+                <Fragment>
+                  <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                    <p className="w-1/2">Dana pinjaman</p>
+                    <p className="w-1/2">Rp. {subm?.loanFund?.toLocaleString("ID-id")}</p>
+                  </div>
+                  <div className="h-11 px-6 bg-white border-b flex items-center">
+                    <p className="w-1/2">Bunga pinjaman</p>
+                    <p className="w-1/2">{subm.interest}%</p>
+                  </div>
+                  <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
+                    <p className="w-1/2">Tenor</p>
+                    <p className="w-1/2">{subm.tenor} bulan</p>
+                  </div>
+                  <div className="h-11 px-6 bg-white border-b flex items-center">
+                    <p className="w-1/2">Jaminan</p>
+                    <p className="w-1/2">{subm.collateral}</p>
+                  </div>
+                  <div className="h-11 px-6 py-7 rounded-b-2xl bg-gray-50 flex items-center">
+                    <p className="w-1/2">Catatan</p>
+                    <p className="w-1/2">{subm.note}</p>
+                  </div>
+                </Fragment>
+              )}
             </div>
-            <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
-              <p className="w-1/2">Nama produk</p>
-              <p className="w-1/2 font-sourcecodepro font-bold uppercase">
-                {subm.productName} {subm.interestType}
-              </p>
-            </div>
-            <div className="h-11 px-6 bg-white border-b flex items-center">
-              <p className="w-1/2">Tipe produk</p>
-              <Badge style="clear">{subm.productType}</Badge>
-            </div>
-            {type === "saving" && (
-              <Fragment>
-                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
-                  <p className="w-1/2">Angsuran</p>
-                  <p className="w-1/2">Rp. {subm?.installment?.toLocaleString("ID-id")}</p>
-                </div>
-                <div className="h-11 px-6 bg-white rounded-b-2xl flex items-center">
-                  <p className="w-1/2">Tenor</p>
-                  <p className="w-1/2">{`${subm.deposit === "Sekali" ? "Hanya dibayarkan sekali" : `${subm.tenor ? subm.tenor + " bulan" : "Selama menjadi anggota koperasi"}`}`}</p>
-                </div>
-              </Fragment>
-            )}
-            {type === "loan" && (
-              <Fragment>
-                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
-                  <p className="w-1/2">Dana pinjaman</p>
-                  <p className="w-1/2">Rp. {subm?.loanFund?.toLocaleString("ID-id")}</p>
-                </div>
-                <div className="h-11 px-6 bg-white border-b flex items-center">
-                  <p className="w-1/2">Bunga pinjaman</p>
-                  <p className="w-1/2">{subm.interest}%</p>
-                </div>
-                <div className="h-11 px-6 bg-gray-50 border-b flex items-center">
-                  <p className="w-1/2">Tenor</p>
-                  <p className="w-1/2">{subm.tenor} bulan</p>
-                </div>
-                <div className="h-11 px-6 bg-white border-b flex items-center">
-                  <p className="w-1/2">Jaminan</p>
-                  <p className="w-1/2">{subm.collateral}</p>
-                </div>
-                <div className="h-11 px-6 py-7 rounded-b-2xl bg-gray-50 flex items-center">
-                  <p className="w-1/2">Catatan</p>
-                  <p className="w-1/2">{subm.note}</p>
-                </div>
-              </Fragment>
-            )}
           </div>
         </div>
       )}
