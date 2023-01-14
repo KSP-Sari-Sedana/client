@@ -78,7 +78,6 @@ function UserSubmissionDetail() {
   async function cancelSubm() {
     await submCtx.cancelSubm(id, type);
     navigate("/dashboard/submission");
-    window.location.reload();
   }
 
   return (
@@ -148,7 +147,7 @@ function UserSubmissionDetail() {
               </div>
               <div className="h-11 px-6 bg-white border-b flex items-center">
                 <p className="w-1/2">Tipe produk</p>
-                <Badge style="clear">{subm.productType}</Badge>
+                <Badge style={`${subm.productType === "Simpanan" ? "clear" : "magenta"}`}>{subm.productType}</Badge>
               </div>
               {type === "saving" && (
                 <Fragment>

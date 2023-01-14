@@ -14,7 +14,7 @@ function Submission({ submDate, productName, status, productType }) {
           <p className="font-sourcecodepro text-base font-extrabold">{productName}</p>
           <div className="flex gap-x-2">
             <Badge style={status === "Ditinjau" ? "buttercup" : status === "Diterima" ? "rice" : "pippin"}>{status}</Badge>
-            <Badge style="clear">{productType}</Badge>
+            <Badge style={`${productType === "Simpanan" ? "clear" : "magenta"}`}>{productType}</Badge>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ function SavingCard() {
   const { userCtx } = useUserContext();
 
   return (
-    <div className="w-80 h-52 rounded-2xl border flex shadow-sm bg-white overflow-hidden relative">
+    <div className="w-80 h-52 rounded-2xl border flex bg-white overflow-hidden relative">
       <div className="absolute left-56 bottom-4">
         <SwellArt />
       </div>

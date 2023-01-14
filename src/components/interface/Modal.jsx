@@ -21,7 +21,7 @@ function Confirm({ show, onClose, children, className }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="rounded-2xl bg-white p-6">
+                <Dialog.Panel className="rounded-2xl bg-white px-6 py-4">
                   <div>{children}</div>
                 </Dialog.Panel>
               </Transition.Child>

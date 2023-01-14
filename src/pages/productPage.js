@@ -30,7 +30,7 @@ function ProductPage() {
   }
 
   return (
-    <div>
+    <div className="mb-48">
       <Navbar />
       <Installment isOpen={isOpen} closeModal={closeModal} installment={prodCtx.calculation.installment} />
       <div className="mt-28 w-5/6 mx-auto">
