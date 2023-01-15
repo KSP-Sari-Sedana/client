@@ -1,7 +1,9 @@
 import { Fragment } from "react";
 
 import { Navbar } from "../components/interface/Navbar";
-import { Panel } from "../components/interface/Panel";
+import { Admin } from "../components/interface/AdminPanel";
+import { Teller } from "../components/interface/TellerPanel";
+import { Member } from "../components/interface/MemberPanel";
 import { DashboardMenu } from "../components/interface/DashboardMenu";
 
 function DashboardLayout({ children }) {
@@ -23,58 +25,58 @@ function DashboardLayout({ children }) {
   );
 }
 
-function UserSummary() {
+function MemberSummary() {
   return (
     <DashboardLayout>
-      <Panel.UserSummary />
+      <Member.Summary />
     </DashboardLayout>
   );
 }
 
-function UserSubmission() {
+function MemberSubmission() {
   return (
     <DashboardLayout>
-      <Panel.UserSubmission />
+      <Member.Submission />
     </DashboardLayout>
   );
 }
 
-function UserSubmissionDetail() {
+function MemberSubmissionDetail() {
   return (
     <DashboardLayout>
-      <Panel.UserSubmissionDetail />
+      <Member.SubmissionDetail />
     </DashboardLayout>
   );
 }
 
-function UserSaving() {
+function MemberSaving() {
   return (
     <DashboardLayout>
-      <Panel.UserSaving />
+      <Member.Saving />
     </DashboardLayout>
   );
 }
 
-function UserSavingDetail() {
+function MemberSavingDetail() {
   return (
     <DashboardLayout>
-      <Panel.UserSavingDetail />
+      <Member.SavingDetail />
     </DashboardLayout>
   );
 }
 
-function UserLoan() {
+function MemberLoan() {
   return (
     <DashboardLayout>
-      <Panel.UserLoan />
+      <Member.Loan />
     </DashboardLayout>
   );
 }
 
-function UserLoanDetail() {
+function MemberLoanDetail() {
   return (
     <DashboardLayout>
-      <Panel.UserLoanDetail />
+      <Member.LoanDetail />
     </DashboardLayout>
   );
 }
@@ -82,7 +84,7 @@ function UserLoanDetail() {
 function AdminSummary() {
   return (
     <DashboardLayout>
-      <Panel.AdminSummary />
+      <Admin.Summary />
     </DashboardLayout>
   );
 }
@@ -90,7 +92,7 @@ function AdminSummary() {
 function AdminSubmission() {
   return (
     <DashboardLayout>
-      <Panel.AdminSubmission />
+      <Admin.Submission />
     </DashboardLayout>
   );
 }
@@ -98,7 +100,7 @@ function AdminSubmission() {
 function AdminSubmissionDetail() {
   return (
     <DashboardLayout>
-      <Panel.AdminSubmissionDetail />
+      <Admin.SubmissionDetail />
     </DashboardLayout>
   );
 }
@@ -106,7 +108,7 @@ function AdminSubmissionDetail() {
 function AdminTransaction() {
   return (
     <DashboardLayout>
-      <Panel.AdminTransaction />
+      <Admin.Transaction />
     </DashboardLayout>
   );
 }
@@ -114,7 +116,7 @@ function AdminTransaction() {
 function AdminProduct() {
   return (
     <DashboardLayout>
-      <Panel.AdminProduct />
+      <Admin.Product />
     </DashboardLayout>
   );
 }
@@ -122,7 +124,7 @@ function AdminProduct() {
 function AdminUser() {
   return (
     <DashboardLayout>
-      <Panel.AdminUser />
+      <Admin.User />
     </DashboardLayout>
   );
 }
@@ -130,19 +132,19 @@ function AdminUser() {
 function TellerTransaction() {
   return (
     <DashboardLayout>
-      <Panel.TellerTransaction />
+      <Teller.Transaction />
     </DashboardLayout>
   );
 }
 
 const DashboardPage = {
-  UserSummary,
-  UserSubmission,
-  UserSubmissionDetail,
-  UserSaving,
-  UserSavingDetail,
-  UserLoan,
-  UserLoanDetail,
+  MemberSummary,
+  MemberSubmission,
+  MemberSubmissionDetail,
+  MemberSaving,
+  MemberSavingDetail,
+  MemberLoan,
+  MemberLoanDetail,
   AdminSummary,
   AdminSubmission,
   AdminSubmissionDetail,
