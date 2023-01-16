@@ -1,4 +1,6 @@
 import { Badge } from "./Badge";
+import { ArrowIcon } from "../icons/ArrowIcon";
+import { HolderIcon } from "../icons/PlaceholderIcon";
 import { useHelperContext } from "../../context/helperContext";
 
 function Submission({ submDate, productName, status, productType }) {
@@ -41,9 +43,35 @@ function Consumed({ settleDate, accNumber, productName, productType, balance }) 
   );
 }
 
+function TinyProduct({ productName, status, image }) {
+  return (
+    <div className="border w-min rounded-xl bg-white text-sm p-2">
+      <div className="overflow-hidden w-[144px] h-[93px] rounded-xl">
+        {image ? (
+          <div>
+            <img src={image} alt="" />
+          </div>
+        ) : (
+          <HolderIcon.Rectangle />
+        )}
+      </div>
+      <div className="p-2">
+        <p className="font-sourcecodepro text-sm font-bold uppercase">{productName}</p>
+        <div className="flex justify-between mt-1 items-center">
+          <Badge style={status === "Publik" ? "clear" : status === "Wajib" ? "magenta" : "pippin"}>{status}</Badge>
+          <div className="cursor-pointer text-gray-400 hover:text-clear-500">
+            <ArrowIcon aim="rightTop" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Card = {
   Submission,
   Consumed,
+  TinyProduct,
 };
 
 export { Card };

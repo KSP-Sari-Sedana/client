@@ -1,5 +1,18 @@
-async function get() {
-  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products`);
+async function create(payload) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  res = await res.json();
+  return res;
+}
+
+async function get(status) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products${status ? `?status=${status}` : ""}`);
   res = await res.json();
   return res;
 }
@@ -51,4 +64,4 @@ async function getConsumedProductById(id, type) {
   return res;
 }
 
-export default { get, getById, calculate, getConsumedProducts, getConsumedProductById };
+export default { create, get, getById, calculate, getConsumedProducts, getConsumedProductById };

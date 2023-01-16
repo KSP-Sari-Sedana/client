@@ -8,6 +8,8 @@ import { Button } from "./Button";
 import { Avatar } from "./Avatar";
 import { Input } from "./Input";
 import { Modal } from "./Modal";
+import { Card } from "./Card";
+import { Product as ProductPreview } from "./Product";
 import { RadioText } from "./Radio";
 import { Spinner } from "./Spinner";
 import { StarIcon } from "../icons/StarIcon";
@@ -824,7 +826,419 @@ function Transaction() {
 }
 
 function Product() {
-  return <div></div>;
+  const typeAvailable = ["Simpanan", "Pinjaman"];
+  const depositAvailable = ["Bulanan", "Harian", "Sekali"];
+  const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
+
+  const [isAddProduct, setIsAddProduct] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [interest, setInterest] = useState(0);
+  const [type, setType] = useState(typeAvailable[0]);
+  const [deposit, setDeposit] = useState(depositAvailable[0]);
+  const [tenor, setTenor] = useState([]);
+  const [tenorCounter, setTenorCounter] = useState(0);
+  const [installment, setInstallment] = useState([]);
+  const [installmentCounter, setInstallmentCounter] = useState(0);
+  const [status, setStatus] = useState(statusAvailable[0]);
+  const [newProduct, setNewProduct] = useState({});
+  const [APIMessage, setAPIMessage] = useState("");
+
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    setNewProduct({
+      name,
+      image,
+      description,
+      interest: interest.toFixed(1),
+      type,
+      deposit,
+      tenor,
+      installment,
+    });
+
+    getProducts();
+  }, [name, image, description, interest, type, deposit, tenor, installment]);
+
+  async function getProducts() {
+    const response = await prodCtx.getProducts();
+    setProducts(response);
+  }
+
+  function setAvailableTenor(tenorCounter) {
+    if (tenorCounter <= 0) {
+      return;
+    }
+
+    let temp = tenor;
+    temp.push(tenorCounter);
+
+    temp = [...new Set(tenor)].sort(function (a, b) {
+      return a - b;
+    });
+
+    setTenor(temp);
+  }
+
+  function removeAvailableTenor(num) {
+    let temp = tenor;
+
+    temp = temp.filter(function (item) {
+      return item !== num;
+    });
+
+    temp.sort(function (a, b) {
+      return a - b;
+    });
+
+    setTenor(temp);
+  }
+
+  function setAvailableInstallment(installmentCounter) {
+    if (installmentCounter <= 0) {
+      return;
+    }
+
+    let temp = installment;
+    temp.push(installmentCounter);
+
+    temp = [...new Set(installment)].sort(function (a, b) {
+      return a - b;
+    });
+
+    setInstallment(temp);
+  }
+
+  function removeAvailableInstallment(num) {
+    let temp = installment;
+
+    temp = temp.filter(function (item) {
+      return item !== num;
+    });
+
+    temp.sort(function (a, b) {
+      return a - b;
+    });
+
+    setInstallment(temp);
+  }
+
+  function handleImageChange(image) {
+    var reader = new FileReader();
+    reader.readAsDataURL(image);
+
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.onerror = (error) => {};
+  }
+
+  async function addProduct() {
+    let temp = interest;
+    temp = temp.toFixed(1);
+    temp = parseFloat(temp);
+
+    const payload = {
+      name: name.toUpperCase(),
+      image,
+      description,
+      interest: temp,
+      type,
+      deposit,
+      tenor: deposit === "Sekali" ? [] : tenor,
+      installment: type === "Pinjaman" ? [] : installment,
+      status,
+    };
+
+    const result = await prodCtx.create(payload);
+    setAPIMessage(result.message);
+
+    if (result.status === "OK") {
+      setIsAddProduct(false);
+      setAPIMessage("");
+      setName("");
+      setImage(null);
+      setDescription("");
+      setInterest(0);
+      setType(typeAvailable[0]);
+      setDeposit(depositAvailable[0]);
+      setTenor([]);
+      setInstallment([]);
+      setStatus(statusAvailable[0]);
+
+      getProducts();
+    }
+  }
+
+  function cancelAddProduct() {
+    setAPIMessage("");
+    setName("");
+    setImage(null);
+    setDescription("");
+    setInterest(0);
+    setType(typeAvailable[0]);
+    setDeposit(depositAvailable[0]);
+    setTenor([]);
+    setInstallment([]);
+    setStatus(statusAvailable[0]);
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Produk</p>
+      <div className="flex">
+        <Button
+          action={() => {
+            setIsAddProduct(true);
+          }}
+          text="Tambah produk"
+          style="cheerful"
+          round="rounded-full"
+          height="py-1"
+          width="px-4"
+        ></Button>
+        <Modal.Confirm className="pt-2 pb-1" show={isAddProduct} onClose={setIsAddProduct}>
+          <div>
+            {APIMessage && (
+              <div className="relative font-light">
+                <div className="absolute inset-0 -top-16 animate-toast flex justify-center">
+                  <p className="bg-gray-700 text-sm absolute px-4 py-1 text-white rounded-full max-w-fit">{APIMessage}</p>
+                </div>
+              </div>
+            )}
+            <div className="flex gap-x-4">
+              <div>
+                <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Pertinjauan</p>
+                <ProductPreview product={newProduct}>
+                  <input
+                    className="w-full border bg-red-500 h-full cursor-pointer opacity-0 absolute top-0 left-0 z-10"
+                    onChange={(event) => {
+                      handleImageChange(event.target.files[0]);
+                    }}
+                    type="file"
+                  />
+                </ProductPreview>
+              </div>
+              <div>
+                <div className="grid grid-cols-2 gap-x-3 text-sm">
+                  <Input action={setName} label="Nama Produk" placeHolder="Nama Produk" />
+                  <div>
+                    <p className="mb-2">Tipe</p>
+                    <RadioText data={typeAvailable} value={type} onChange={setType} />
+                  </div>
+                  <div>
+                    <p className="mb-2">Bunga</p>
+                    <div className="flex items-center gap-x-2 mt-3">
+                      <Button
+                        action={() => {
+                          if (interest < 0.1) return;
+                          setInterest(interest - 0.1);
+                        }}
+                        text="-"
+                        style="light"
+                        round="rounded-sm"
+                        height="py-1"
+                        width="px-2"
+                      ></Button>
+                      <p>{interest.toFixed(1)}</p>
+                      <Button
+                        action={() => {
+                          setInterest(interest + 0.1);
+                        }}
+                        text="+"
+                        style="light"
+                        round="rounded-sm"
+                        height="py-1"
+                        width="px-2"
+                      ></Button>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-2">Setoran</p>
+                    <RadioText data={depositAvailable} value={deposit} onChange={setDeposit} />
+                  </div>
+                  <div className="mt-4">
+                    <p className="mb-2">Tenor (bulan)</p>
+                    <div className="border p-2 rounded-lg">
+                      {deposit !== "Sekali" ? (
+                        <div>
+                          <div className="grid grid-cols-4 gap-2">
+                            {tenor.map((value, index) => (
+                              <div key={index} className="bg-magenta-50 px-[6px] py-[2px] rounded-md flex items-center justify-around">
+                                <p className="w-full text-magenta-600">{value}</p>
+                                <span
+                                  onClick={() => {
+                                    removeAvailableTenor(value);
+                                  }}
+                                  className="text-magenta-600 hover:text-magenta-700 cursor-pointer"
+                                >
+                                  ×
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className={`flex items-center gap-x-2 ${tenor.length > 0 && "mt-3"}`}>
+                            <Button
+                              action={() => {
+                                if (tenorCounter < 1) return;
+                                setTenorCounter(tenorCounter - 1);
+                              }}
+                              text="-"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                            <p>{tenorCounter}</p>
+                            <Button
+                              action={() => {
+                                setTenorCounter(tenorCounter + 1);
+                              }}
+                              text="+"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                            <Button
+                              action={() => {
+                                setAvailableTenor(tenorCounter);
+                              }}
+                              text="Tambah"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-bethlehem-800">Tenor tidak bisa diset </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="mb-2">Status</p>
+                    <RadioText data={statusAvailable} value={status} onChange={setStatus} />
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <p className="mb-2 mt-3">Angsuran</p>
+                  <div className="border p-2 rounded-lg">
+                    {type === "Pinjaman" ? (
+                      <div>
+                        <p className="text-bethlehem-800">Angsuran tidak bisa diset </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="grid grid-cols-5 gap-2">
+                          {installment.map((value, index) => (
+                            <div key={index} className="bg-rice-50 px-[6px] py-[2px] rounded-md flex items-center justify-around">
+                              <p className="w-full text-rice-600">{value.toLocaleString("ID-id")}</p>
+                              <span
+                                onClick={() => {
+                                  removeAvailableInstallment(value);
+                                }}
+                                className="text-rice-600 hover:text-rice-700 cursor-pointer"
+                              >
+                                ×
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className={`flex items-center gap-x-2 ${installment.length > 0 && "mt-3"}`}>
+                          <Button
+                            action={() => {
+                              if (installmentCounter < 5000) return;
+                              setInstallmentCounter(installmentCounter - 5000);
+                            }}
+                            text="-"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                          <p>{installmentCounter.toLocaleString("ID-id")}</p>
+                          <Button
+                            action={() => {
+                              setInstallmentCounter(installmentCounter + 5000);
+                            }}
+                            text="+"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                          <Button
+                            action={() => {
+                              setAvailableInstallment(installmentCounter);
+                            }}
+                            text="Tambah"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <p className="mb-2 mt-3">Deskripsi</p>
+                  <textarea
+                    onChange={(event) => {
+                      setDescription(event.target.value);
+                    }}
+                    className="border resize-none px-4 py-2 focus:outline-none border-gray-300 w-full rounded-lg"
+                    defaultValue=""
+                    placeholder="Deskripsi"
+                    cols="20"
+                    rows="2"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex place-content-center mt-5 gap-x-3">
+            <Button
+              action={() => {
+                addProduct();
+              }}
+              text="Tambah"
+              style="electron"
+              round="rounded-full"
+              height="py-1"
+              width="px-4"
+            ></Button>
+            <Button
+              action={() => {
+                setIsAddProduct(false);
+                cancelAddProduct();
+              }}
+              text="Batal"
+              style="light"
+              round="rounded-full"
+              height="py-1"
+              width="px-4"
+            ></Button>
+          </div>
+        </Modal.Confirm>
+      </div>
+      <div className="grid grid-cols-5 min-w-max mt-4 gap-4">
+        {products.map((value, index) => (
+          <div key={index}>
+            <Card.TinyProduct productName={value.name} status={value.status} image={value.image} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function User() {

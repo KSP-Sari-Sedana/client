@@ -18,7 +18,7 @@ function LandingPage() {
   }, []);
 
   async function getProducts() {
-    setProducts(await prodCtx.getProducts());
+    setProducts(await prodCtx.getProducts("publik"));
   }
 
   return (
@@ -26,7 +26,7 @@ function LandingPage() {
       <Navbar />
       <Intro />
       <Heading text="Produk" id="product" />
-      <div className="grid grid-cols-3 mx-20">
+      <div className="grid grid-cols-3 gap-y-10 mx-20">
         {products.map((product) => {
           return (
             <Fragment key={product.id}>

@@ -14,8 +14,13 @@ function ProductProvider({ children }) {
   const [loanFund, setLoanFund] = useState(6000000);
   const [calculation, setCalculation] = useState({});
 
-  async function getProducts() {
-    let result = await productAPI.get();
+  async function create(payload) {
+    let result = await productAPI.create(payload);
+    return result;
+  }
+
+  async function getProducts(status) {
+    let result = await productAPI.get(status);
     if (result.status !== "OK") {
       return;
     }
@@ -67,6 +72,7 @@ function ProductProvider({ children }) {
     setInterestType,
     setInstallment,
     setTenor,
+    create,
     getProducts,
     getById,
     getConsumedProducts,
