@@ -7,7 +7,7 @@ function Product({ product, isPreview, children, isEditImage }) {
       <div className="w-80 bg-white border border-slate-200 rounded-xl p-4">
         <div className={`h-[200px] overflow-hidden rounded-xl relative ${isEditImage && "cursor-pointer"}`}>
           {children}
-          <img src={product.image || "/assets/placeholder.svg"} alt="" className="mx-auto" />
+          <img src={product?.image || "/assets/placeholder.svg"} alt="" className="mx-auto" />
         </div>
 
         <div className="px-2">

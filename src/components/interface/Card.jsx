@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { Badge } from "./Badge";
 import { ArrowIcon } from "../icons/ArrowIcon";
 import { HolderIcon } from "../icons/PlaceholderIcon";
@@ -43,10 +45,10 @@ function Consumed({ settleDate, accNumber, productName, productType, balance }) 
   );
 }
 
-function TinyProduct({ productName, status, image }) {
+function TinyProduct({ productName, status, image, id }) {
   return (
     <div className="border w-min rounded-xl bg-white text-sm p-2">
-      <div className="overflow-hidden w-[144px] h-[93px] rounded-xl">
+      <div className={`overflow-hidden w-[144px] h-[93px] rounded-xl ${image && "border"}`}>
         {image ? (
           <div>
             <img src={image} alt="" />
@@ -56,11 +58,13 @@ function TinyProduct({ productName, status, image }) {
         )}
       </div>
       <div className="p-2">
-        <p className="font-sourcecodepro text-sm font-bold uppercase">{productName}</p>
-        <div className="flex justify-between mt-1 items-center">
+        <p className="font-sourcecodepro text-sm font-bold uppercase h-4 overflow-hidden">{productName}</p>
+        <div className="flex justify-between mt-2 items-center">
           <Badge style={status === "Publik" ? "clear" : status === "Wajib" ? "magenta" : "pippin"}>{status}</Badge>
           <div className="cursor-pointer text-gray-400 hover:text-clear-500">
-            <ArrowIcon aim="rightTop" />
+            <Link to={`${id}`}>
+              <ArrowIcon aim="rightTop" />
+            </Link>
           </div>
         </div>
       </div>

@@ -17,6 +17,19 @@ async function get(status) {
   return res;
 }
 
+async function update(id, payload) {
+  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  res = await res.json();
+  return res;
+}
+
 async function getById(id) {
   let res = await fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}`);
   res = await res.json();
@@ -64,4 +77,4 @@ async function getConsumedProductById(id, type) {
   return res;
 }
 
-export default { create, get, getById, calculate, getConsumedProducts, getConsumedProductById };
+export default { create, get, update, getById, calculate, getConsumedProducts, getConsumedProductById };

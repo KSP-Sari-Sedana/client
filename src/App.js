@@ -56,6 +56,7 @@ export default function App() {
             <Route path="/dashboard/admin/submission/:type/:id" element={isLoggedIn ? <DashboardPage.AdminSubmissionDetail /> : <Navigate to="/login" />} />
             <Route path="/dashboard/admin/transaction" element={isLoggedIn ? <DashboardPage.AdminTransaction /> : <Navigate to="/login" />} />
             <Route path="/dashboard/admin/product" element={isLoggedIn ? <DashboardPage.AdminProduct /> : <Navigate to="/login" />} />
+            <Route path="/dashboard/admin/product/:id" element={isLoggedIn ? <DashboardPage.AdminProductDetail /> : <Navigate to="/login" />} />
             <Route path="/dashboard/admin/user" element={isLoggedIn ? <DashboardPage.AdminUser /> : <Navigate to="/login" />} />
             <Route path="/dashboard/teller/transaction" element={isLoggedIn ? <DashboardPage.TellerTransaction /> : <Navigate to="/login" />} />
             <Route path="/products/:id" element={<ProductPage />} />

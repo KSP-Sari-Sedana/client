@@ -27,6 +27,11 @@ function ProductProvider({ children }) {
     return result.data.products;
   }
 
+  async function update(id, payload) {
+    let result = await productAPI.update(id, payload);
+    return result;
+  }
+
   async function getById(id) {
     let result = await productAPI.getById(id);
     if (result.status !== "OK") {
@@ -74,6 +79,7 @@ function ProductProvider({ children }) {
     setTenor,
     create,
     getProducts,
+    update,
     getById,
     getConsumedProducts,
     getConsumedProductById,

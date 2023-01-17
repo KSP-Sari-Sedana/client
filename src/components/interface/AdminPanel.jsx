@@ -15,11 +15,16 @@ import { Spinner } from "./Spinner";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
 import { ArrowIcon } from "../icons/ArrowIcon";
+import { TrashIcon } from "../icons/TrashIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
 import { useHelperContext } from "../../context/helperContext";
 import { useTransContext } from "../../context/transContext";
+
+const typeAvailable = ["Simpanan", "Pinjaman"];
+const depositAvailable = ["Bulanan", "Harian", "Sekali"];
+const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
 
 function Summary() {
   return <div></div>;
@@ -826,10 +831,6 @@ function Transaction() {
 }
 
 function Product() {
-  const typeAvailable = ["Simpanan", "Pinjaman"];
-  const depositAvailable = ["Bulanan", "Harian", "Sekali"];
-  const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
-
   const [isAddProduct, setIsAddProduct] = useState(false);
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
@@ -986,6 +987,10 @@ function Product() {
     setStatus(statusAvailable[0]);
   }
 
+  function deleteImage() {
+    setImage(null);
+  }
+
   return (
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Produk</p>
@@ -1122,9 +1127,25 @@ function Product() {
                       )}
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <p className="mb-2">Status</p>
-                    <RadioText data={statusAvailable} value={status} onChange={setStatus} />
+                  <div className="mt-4 flex flex-col gap-y-5">
+                    <div>
+                      <p className="mb-2">Status</p>
+                      <RadioText data={statusAvailable} value={status} onChange={setStatus} />
+                    </div>
+                    <div>
+                      <p className="mb-2">Foto</p>
+                      <div className="flex">
+                        <div
+                          onClick={() => {
+                            deleteImage();
+                          }}
+                          className="flex items-center gap-x-2 hover:text-bethlehem-800 text-bethlehem-600 bg-bethlehem-50 px-2 py-1 rounded-md hover:bg-bethlehem-100 cursor-pointer"
+                        >
+                          <TrashIcon />
+                          <p>Hapus foto</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="text-sm">
@@ -1231,12 +1252,448 @@ function Product() {
         </Modal.Confirm>
       </div>
       <div className="grid grid-cols-5 min-w-max mt-4 gap-4">
-        {products.map((value, index) => (
+        {products.map((product, index) => (
           <div key={index}>
-            <Card.TinyProduct productName={value.name} status={value.status} image={value.image} />
+            <Card.TinyProduct productName={product.name} status={product.status} image={product.image} id={product.id} />
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function ProductDetail() {
+  const [product, setProduct] = useState({});
+  const [productTemp, setProductTemp] = useState({});
+
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [interest, setInterest] = useState(0);
+  const [type, setType] = useState(typeAvailable[0]);
+  const [deposit, setDeposit] = useState(depositAvailable[0]);
+  const [tenor, setTenor] = useState([]);
+  const [tenorCounter, setTenorCounter] = useState(0);
+  const [installment, setInstallment] = useState([]);
+  const [installmentCounter, setInstallmentCounter] = useState(0);
+  const [status, setStatus] = useState(statusAvailable[0]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [APIMessage, setAPIMessage] = useState("");
+
+  const { id } = useParams();
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    if (Object.keys(product).length === 0) getById();
+
+    setProductTemp((prev) => {
+      return {
+        ...prev,
+        name,
+        image,
+        description,
+        interest: interest?.toFixed(1),
+        type,
+        deposit,
+        tenor,
+        installment,
+        status,
+      };
+    });
+  }, [name, image, description, interest, type, deposit, tenor, installment, status]);
+
+  async function getById() {
+    setIsLoading(true);
+
+    const response = await prodCtx.getById(id);
+    setProduct(response);
+    setProductTemp(response);
+
+    setName(response.name);
+    setImage(response.image);
+    setDescription(response.description);
+    setInterest(response.interest);
+    setType(response.type);
+    setDeposit(response.deposit);
+    setTenor(response.tenor);
+    setInstallment(response.installment);
+    setStatus(response.status);
+
+    setIsLoading(false);
+  }
+
+  function setAvailableTenor(tenorCounter) {
+    if (tenorCounter <= 0) {
+      return;
+    }
+
+    let temp = tenor;
+    temp.push(tenorCounter);
+
+    temp = [...new Set(tenor)].sort(function (a, b) {
+      return a - b;
+    });
+
+    setTenor(temp);
+  }
+
+  function removeAvailableTenor(num) {
+    let temp = tenor;
+
+    temp = temp.filter(function (item) {
+      return item !== num;
+    });
+
+    temp.sort(function (a, b) {
+      return a - b;
+    });
+
+    setTenor(temp);
+  }
+
+  function setAvailableInstallment(installmentCounter) {
+    if (installmentCounter <= 0) {
+      return;
+    }
+
+    let temp = installment;
+    temp.push(installmentCounter);
+
+    temp = [...new Set(installment)].sort(function (a, b) {
+      return a - b;
+    });
+
+    setInstallment(temp);
+  }
+
+  function removeAvailableInstallment(num) {
+    let temp = installment;
+
+    temp = temp.filter(function (item) {
+      return item !== num;
+    });
+
+    temp.sort(function (a, b) {
+      return a - b;
+    });
+
+    setInstallment(temp);
+  }
+
+  function handleImageChange(image) {
+    var reader = new FileReader();
+    reader.readAsDataURL(image);
+
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.onerror = (error) => {};
+  }
+
+  async function getBase64(imageUrl) {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      };
+    });
+  }
+
+  async function updateProduct() {
+    setIsLoading(true);
+    const payload = {
+      name: name.toLocaleUpperCase(),
+      image: image ? await getBase64(image) : null,
+      description: description,
+      interest: Math.round(interest * 10) / 10,
+      type: type,
+      deposit: deposit,
+      tenor: deposit === "Sekali" ? [] : tenor,
+      installment: type === "Pinjaman" ? [] : installment,
+      status: status,
+    };
+
+    const result = await prodCtx.update(id, payload);
+    if (result.status === "OK") {
+      await getById();
+    }
+    setAPIMessage(result.message);
+    setIsLoading(false);
+  }
+
+  function cancelUpdateProduct() {
+    setName(product.name);
+    setImage(product.image);
+    setDescription(product.description);
+    setInterest(product.interest);
+    setType(product.type);
+    setDeposit(product.deposit);
+    setTenor(product.tenor);
+    setInstallment(product.installment);
+    setStatus(product.status);
+    setAPIMessage("");
+  }
+
+  function deleteImage() {
+    setImage(null);
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Produk</p>
+      {isLoading ? (
+        <Spinner text="Mengambil produk" className="text-slate-700 place-content-center mb-2" />
+      ) : (
+        <div>
+          {APIMessage && (
+            <div className="relative font-light">
+              <div className="absolute inset-0 -top-20 animate-toast flex justify-center">
+                <p className="bg-gray-700 text-sm absolute px-4 py-1 text-white rounded-full max-w-fit">{APIMessage}</p>
+              </div>
+            </div>
+          )}
+          <div className="flex gap-x-5 min-w-max">
+            <div>
+              <ProductPreview product={productTemp}>
+                <input
+                  className="w-full border bg-red-500 h-full cursor-pointer opacity-0 absolute top-0 left-0 z-10"
+                  onChange={(event) => {
+                    handleImageChange(event.target.files[0]);
+                  }}
+                  type="file"
+                />
+              </ProductPreview>
+              <div className="flex ml-3 mt-5 gap-x-3">
+                <Button
+                  action={() => {
+                    updateProduct();
+                  }}
+                  text="Simpan"
+                  isLoading={isLoading}
+                  style="electron"
+                  round="rounded-full"
+                  height="py-1"
+                  width="px-4"
+                ></Button>
+                <Button
+                  action={() => {
+                    cancelUpdateProduct();
+                  }}
+                  text="Batal"
+                  style="light"
+                  round="rounded-full"
+                  height="py-1"
+                  width="px-4"
+                ></Button>
+              </div>
+            </div>
+            <div className="grow">
+              <div>
+                <div className="grid grid-cols-2 gap-x-3 text-sm">
+                  <Input value={name} action={setName} label="Nama Produk" placeHolder="Nama Produk" />
+                  <div>
+                    <p className="mb-2">Tipe</p>
+                    <RadioText data={typeAvailable} value={type} onChange={setType} />
+                  </div>
+                  <div>
+                    <p className="mb-2">Bunga</p>
+                    <div className="flex items-center gap-x-2 mt-3">
+                      <Button
+                        action={() => {
+                          if (interest < 0.1) return;
+                          setInterest(interest - 0.1);
+                        }}
+                        text="-"
+                        style="light"
+                        round="rounded-sm"
+                        height="py-1"
+                        width="px-2"
+                      ></Button>
+                      <p>{interest?.toFixed(1)}</p>
+                      <Button
+                        action={() => {
+                          setInterest(interest + 0.1);
+                        }}
+                        text="+"
+                        style="light"
+                        round="rounded-sm"
+                        height="py-1"
+                        width="px-2"
+                      ></Button>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-2">Setoran</p>
+                    <RadioText data={depositAvailable} value={deposit} onChange={setDeposit} />
+                  </div>
+                  <div className="mt-4">
+                    <p className="mb-2">Tenor (bulan)</p>
+                    <div className="border p-2 rounded-lg">
+                      {deposit !== "Sekali" ? (
+                        <div>
+                          <div className="grid grid-cols-5 gap-2">
+                            {tenor.map((value, index) => (
+                              <div key={index} className="bg-magenta-50 px-[6px] py-[2px] rounded-md flex items-center justify-around">
+                                <p className="w-full text-magenta-600">{value}</p>
+                                <span
+                                  onClick={() => {
+                                    removeAvailableTenor(value);
+                                  }}
+                                  className="text-magenta-600 hover:text-magenta-700 cursor-pointer"
+                                >
+                                  ×
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className={`flex items-center gap-x-2 ${tenor.length > 0 && "mt-3"}`}>
+                            <Button
+                              action={() => {
+                                if (tenorCounter < 1) return;
+                                setTenorCounter(tenorCounter - 1);
+                              }}
+                              text="-"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                            <p>{tenorCounter}</p>
+                            <Button
+                              action={() => {
+                                setTenorCounter(tenorCounter + 1);
+                              }}
+                              text="+"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                            <Button
+                              action={() => {
+                                setAvailableTenor(tenorCounter);
+                              }}
+                              text="Tambah"
+                              style="light"
+                              round="rounded-sm"
+                              height="py-1"
+                              width="px-2"
+                            ></Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-bethlehem-800">Tenor tidak bisa diset </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-col gap-y-5">
+                    <div>
+                      <p className="mb-2">Status</p>
+                      <RadioText data={statusAvailable} value={status} onChange={setStatus} />
+                    </div>
+                    <div>
+                      <p className="mb-2">Foto</p>
+                      <div className="flex">
+                        <div
+                          onClick={() => {
+                            deleteImage();
+                          }}
+                          className="flex items-center gap-x-2 hover:text-bethlehem-800 text-bethlehem-600 bg-bethlehem-50 px-2 py-1 rounded-md hover:bg-bethlehem-100 cursor-pointer"
+                        >
+                          <TrashIcon />
+                          <p>Hapus foto</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <p className="mb-2 mt-3">Angsuran</p>
+                  <div className="border p-2 rounded-lg">
+                    {type === "Pinjaman" ? (
+                      <div>
+                        <p className="text-bethlehem-800">Angsuran tidak bisa diset </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="grid grid-cols-5 gap-2">
+                          {installment.map((value, index) => (
+                            <div key={index} className="bg-rice-50 px-[6px] py-[2px] rounded-md flex items-center justify-around">
+                              <p className="w-full text-rice-600">{value.toLocaleString("ID-id")}</p>
+                              <span
+                                onClick={() => {
+                                  removeAvailableInstallment(value);
+                                }}
+                                className="text-rice-600 hover:text-rice-700 cursor-pointer"
+                              >
+                                ×
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className={`flex items-center gap-x-2 ${installment.length > 0 && "mt-3"}`}>
+                          <Button
+                            action={() => {
+                              if (installmentCounter < 5000) return;
+                              setInstallmentCounter(installmentCounter - 5000);
+                            }}
+                            text="-"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                          <p>{installmentCounter.toLocaleString("ID-id")}</p>
+                          <Button
+                            action={() => {
+                              setInstallmentCounter(installmentCounter + 5000);
+                            }}
+                            text="+"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                          <Button
+                            action={() => {
+                              setAvailableInstallment(installmentCounter);
+                            }}
+                            text="Tambah"
+                            style="light"
+                            round="rounded-sm"
+                            height="py-1"
+                            width="px-2"
+                          ></Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <p className="mb-2 mt-3">Deskripsi</p>
+                  <textarea
+                    onChange={(event) => {
+                      setDescription(event.target.value);
+                    }}
+                    defaultValue={description}
+                    className="border resize-none px-4 py-2 focus:outline-none border-gray-300 w-full rounded-lg"
+                    placeholder="Deskripsi"
+                    cols="20"
+                    rows="2"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1251,6 +1708,7 @@ const Admin = {
   SubmissionDetail,
   Transaction,
   Product,
+  ProductDetail,
   User,
 };
 
