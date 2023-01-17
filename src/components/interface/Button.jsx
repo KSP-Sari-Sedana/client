@@ -31,7 +31,7 @@ function Button({ text, style, link, round, height, width, icon, action, isLoadi
         <div className={`${style} ${height} ${width} ${round} opacity-70 cursor-not-allowed`}>
           <div className="flex items-center justify-center">
             <SpinnerIcon />
-            <button className="cursor-not-allowed">Loading</button>
+            <button className="cursor-not-allowed ml-2">Loading</button>
           </div>
         </div>
       ) : (
