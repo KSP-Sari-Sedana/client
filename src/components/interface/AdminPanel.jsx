@@ -1699,7 +1699,129 @@ function ProductDetail() {
 }
 
 function User() {
-  return <div></div>;
+  const availableRole = ["Admin", "Teller", "Anggota", "Member"];
+  const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
+
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedRole, setSelectedRole] = useState(availableRole[2]);
+  const [selectedStatus, setSelectedStatus] = useState(availableStatus[0]);
+
+  const { userCtx } = useUserContext();
+
+  useEffect(() => {
+    get();
+  }, [selectedRole, selectedStatus]);
+
+  async function get() {
+    setIsLoading(true);
+    setUsers(await userCtx.get(selectedStatus, selectedRole));
+    setIsLoading(false);
+  }
+
+  return (
+    <div>
+      <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Anggota</p>
+      <div className="mb-4 text-sm">
+        <div className="flex items-center gap-x-2">
+          <RadioGroup value={selectedStatus} onChange={setSelectedStatus}>
+            <div className="flex items-center gap-x-2">
+              <p>status: </p>
+              {availableStatus.map((status, index) => (
+                <RadioGroup.Option key={index} value={status} as={Fragment}>
+                  {({ checked }) => (
+                    <div>
+                      <Badge className="cursor-pointer" style={checked ? "clear" : "gray"}>
+                        {status}
+                      </Badge>
+                    </div>
+                  )}
+                </RadioGroup.Option>
+              ))}
+            </div>
+          </RadioGroup>
+          <RadioGroup value={selectedRole} onChange={setSelectedRole}>
+            <div className="flex items-center gap-x-2">
+              <p>role: </p>
+              {availableRole.map((role, index) => (
+                <RadioGroup.Option key={index} value={role} as={Fragment}>
+                  {({ checked }) => (
+                    <div>
+                      <Badge className="cursor-pointer" style={checked ? "clear" : "gray"}>
+                        <StarIcon role={role} />
+                        {role}
+                      </Badge>
+                    </div>
+                  )}
+                </RadioGroup.Option>
+              ))}
+            </div>
+          </RadioGroup>
+        </div>
+      </div>
+      <div className=" min-w-max">
+        <div className="border rounded-2xl overflow-hidden bg-white text-sm">
+          <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
+            <div className="flex font-medium">
+              <p className="w-[30%]">Nama</p>
+              <p className="w-[20%]">Telepon</p>
+              <p className="w-[25%]">NIP</p>
+              <p className="w-[23%]">Pekerjaan</p>
+              <p className="w-[20%]">Status</p>
+            </div>
+          </div>
+          <div>
+            {isLoading ? (
+              <div className={`py-[10px] px-6 items-center justify-items-center`}>
+                <Spinner text="Loading" className="text-slate-700 place-content-center" />
+              </div>
+            ) : (
+              <div>
+                {users.length === 0 ? (
+                  <div className="text-center py-2">
+                    <p>User tidak ditemukan</p>
+                  </div>
+                ) : (
+                  <Fragment>
+                    {users.map((user, index) => {
+                      return (
+                        <Link key={index} to={`${user.id}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
+                          <div className="flex items-center gap-x-2 col-span-2 w-[30%] ">
+                            <div>
+                              <Avatar dimension="w-7 h-7" src={user.image || "https://source.boringavatars.com/pixel/120?square"} />
+                            </div>
+                            <div>
+                              <p className="leading-none font-medium">{`${user.firstName} ${user.lastName}`}</p>
+                              <div className="flex items-center">
+                                <StarIcon role={user.role} />
+                                <p className="font-sourcecodepro text-xs text-gray-600">{user.role}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <p className=" w-[20%] font-sourcecodepro font-medium">{user.cellphone}</p>
+                          <p className=" w-[25%] font-sourcecodepro font-medium">{user.nin}</p>
+                          <p className=" w-[23%] ">{user.job}</p>
+                          <div className=" w-[20%] ">
+                            <Badge
+                              style={
+                                user.status === "Aktif" ? "clear" : user.status === "Ditinjau" ? "buttercup" : user.status === "Dikunci" ? "rice" : user.status === "Nonaktif" ? "magenta" : "pippin"
+                              }
+                            >
+                              {user.status}
+                            </Badge>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </Fragment>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 const Admin = {

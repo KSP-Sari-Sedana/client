@@ -1,3 +1,16 @@
+async function get(status, role) {
+  let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users/filter/all?status=${status}&role=${role}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  result = await result.json();
+  return result;
+}
+
 async function register(username, email, firstName, lastName, password) {
   let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
     method: "POST",
@@ -37,4 +50,4 @@ async function getByUsername(username) {
   return result;
 }
 
-export default { register, getMyProfile, getByUsername };
+export default { get, register, getMyProfile, getByUsername };

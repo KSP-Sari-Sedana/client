@@ -19,6 +19,11 @@ function UserProvider({ children }) {
 
   const navigate = useNavigate();
 
+  async function get(status, role) {
+    let result = await userAPI.get(status, role);
+    return result?.data?.users || [];
+  }
+
   async function register() {
     let result = await userAPI.register(username, email, firstName, lastName, password);
     setAPIMessage(result.message);
@@ -47,6 +52,7 @@ function UserProvider({ children }) {
     password,
     APIMessage,
     me,
+    get,
     setUsername,
     setEmail,
     setFirstName,
