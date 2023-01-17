@@ -48,10 +48,10 @@ function Consumed({ settleDate, accNumber, productName, productType, balance }) 
 function TinyProduct({ productName, status, image, id }) {
   return (
     <div className="border w-min rounded-xl bg-white text-sm p-2">
-      <div className={`overflow-hidden w-[144px] h-[93px] rounded-xl ${image && "border"}`}>
+      <div className={`overflow-hidden w-[144px] h-[93px] rounded-xl`}>
         {image ? (
           <div>
-            <img src={image} alt="" />
+            <img src={image} alt="" className="h-full w-full" />
           </div>
         ) : (
           <HolderIcon.Rectangle />
