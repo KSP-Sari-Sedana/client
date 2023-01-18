@@ -10,7 +10,7 @@ import { Input } from "./Input";
 import { Modal } from "./Modal";
 import { Card } from "./Card";
 import { Product as ProductPreview } from "./Product";
-import { Radio, RadioText } from "./Radio";
+import { RadioText } from "./Radio";
 import { Spinner } from "./Spinner";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
@@ -21,12 +21,14 @@ import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
 import { useHelperContext } from "../../context/helperContext";
 import { useTransContext } from "../../context/transContext";
+import { useAccContext } from "../../context/accContext";
 
 const typeAvailable = ["Simpanan", "Pinjaman"];
 const depositAvailable = ["Bulanan", "Harian", "Sekali"];
 const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
 const availableRole = ["Admin", "Teller", "Anggota", "Member"];
 const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
+const availableAccStatus = ["Berjalan", "Selesai"];
 
 function Summary() {
   return <div></div>;
@@ -1827,6 +1829,7 @@ function UserDetail() {
   const [user, setUser] = useState({});
   const [consumedProducts, setConsumedProducts] = useState([]);
   const [status, setStatus] = useState("");
+  const [accStatus, setAccStatus] = useState("");
   const [role, setRole] = useState("");
   const [isModalRoleAndStatusOpen, setIsModalRoleAndStatusOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -1835,12 +1838,14 @@ function UserDetail() {
   const { userCtx } = useUserContext();
   const { helpCtx } = useHelperContext();
   const { prodCtx } = useProductContext();
+  const { accCtx } = useAccContext();
 
   useEffect(() => {
     getByUsername();
   }, []);
 
   async function getByUsername() {
+    setIsLoading(true);
     const user = await userCtx.getByUsername(username);
 
     const saving = await prodCtx.getConsumedProducts("saving", user.username);
@@ -1851,6 +1856,7 @@ function UserDetail() {
     for (var i = 0; i < consumedProducts.length; i++) {
       consumedProducts[i].id = i;
       consumedProducts[i].modalKey = false;
+      consumedProducts[i].type = consumedProducts[i].productType === "Simpanan" ? "saving" : "loan";
     }
 
     setUser(user);
@@ -1863,6 +1869,12 @@ function UserDetail() {
     setIsLoading(true);
     await userCtx.setStatusAndRole(user.username, status, role);
     setIsModalRoleAndStatusOpen(false);
+    getByUsername();
+  }
+
+  async function handleAccStatus(type, id, status) {
+    setIsLoading(true);
+    await accCtx.setStatus(type, id, status);
     getByUsername();
   }
 
@@ -2012,7 +2024,7 @@ function UserDetail() {
                 </div>
                 {consumedProducts.length > 0 && (
                   <div>
-                    <p className="text-sm ml-3 mb-2 mt-3">Produk</p>
+                    <p className="text-sm ml-3 mb-2 mt-3">Produk yang dinikmati</p>
                     <div>
                       <div className="grid grid-cols-3 gap-2">
                         {consumedProducts.map((product, index) => (
@@ -2020,6 +2032,7 @@ function UserDetail() {
                             <div
                               className="grow py-6 px-5"
                               onClick={() => {
+                                setAccStatus(product.status);
                                 product.modalKey = true;
                                 setConsumedProducts([...consumedProducts]);
                               }}
@@ -2045,8 +2058,58 @@ function UserDetail() {
                                 );
                               }}
                             >
-                              <p className="font-sourcecodepro text-sm font-extrabold leading-4">{product.productName}</p>
-                              <p className="font-sourcecodepro font-semibold leading-4">{helpCtx.formatAccNumber(product.accNumber)}</p>
+                              <div className="flex flex-col place-items-center gap-y-3 text-sm">
+                                <div className="text-center">
+                                  <p className="font-sourcecodepro text-xl font-extrabold leading-4">{product.productName}</p>
+                                  <p className="font-sourcecodepro font-semibold leading-4 text-gray-600">rek: {helpCtx.formatAccNumber(product.accNumber)}</p>
+                                  <p className="mt-3 text-gray-500">
+                                    Status angsuran pada rekening ini adalah <span className="lowercase">{product.status}</span>
+                                  </p>
+                                </div>
+                                <Badge style={`${product.status === "Berjalan" ? "buttercup" : "clear"}`}>{product.status}</Badge>
+                                <div className="flex items-center gap-x-2">
+                                  <p>Ubah status: </p>
+                                  <RadioText value={accStatus} onChange={setAccStatus} data={availableAccStatus}></RadioText>
+                                </div>
+                                <div className="flex mt-4 place-content-center gap-x-2">
+                                  <Button
+                                    action={() => {
+                                      handleAccStatus(product.type, product.accId, accStatus);
+                                      setConsumedProducts(
+                                        consumedProducts.map((item) => {
+                                          if (item.id === product.id) {
+                                            item.status = accStatus;
+                                            item.modalKey = false;
+                                          }
+                                          return item;
+                                        })
+                                      );
+                                    }}
+                                    text="Simpan"
+                                    style="electron"
+                                    round="rounded-full"
+                                    height="py-1"
+                                    width="px-4"
+                                  ></Button>
+                                  <Button
+                                    action={() => {
+                                      setConsumedProducts(
+                                        consumedProducts.map((item) => {
+                                          if (item.id === product.id) {
+                                            item.modalKey = false;
+                                          }
+                                          return item;
+                                        })
+                                      );
+                                    }}
+                                    text="Batal"
+                                    style="light"
+                                    round="rounded-full"
+                                    height="py-1"
+                                    width="px-4"
+                                  ></Button>
+                                </div>
+                              </div>
                             </Modal.Confirm>
                           </div>
                         ))}
