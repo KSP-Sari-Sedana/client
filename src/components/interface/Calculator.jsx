@@ -231,7 +231,7 @@ function Calculator(props) {
               icon="arrow"
             />
             <Modal.Confirm show={isOpen} onClose={setIsOpen}>
-              {userCtx.me.status === "Nonaktif" ? (
+              {userCtx.me.status !== "Aktif" ? (
                 <div className="text-sm">
                   <div className="text-center">
                     <p>Anda belum dapat mengajukan produk karena status keanggotaan belum aktif.</p>
