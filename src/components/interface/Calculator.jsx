@@ -231,41 +231,7 @@ function Calculator(props) {
               icon="arrow"
             />
             <Modal.Confirm show={isOpen} onClose={setIsOpen}>
-              {userCtx.me.status !== "Aktif" ? (
-                <div className="text-sm">
-                  <div className="text-center">
-                    <p>Anda belum dapat mengajukan produk karena status keanggotaan belum aktif.</p>
-                    <p>Lengkapi profil dan lakukan pembayaran modal di koperasi untuk mengaktifkan keanggotaan</p>
-                  </div>
-                  <hr className="my-3 h-px bg-gray-200 border-0"></hr>
-                  <div className="flex place-content-center gap-x-2">
-                    <Button
-                      action={() => {
-                        setIsOpen(false);
-                        navigate("/profile");
-                        window.location.reload();
-                      }}
-                      text="Lengkapi Profil"
-                      style="electron"
-                      round="rounded-full"
-                      height="py-1"
-                      width="px-4"
-                    />
-                    <Button
-                      action={() => {
-                        setIsOpen(false);
-                        navigate("/#location");
-                        window.location.reload();
-                      }}
-                      text="Lokasi"
-                      style="light"
-                      round="rounded-full"
-                      height="py-1"
-                      width="px-4"
-                    />
-                  </div>
-                </div>
-              ) : (
+              {userCtx.me.status === "Aktif" && userCtx.me.role !== "Member" ? (
                 <div className="text-sm">
                   <p className="text-center">
                     Anda akan mengajukan produk <span className="font-sourcecodepro font-bold">{product.name}</span>
@@ -316,6 +282,40 @@ function Calculator(props) {
                         setIsOpen(false);
                       }}
                       text="Batal"
+                      style="light"
+                      round="rounded-full"
+                      height="py-1"
+                      width="px-4"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm">
+                  <div className="text-center">
+                    <p>Anda belum dapat mengajukan produk karena status keanggotaan belum aktif.</p>
+                    <p>Lengkapi profil dan lakukan pembayaran modal di koperasi untuk mengaktifkan keanggotaan</p>
+                  </div>
+                  <hr className="my-3 h-px bg-gray-200 border-0"></hr>
+                  <div className="flex place-content-center gap-x-2">
+                    <Button
+                      action={() => {
+                        setIsOpen(false);
+                        navigate("/profile");
+                        window.location.reload();
+                      }}
+                      text="Lengkapi Profil"
+                      style="electron"
+                      round="rounded-full"
+                      height="py-1"
+                      width="px-4"
+                    />
+                    <Button
+                      action={() => {
+                        setIsOpen(false);
+                        navigate("/#location");
+                        window.location.reload();
+                      }}
+                      text="Lokasi"
                       style="light"
                       round="rounded-full"
                       height="py-1"
