@@ -34,6 +34,13 @@ function UserProvider({ children }) {
     window.location.reload();
   }
 
+  async function update(payload) {
+    let result = await userAPI.update(payload);
+    setAPIMessage(result.message);
+    setMe(result.data.user);
+    return result;
+  }
+
   async function getMyProfile() {
     let result = await userAPI.getMyProfile();
     setMe(result.data.user);
@@ -67,6 +74,7 @@ function UserProvider({ children }) {
     setLastName,
     setPassword,
     register,
+    update,
     getMyProfile,
     getByUsername,
     setStatusAndRole,

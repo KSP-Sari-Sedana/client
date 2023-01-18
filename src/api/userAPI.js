@@ -24,6 +24,20 @@ async function register(username, email, firstName, lastName, password) {
   return result;
 }
 
+async function update(payload) {
+  let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  result = await result.json();
+  return result;
+}
+
 async function getMyProfile() {
   let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
     method: "GET",
@@ -64,4 +78,4 @@ async function setStatusAndRole(username, status, role) {
   return result;
 }
 
-export default { get, register, getMyProfile, getByUsername, setStatusAndRole };
+export default { get, register, update, getMyProfile, getByUsername, setStatusAndRole };
