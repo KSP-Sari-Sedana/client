@@ -50,4 +50,18 @@ async function getByUsername(username) {
   return result;
 }
 
-export default { get, register, getMyProfile, getByUsername };
+async function setStatusAndRole(username, status, role) {
+  let result = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${username}`, {
+    method: "PUT",
+    body: JSON.stringify({ status, role }),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  result = await result.json();
+  return result;
+}
+
+export default { get, register, getMyProfile, getByUsername, setStatusAndRole };

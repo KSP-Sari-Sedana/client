@@ -137,6 +137,14 @@ function AdminUser() {
   );
 }
 
+function AdminUserDetail() {
+  return (
+    <DashboardLayout>
+      <Admin.UserDetail />
+    </DashboardLayout>
+  );
+}
+
 function TellerTransaction() {
   return (
     <DashboardLayout>
@@ -160,6 +168,7 @@ const DashboardPage = {
   AdminProduct,
   AdminProductDetail,
   AdminUser,
+  AdminUserDetail,
   TellerTransaction,
 };
 

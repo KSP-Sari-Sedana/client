@@ -10,7 +10,7 @@ import { Input } from "./Input";
 import { Modal } from "./Modal";
 import { Card } from "./Card";
 import { Product as ProductPreview } from "./Product";
-import { RadioText } from "./Radio";
+import { Radio, RadioText } from "./Radio";
 import { Spinner } from "./Spinner";
 import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
@@ -25,6 +25,8 @@ import { useTransContext } from "../../context/transContext";
 const typeAvailable = ["Simpanan", "Pinjaman"];
 const depositAvailable = ["Bulanan", "Harian", "Sekali"];
 const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
+const availableRole = ["Admin", "Teller", "Anggota", "Member"];
+const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
 
 function Summary() {
   return <div></div>;
@@ -1699,9 +1701,6 @@ function ProductDetail() {
 }
 
 function User() {
-  const availableRole = ["Admin", "Teller", "Anggota", "Member"];
-  const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
-
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState(availableRole[2]);
@@ -1785,7 +1784,7 @@ function User() {
                   <Fragment>
                     {users.map((user, index) => {
                       return (
-                        <Link key={index} to={`${user.id}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
+                        <Link key={index} to={`${user.username}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
                           <div className="flex items-center gap-x-2 col-span-2 w-[30%] ">
                             <div>
                               <Avatar dimension="w-7 h-7" src={user.image || "https://source.boringavatars.com/pixel/120?square"} />
@@ -1824,6 +1823,246 @@ function User() {
   );
 }
 
+function UserDetail() {
+  const [user, setUser] = useState({});
+  const [consumedProducts, setConsumedProducts] = useState([]);
+  const [status, setStatus] = useState("");
+  const [role, setRole] = useState("");
+  const [isModalRoleAndStatusOpen, setIsModalRoleAndStatusOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const { username } = useParams();
+
+  const { userCtx } = useUserContext();
+  const { helpCtx } = useHelperContext();
+  const { prodCtx } = useProductContext();
+
+  useEffect(() => {
+    getByUsername();
+  }, []);
+
+  async function getByUsername() {
+    const user = await userCtx.getByUsername(username);
+
+    const saving = await prodCtx.getConsumedProducts("saving", user.username);
+    const loan = await prodCtx.getConsumedProducts("loan", user.username);
+    const consumedProducts = [...saving, ...loan];
+    setConsumedProducts(consumedProducts);
+
+    for (var i = 0; i < consumedProducts.length; i++) {
+      consumedProducts[i].id = i;
+      consumedProducts[i].modalKey = false;
+    }
+
+    setUser(user);
+    setStatus(user.status);
+    setRole(user.role);
+    setIsLoading(false);
+  }
+
+  async function handleUpdateRoleAndStatus() {
+    setIsLoading(true);
+    await userCtx.setStatusAndRole(user.username, status, role);
+    setIsModalRoleAndStatusOpen(false);
+    getByUsername();
+  }
+
+  return (
+    <div>
+      {isLoading ? (
+        <div>
+          <Spinner text="Loading" className="text-slate-700 place-content-center" />
+        </div>
+      ) : (
+        <div>
+          <p className="text-center font-darkergrotesque text-3xl font-extrabold">Profil</p>
+          <div className="flex gap-x-8 mt-8">
+            <div className="min-w-max">
+              <div className="flex flex-col items-center">
+                <Avatar src={user.image || "https://source.boringavatars.com/pixel/120?square"}></Avatar>
+                <div className="flex mt-3 gap-x-2">
+                  <Badge style="clear">
+                    <StarIcon role={user.role} />
+                    {user.role}
+                  </Badge>
+                  <Badge style={user.status === "Aktif" ? "clear" : user.status === "Ditinjau" ? "buttercup" : user.status === "Dikunci" ? "rice" : user.status === "Nonaktif" ? "magenta" : "pippin"}>
+                    {user.status}
+                  </Badge>
+                </div>
+                <div className="mt-2">
+                  <p className="font-darkergrotesque text-4xl font-extrabold">{`${user.firstName} ${user.lastName}`}</p>
+                  <p className="text-sm text-center mt-1 text-gray-700">{user.email}</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div className="text-sm mt-4 mb-2">
+                    <p className="">Status</p>
+                    <div>
+                      <RadioText value={status} onChange={setStatus} data={availableStatus}></RadioText>
+                    </div>
+                  </div>
+                  <div className="text-sm mt-4 mb-2">
+                    <p className="">Role</p>
+                    <div>
+                      <RadioText value={role} onChange={setRole} data={availableRole}></RadioText>
+                    </div>
+                  </div>
+                  <div className="flex mt-5 gap-x-3">
+                    <Button
+                      action={() => {
+                        setIsModalRoleAndStatusOpen(true);
+                      }}
+                      text="Simpan"
+                      style="electron"
+                      round="rounded-full"
+                      height="py-1"
+                      width="px-4"
+                    ></Button>
+                  </div>
+                </div>
+                <div>
+                  <Modal.Confirm show={isModalRoleAndStatusOpen} onClose={setIsModalRoleAndStatusOpen}>
+                    <div className="text-sm text-center">
+                      <p>Anda yakin ingin mengubah</p>
+                      <p>
+                        status dan role dari <span>{`${user.firstName} ${user.lastName}`}</span> menjadi:
+                      </p>
+                      <div className="grid grid-cols-2 mt-3">
+                        <div className="flex flex-col gap-y-2 items-center">
+                          <p className="text-gray-500">Status</p>
+                          <Badge style={status === "Aktif" ? "clear" : status === "Ditinjau" ? "buttercup" : status === "Dikunci" ? "rice" : status === "Nonaktif" ? "magenta" : "pippin"}>
+                            {status}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-col gap-y-2 items-center">
+                          <p className="text-gray-500">Role</p>
+                          <Badge style="clear">
+                            <StarIcon role={role} />
+                            {role}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex mt-4 place-content-center gap-x-2">
+                      <Button
+                        action={() => {
+                          handleUpdateRoleAndStatus();
+                        }}
+                        text="Ya"
+                        style="electron"
+                        round="rounded-full"
+                        height="py-1"
+                        width="px-4"
+                      ></Button>
+                      <Button
+                        action={() => {
+                          setIsModalRoleAndStatusOpen(false);
+                        }}
+                        text="Batal"
+                        style="light"
+                        round="rounded-full"
+                        height="py-1"
+                        width="px-4"
+                      ></Button>
+                    </div>
+                  </Modal.Confirm>
+                </div>
+              </div>
+            </div>
+            <div className="grow min-w-max overflow-hidden">
+              <div>
+                <p className="text-sm ml-3 mb-2">Informasi</p>
+                <div className="text-sm grid grid-cols-3 text-center border rounded-2xl overflow-hidden">
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">Username</p>
+                    <p className="text-gray-900">{user.username}</p>
+                  </div>
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">Telepon</p>
+                    <p className="text-gray-900">{user.cellphone || "-"}</p>
+                  </div>
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">NIP</p>
+                    <p className="text-gray-900">{user.nin || "-"}</p>
+                  </div>
+                  <div className="bg-gray-50 py-3 px-3">
+                    <p className="text-gray-500">Pekerjaan</p>
+                    <p className="text-gray-900">{user.job || "-"}</p>
+                  </div>
+                  <div className="bg-gray-50 py-3 px-3">
+                    <p className="text-gray-500">Gaji</p>
+                    <p className="text-gray-900">{helpCtx.formatRupiah(user.salary || 0)}</p>
+                  </div>
+                  <div className="bg-gray-50 py-3 px-3">
+                    <p className="text-gray-500">Pengeluaran</p>
+                    <p className="text-gray-900">{helpCtx.formatRupiah(user.expense || 0)}</p>
+                  </div>
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">Provinsi</p>
+                    <p className="text-gray-900">{user.province || "-"}</p>
+                  </div>
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">Kabupaten</p>
+                    <p className="text-gray-900">{user.district || "-"}</p>
+                  </div>
+                  <div className="bg-white py-3 px-3">
+                    <p className="text-gray-500">Kecamatan</p>
+                    <p className="text-gray-900">{user.subdistrict || "-"}</p>
+                  </div>
+                </div>
+                {consumedProducts.length > 0 && (
+                  <div>
+                    <p className="text-sm ml-3 mb-2 mt-3">Produk</p>
+                    <div>
+                      <div className="grid grid-cols-3 gap-2">
+                        {consumedProducts.map((product, index) => (
+                          <div key={index} className={`border rounded-xl cursor-pointer h-20 text-sm leading-4 flex items-center hover:bg-gray-50`}>
+                            <div
+                              className="grow py-6 px-5"
+                              onClick={() => {
+                                product.modalKey = true;
+                                setConsumedProducts([...consumedProducts]);
+                              }}
+                            >
+                              <div className="flex-col">
+                                <p className="font-sourcecodepro text-sm font-extrabold leading-4">{product.productName}</p>
+                                <p className="font-sourcecodepro font-semibold leading-4">{helpCtx.formatAccNumber(product.accNumber)}</p>
+                                <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${product.productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>
+                                  Rp. {product.loanBalance?.toLocaleString("ID-id") || product.balance?.toLocaleString("ID-id")}
+                                </p>
+                              </div>
+                            </div>
+                            <Modal.Confirm
+                              show={product.modalKey}
+                              onClose={() => {
+                                setConsumedProducts(
+                                  consumedProducts.map((item) => {
+                                    if (item.id === product.id) {
+                                      item.modalKey = false;
+                                    }
+                                    return item;
+                                  })
+                                );
+                              }}
+                            >
+                              <p className="font-sourcecodepro text-sm font-extrabold leading-4">{product.productName}</p>
+                              <p className="font-sourcecodepro font-semibold leading-4">{helpCtx.formatAccNumber(product.accNumber)}</p>
+                            </Modal.Confirm>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const Admin = {
   Summary,
   Submission,
@@ -1832,6 +2071,7 @@ const Admin = {
   Product,
   ProductDetail,
   User,
+  UserDetail,
 };
 
 export { Admin };

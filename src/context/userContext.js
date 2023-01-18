@@ -44,6 +44,14 @@ function UserProvider({ children }) {
     return result?.data?.user || {};
   }
 
+  async function setStatusAndRole(username, status, role) {
+    let result = await userAPI.setStatusAndRole(username, status, role);
+    if (result.status !== "OK") {
+      return;
+    }
+    return result;
+  }
+
   const userCtx = {
     username,
     email,
@@ -61,6 +69,7 @@ function UserProvider({ children }) {
     register,
     getMyProfile,
     getByUsername,
+    setStatusAndRole,
   };
 
   const userContextValue = { userCtx };
