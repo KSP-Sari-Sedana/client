@@ -6,7 +6,7 @@ import { Avatar } from "./Avatar";
 import { StarIcon } from "../icons/StarIcon";
 import { PresentationIcon } from "../icons/PresentationIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
-import { CloseIcon } from "../icons/CloseIcon";
+import { DoorIcon } from "../icons/DoorIcon";
 import { useAuthContext } from "../../context/authContext";
 import { useUserContext } from "../../context/userContext";
 
@@ -62,7 +62,7 @@ function UserMenu() {
                   authCtx.logout();
                 }}
               >
-                <CloseIcon />
+                <DoorIcon />
                 <span className="ml-2 text-sm">Keluar</span>
               </div>
             </div>

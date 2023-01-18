@@ -683,7 +683,7 @@ function Transaction() {
                   <div className="mt-3">
                     <p className="mb-1 ml-2 font-medium">Jumlah {code}</p>
                     <div className="flex w-44">
-                      <Input placeHolder="200.000" action={setSaveInst} />
+                      <Input icon="currency" placeHolder="200.000" action={setSaveInst} />
                     </div>
                   </div>
                   <div className="flex">
@@ -748,15 +748,15 @@ function Transaction() {
                   <div className="flex gap-x-4">
                     <div className="w-44">
                       <p className="mb-1 ml-2 font-medium">Pokok</p>
-                      <Input placeHolder="200.000" action={setPrincipal} />
+                      <Input icon="currency" placeHolder="200.000" action={setPrincipal} />
                     </div>
                     <div className="w-44">
                       <p className="mb-1 ml-2 font-medium">Bunga</p>
-                      <Input placeHolder="200.000" action={setInterest} />
+                      <Input icon="currency" placeHolder="200.000" action={setInterest} />
                     </div>
                     <div className="w-44">
                       <p className="mb-1 ml-2 font-medium">Denda</p>
-                      <Input placeHolder="200.000" action={setOverdueFee} />
+                      <Input icon="currency" placeHolder="200.000" action={setOverdueFee} />
                     </div>
                   </div>
                   <div className="flex">

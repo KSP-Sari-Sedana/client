@@ -1,9 +1,10 @@
-import { AtIcon } from "../icons/AtIcon";
+import { MailIcon } from "../icons/MailIcon";
 import { KeyIcon } from "../icons/KeyIcon";
 import { FingerPrintIcon } from "../icons/FingerPrintIcon";
 import { CurrencyIcon } from "../icons/CurrencyIcon";
 import { NINIcon } from "../icons/NINIcon";
 import { BriefcaseIcon } from "../icons/BriefcaseIcon";
+import { PhoneIcon } from "../icons/PhoneIcon";
 
 function Input({ label, type, placeHolder, icon, value, action, isDisabled }) {
   return (
@@ -12,12 +13,13 @@ function Input({ label, type, placeHolder, icon, value, action, isDisabled }) {
       <div className={icon && `relative`}>
         {icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-            {icon === "email" && <AtIcon />}
+            {icon === "email" && <MailIcon />}
             {icon === "password" && <KeyIcon />}
             {icon === "fingerPrint" && <FingerPrintIcon />}
             {icon === "currency" && <CurrencyIcon />}
             {icon === "nin" && <NINIcon />}
             {icon === "job" && <BriefcaseIcon />}
+            {icon === "phone" && <PhoneIcon />}
           </div>
         )}
         <input
