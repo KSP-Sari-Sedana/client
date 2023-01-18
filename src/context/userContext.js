@@ -37,7 +37,7 @@ function UserProvider({ children }) {
   async function update(payload) {
     let result = await userAPI.update(payload);
     setAPIMessage(result.message);
-    setMe(result.data.user);
+    getMyProfile();
     return result;
   }
 

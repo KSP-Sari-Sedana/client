@@ -89,13 +89,26 @@ function Profile() {
       password,
     };
 
-    const result = await userCtx.update(user);
-    setAPIMessage(result.message);
+    try {
+      setIsLoading(true);
+      const result = await userCtx.update(user);
+      setAPIMessage(result.message);
+    } catch (error) {
+      setAPIMessage(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <div>
-      <div>{APIMessage && <div></div>}</div>
+      <div>
+        {APIMessage && (
+          <div>
+            <p></p>
+          </div>
+        )}
+      </div>
       {isLoading ? (
         <></>
       ) : (
