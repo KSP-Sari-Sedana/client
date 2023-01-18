@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Navbar } from "../components/interface/Navbar";
 import { Avatar } from "../components/interface/Avatar";
 import { Badge } from "../components/interface/Badge";
-import { SavingCard } from "../components/interface/SavingCard";
+import { Wallet } from "../components/interface/Wallet";
 import { Profile } from "../components/interface/Profile";
 import { StarIcon } from "../components/icons/StarIcon";
 import { useUserContext } from "../context/userContext";
@@ -33,7 +33,7 @@ function ProfilePage() {
         </div>
         <div className="flex mt-10 gap-x-6">
           <div>
-            <SavingCard />
+            <Wallet.Rainbow />
           </div>
           <div className="grow">
             <Profile />

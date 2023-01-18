@@ -2,7 +2,7 @@ import { ChipIcon } from "../icons/ChipIcon";
 import { SwellArt } from "../art/SwellArt";
 import { useUserContext } from "../../context/userContext";
 
-function SavingCard() {
+function Rainbow() {
   const { userCtx } = useUserContext();
 
   return (
@@ -17,19 +17,20 @@ function SavingCard() {
           </div>
           <div className="mb-2 font-darkergrotesque text-2xl font-extrabold">
             <div className="flex gap-x-2">
-              <p>1253</p>
-              <p>5432</p>
+              <p>{userCtx.me.firstName}</p>
             </div>
             <div className="flex gap-x-2">
-              <p>3521</p>
-              <p>3090</p>
+              <p>{userCtx.me.lastName}</p>
             </div>
           </div>
-          <p className="font-sourcecodepro font-medium tracking-tighter">{`${userCtx.me.firstName} ${userCtx.me.lastName}`}</p>
         </div>
       </div>
     </div>
   );
 }
 
-export { SavingCard };
+const Wallet = {
+  Rainbow,
+};
+
+export { Wallet };
