@@ -35,7 +35,7 @@ function Profile() {
   const [selectedDistrict, setSelectedDistrict] = useState(userCtx.me.district);
   const [selectedSubdistrict, setSelectedSubdistrict] = useState(userCtx.me.subdistrict);
   const [address, setAddress] = useState("");
-  const [NIN, setNIN] = useState("");
+  const [nin, setNin] = useState("");
   const [job, setJob] = useState("");
   const [salary, setSalary] = useState("");
   const [expense, setExpense] = useState("");
@@ -64,7 +64,7 @@ function Profile() {
     setSelectedDistrict(userCtx.me.district);
     setSelectedSubdistrict(userCtx.me.subdistrict);
     setAddress(userCtx.me.address);
-    setNIN(userCtx.me.nin);
+    setNin(userCtx.me.nin);
     setJob(userCtx.me.job);
     setSalary(userCtx.me.salary);
     setExpense(userCtx.me.expense);
@@ -82,7 +82,7 @@ function Profile() {
       district: selectedDistrict,
       subdistrict: selectedSubdistrict,
       address,
-      NIN,
+      nin,
       job,
       salary,
       expense,
@@ -112,7 +112,7 @@ function Profile() {
               <Input action={setEmail} label="Alamat e-mail" value={email} icon="email"></Input>
             </div>
             <Input icon="phone" action={setCellphone} label="Nomor telepon" value={cellphone}></Input>
-            <Input action={setNIN} label="NIP" icon="nin" value={NIN} />
+            <Input action={setNin} label="NIP" icon="nin" value={nin} />
           </div>
           <div className="flex gap-x-4">
             <div className="text-sm">
