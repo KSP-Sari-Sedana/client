@@ -218,8 +218,8 @@ function Profile() {
           </div>
           <div className="flex gap-x-4 mt-4">
             <Input action={setJob} label="Pekerjaan" icon="job" value={job} placeHolder="Artist" type="text" />
-            <Input action={setSalary} label="Gaji perbulan" icon="currency" value={salary} placeHolder="Artist" type="text" />
-            <Input action={setExpense} label="Pengeluaran perbulan" icon="currency" value={expense} placeHolder="Artist" type="text" />
+            <Input action={setSalary} label="Gaji perbulan" icon="currency" value={salary} placeHolder="6.000.000" type="text" />
+            <Input action={setExpense} label="Pengeluaran perbulan" icon="currency" value={expense} placeHolder="3.500.000" type="text" />
           </div>
           <div className="flex mb-32 mt-5 gap-x-3">
             <Button
