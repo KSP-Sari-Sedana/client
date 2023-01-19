@@ -14,6 +14,7 @@ import SubmProvider from "./context/submContext";
 import HelperProvider from "./context/helperContext";
 import TransProvider from "./context/transContext";
 import AccProvider from "./context/accContext";
+import SummaryProvider from "./context/summaryContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -28,7 +29,9 @@ root.render(
                   <HelperProvider>
                     <TransProvider>
                       <AccProvider>
-                        <App />
+                        <SummaryProvider>
+                          <App />
+                        </SummaryProvider>
                       </AccProvider>
                     </TransProvider>
                   </HelperProvider>

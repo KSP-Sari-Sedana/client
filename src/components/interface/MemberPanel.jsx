@@ -8,12 +8,64 @@ import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Modal } from "./Modal";
 import { Spinner } from "./Spinner";
+import { HolderIcon } from "../icons/HolderIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useProductContext } from "../../context/productContext";
 import { useHelperContext } from "../../context/helperContext";
+import { useSummaryContext } from "../../context/summaryContext";
 
 function Summary() {
-  return <div></div>;
+  const [summary, setSummary] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const { summCtx } = useSummaryContext();
+  const { helpCtx } = useHelperContext();
+
+  useEffect(() => {
+    getSummary();
+  }, []);
+
+  async function getSummary() {
+    setSummary(await summCtx.getSummary());
+    setIsLoading(false);
+  }
+
+  return (
+    <Fragment>
+      {isLoading ? (
+        <Spinner text="Loading" className="text-slate-700 place-content-center" />
+      ) : (
+        <div>
+          <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Ikhtisar Anda</p>
+          <div className="grid grid-cols-3 gap-3 place-self-stretch min-w-max text-sm">
+            <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3">
+              <HolderIcon.Square />
+              <div className="grow">
+                <p className="font-medium mb-1">Total tabungan</p>
+                <Badge style="clear">{helpCtx.formatRupiah(summary.saving.balance)}</Badge>
+              </div>
+            </div>
+            <div className="col-span-2 bg-white border rounded-xl px-4 py-3 flex gap-x-3">
+              <HolderIcon.Square />
+              <div className="grow flex items-center justify-between gap-x-3">
+                <div>
+                  <p className="font-medium mb-1">Total pinjaman</p>
+                  <Badge style="pippin">{helpCtx.formatRupiah(summary.loan.loanTotal)}</Badge>
+                </div>
+                <div>
+                  <p className="font-medium mb-1">Total pembayaran</p>
+                  <Badge style="clear">{helpCtx.formatRupiah(summary.loan.totalLoanPayment)}</Badge>
+                </div>
+                <div>
+                  <p className="font-medium mb-1">Total sisa pinjaman</p>
+                  <Badge style="rice">{helpCtx.formatRupiah(summary.loan.loanBalance)}</Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </Fragment>
+  );
 }
 
 function Submission() {
