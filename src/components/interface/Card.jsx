@@ -63,7 +63,7 @@ function TinyProduct({ productName, status, image, id }) {
           <Badge style={status === "Publik" ? "clear" : status === "Wajib" ? "magenta" : "pippin"}>{status}</Badge>
           <div className="cursor-pointer text-gray-400 hover:text-clear-500">
             <Link to={`${id}`}>
-              <ArrowIcon aim="rightTop" />
+              <ArrowIcon.Dart aim="rightTop" />
             </Link>
           </div>
         </div>

@@ -263,7 +263,7 @@ function SubmissionDetail() {
                     }}
                     className="hover:text-clear-700 cursor-pointer"
                   >
-                    <ArrowIcon aim="rightTop" />
+                    <ArrowIcon.Dart aim="rightTop" />
                   </div>
                   <Modal.Confirm show={isOpen} onClose={setIsOpen}>
                     <div className="text-sm">
@@ -331,7 +331,7 @@ function SubmissionDetail() {
                 <WhatsAppIcon />
                 <a className="text-gray-500 hover:text-clear-700 flex items-center" href={`https://wa.me/${subm?.cellphone?.substring(1)}`} target="_blank">
                   {subm.cellphone}
-                  <ArrowIcon aim="rightTop" />
+                  <ArrowIcon.Dart aim="rightTop" />
                 </a>
               </div>
               <div className="w-[20%]">

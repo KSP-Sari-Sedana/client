@@ -39,7 +39,7 @@ function Button({ text, style, link, round, height, width, icon, action, isLoadi
           <div className={`${style} ${height} ${width} ${round}`}>
             <div className="flex items-center justify-center">
               <button>{text}</button>
-              {icon === "arrow" && <ArrowIcon />}
+              {icon === "arrow" && <ArrowIcon.Dart />}
             </div>
           </div>
         </Link>

@@ -61,7 +61,7 @@ function LoanResult(props) {
         <div className="flex items-center">
           <button onClick={props.installment} className="flex items-center text-sm mb-1 leading-none text-electron-300 hover:text-electron-700">
             Angsuran
-            <ArrowIcon aim="rightTop" />
+            <ArrowIcon.Dart aim="rightTop" />
           </button>
         </div>
       </div>
