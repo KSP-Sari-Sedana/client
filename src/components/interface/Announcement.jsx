@@ -5,7 +5,7 @@ import { ProfileIcon } from "../icons/ProfileIcon";
 import { NotepadIcon } from "../icons/NotepadIcon";
 import { useNotifContext } from "../../context/notifContext";
 
-function Announcement({ id, category, detail, isRead, link, date }) {
+function Announcement({ id, category, detail, isRead, link, date, action }) {
   const { notifCtx } = useNotifContext();
   date = new Date(date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" });
 
@@ -14,7 +14,7 @@ function Announcement({ id, category, detail, isRead, link, date }) {
       <div
         onClick={() => {
           notifCtx.markAsRead(id);
-          notifCtx.getByUser();
+          action();
         }}
         className={`my-2 py-1 px-4 rounded-md hover:bg-zinc-100 cursor-pointer ${isRead ? "bg-white" : "bg-green-50"}`}
       >

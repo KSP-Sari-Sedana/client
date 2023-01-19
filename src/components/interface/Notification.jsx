@@ -2,17 +2,26 @@ import { Fragment, useState, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
 
 import { Announcement } from "./Announcement";
+import { Spinner } from "./Spinner";
 import { TollerIcon } from "../icons/TollerIcon";
 import { useNotifContext } from "../../context/notifContext";
 
 function Notification() {
+  const [notifs, setNotifs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { notifCtx } = useNotifContext();
 
   useEffect(() => {
-    notifCtx.getByUser();
+    getNotif();
   }, []);
 
-  const unreadNotif = notifCtx.notifs.filter((notif) => !notif.isRead);
+  async function getNotif() {
+    setNotifs(await notifCtx.getByUser());
+    setNotifs(await notifCtx.getByUser());
+    setIsLoading(false);
+  }
+
+  const unreadNotif = notifs.filter((notif) => !notif.isRead);
 
   return (
     <Fragment>
@@ -38,11 +47,28 @@ function Notification() {
           <Popover.Panel>
             <div className="w-96 h-96 overflow-auto rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
               <p className="text-sm text-center">Notifikasi terakhir</p>
-              <div>
-                {notifCtx.notifs.map((notif, index) => {
-                  return <Announcement key={index} id={notif.id} category={notif.category} detail={notif.detail} isRead={notif.isRead} date={notif.date} link={notif.link} />;
-                })}
-              </div>
+              {isLoading ? (
+                <Spinner text="Loading" className="text-slate-700 place-content-center mt-3" />
+              ) : (
+                <div>
+                  {notifs.map((notif, index) => {
+                    return (
+                      <Announcement
+                        action={() => {
+                          getNotif();
+                        }}
+                        key={index}
+                        id={notif.id}
+                        category={notif.category}
+                        detail={notif.detail}
+                        isRead={notif.isRead}
+                        date={notif.date}
+                        link={notif.link}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </Popover.Panel>
         </Transition>

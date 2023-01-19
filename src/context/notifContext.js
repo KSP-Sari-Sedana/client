@@ -13,6 +13,7 @@ function NotifProvider({ children }) {
   async function getByUser() {
     const result = await notifApi.getByUser();
     setNotifs(result.data.notifications);
+    return result.data.notifications;
   }
 
   async function markAsRead(id) {
