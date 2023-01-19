@@ -193,14 +193,14 @@ function Profile() {
               <div className="text-sm">
                 <p className="mb-2">Kecamatan</p>
                 <Combobox value={selectedSubdistrict} onChange={setSelectedSubdistrict}>
-                  <div className="relative z-30">
+                  <div className="relative">
                     <div className="relative w-full flex gap-x-2 cursor-default p-2.5 pl-3 overflow-hidden border border-gray-300 rounded-lg bg-white">
                       <SubdistrictIcon />
                       <Combobox.Input placeholder="Kecamatan" className="w-full focus:outline-none" displayValue={(subdistrict) => subdistrict} onChange={(event) => setQuery(event.target.value)} />
                       <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4"></Combobox.Button>
                     </div>
                     <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0" afterLeave={() => setQuery("")}>
-                      <Combobox.Options className="shadow-sm absolute mt-1 max-h-60 w-full overflow-auto rounded-lg border bg-white p-2">
+                      <Combobox.Options className="shadow-sm z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-lg border bg-white p-2">
                         {filteredSubdistrict.length === 0 && query !== "" ? (
                           <div className="relative cursor-default select-none py-1 px-2 text-gray-700">Nothing found.</div>
                         ) : (
