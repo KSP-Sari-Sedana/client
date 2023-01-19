@@ -1955,12 +1955,13 @@ function UserDetail() {
                           </Badge>
                         </div>
                       </div>
-                      {role === "Anggota" && status === "Aktif" && (
+                      {(role === "Admin" || role === "Teller" || role === "Anggota") && status === "Aktif" && (
                         <div className="mt-4 flex flex-col gap-y-1 items-center border p-2 text-bethlehem-500 border-bethlehem-500 rounded-md">
                           <WarningIcon.Triangle />
                           <div className="text-gray-700">
                             <p>Pastikan telah melakukan pembayaran sebesar Rp. 200.000</p>
-                            <p>sebagai modal untuk menjadi anggota koperasi</p>
+                            <p>sebagai modal untuk menjadi anggota koperasi.</p>
+                            <p>{`Dan pastikan role yang anda atur sudah benar`}</p>
                           </div>
                         </div>
                       )}
