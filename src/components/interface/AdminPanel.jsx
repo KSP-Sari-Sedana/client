@@ -16,6 +16,7 @@ import { StarIcon } from "../icons/StarIcon";
 import { WhatsAppIcon } from "../icons/WhatsAppIcon";
 import { ArrowIcon } from "../icons/ArrowIcon";
 import { TrashIcon } from "../icons/TrashIcon";
+import { WarningIcon } from "../icons/WarningIcon";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
@@ -1939,7 +1940,7 @@ function UserDetail() {
                       <p>
                         status dan role dari <span>{`${user.firstName} ${user.lastName}`}</span> menjadi:
                       </p>
-                      <div className="grid grid-cols-2 mt-3">
+                      <div className="flex gap-x-3 place-content-center mt-3">
                         <div className="flex flex-col gap-y-2 items-center">
                           <p className="text-gray-500">Status</p>
                           <Badge style={status === "Aktif" ? "clear" : status === "Ditinjau" ? "buttercup" : status === "Dikunci" ? "rice" : status === "Nonaktif" ? "magenta" : "pippin"}>
@@ -1954,6 +1955,15 @@ function UserDetail() {
                           </Badge>
                         </div>
                       </div>
+                      {role === "Anggota" && status === "Aktif" && (
+                        <div className="mt-4 flex flex-col gap-y-1 items-center border p-2 text-bethlehem-500 border-bethlehem-500 rounded-md">
+                          <WarningIcon.Triangle />
+                          <div className="text-gray-700">
+                            <p>Pastikan telah melakukan pembayaran sebesar Rp. 200.000</p>
+                            <p>sebagai modal untuk menjadi anggota koperasi</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="flex mt-4 place-content-center gap-x-2">
                       <Button
