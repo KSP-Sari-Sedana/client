@@ -7,6 +7,7 @@ import { Spinner } from "./Spinner";
 import { Wallet } from "./Wallet";
 import { ProvinceIcon } from "../icons/ProvinceIcon";
 import { DistrictIcon } from "../icons/DistrictIcon";
+import { ArrowIcon } from "../icons/ArrowIcon";
 import { SubdistrictIcon } from "../icons/SubdistrictIcon";
 import { useUserContext } from "../../context/userContext";
 
@@ -139,7 +140,9 @@ function Profile() {
                     <div className="relative w-full flex gap-x-2 cursor-default p-2.5 pl-3 overflow-hidden border border-gray-300 rounded-lg bg-white">
                       <ProvinceIcon />
                       <Combobox.Input placeholder="Provinsi" className="w-full focus:outline-none" displayValue={(province) => province} onChange={(event) => setQuery(event.target.value)} />
-                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4"></Combobox.Button>
+                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4">
+                        <ArrowIcon.Head />
+                      </Combobox.Button>
                     </div>
                     <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0" afterLeave={() => setQuery("")}>
                       <Combobox.Options className="shadow-sm absolute mt-1 max-h-60 w-full overflow-auto rounded-lg border bg-white p-2">
@@ -168,7 +171,9 @@ function Profile() {
                     <div className="relative w-full flex gap-x-2 cursor-default p-2.5 pl-3 overflow-hidden border border-gray-300 rounded-lg bg-white">
                       <DistrictIcon />
                       <Combobox.Input placeholder="Kabupaten" className="w-full focus:outline-none" displayValue={(district) => district} onChange={(event) => setQuery(event.target.value)} />
-                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4"></Combobox.Button>
+                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4">
+                        <ArrowIcon.Head />
+                      </Combobox.Button>
                     </div>
                     <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0" afterLeave={() => setQuery("")}>
                       <Combobox.Options className="shadow-sm absolute mt-1 z-10 max-h-60 w-full overflow-auto rounded-lg border bg-white p-2">
@@ -197,7 +202,9 @@ function Profile() {
                     <div className="relative w-full flex gap-x-2 cursor-default p-2.5 pl-3 overflow-hidden border border-gray-300 rounded-lg bg-white">
                       <SubdistrictIcon />
                       <Combobox.Input placeholder="Kecamatan" className="w-full focus:outline-none" displayValue={(subdistrict) => subdistrict} onChange={(event) => setQuery(event.target.value)} />
-                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4"></Combobox.Button>
+                      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center p-4">
+                        <ArrowIcon.Head />
+                      </Combobox.Button>
                     </div>
                     <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0" afterLeave={() => setQuery("")}>
                       <Combobox.Options className="shadow-sm z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-lg border bg-white p-2">

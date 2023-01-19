@@ -18,8 +18,17 @@ function Dart({ aim }) {
   );
 }
 
+function Head() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" fill="none" viewBox="0 0 12 6">
+      <path fill="#28303F" fillRule="evenodd" d="M.414.532A.75.75 0 011.47.414L6 4.04 10.531.414a.75.75 0 11.938 1.172l-5 4a.75.75 0 01-.937 0l-5-4A.75.75 0 01.414.532z" clipRule="evenodd"></path>
+    </svg>
+  );
+}
+
 const ArrowIcon = {
   Dart,
+  Head,
 };
 
 export { ArrowIcon };
