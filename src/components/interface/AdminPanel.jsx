@@ -182,7 +182,7 @@ function Submission() {
                         <Spinner text="Loading" className="text-slate-700 place-content-center" />
                       </div>
                     ) : (
-                      <div>
+                      <div className="h-96 overflow-scroll">
                         {submSaving.map((subm, index) => {
                           return (
                             <Link key={index} to={`saving/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
@@ -234,7 +234,7 @@ function Submission() {
                         <Spinner text="Loading" className="text-slate-700 place-content-center" />
                       </div>
                     ) : (
-                      <div>
+                      <div className="h-96 overflow-scroll">
                         {submLoan.map((subm, index) => {
                           return (
                             <Link key={index} to={`loan/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
