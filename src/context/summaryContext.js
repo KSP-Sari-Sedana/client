@@ -13,8 +13,14 @@ function SummaryProvider({ children }) {
     return res?.data;
   }
 
+  async function getSummaryByAdmin() {
+    let res = await summaryAPI.getSummaryByAdmin();
+    return res?.data;
+  }
+
   const summCtx = {
     getSummary,
+    getSummaryByAdmin,
   };
   const summContextValue = { summCtx };
 
