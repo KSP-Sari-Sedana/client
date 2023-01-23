@@ -188,7 +188,7 @@ function Submission() {
                             <Link key={index} to={`saving/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
                               <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
                                 <div>
-                                  <Avatar dimension="w-7 h-7" src={subm.image} />
+                                  <Avatar dimension="w-7 h-7" src={subm.image || "https://source.boringavatars.com/pixel/120?square"} />
                                 </div>
                                 <div>
                                   <p className="leading-none font-medium">{subm.fullName}</p>
@@ -240,7 +240,7 @@ function Submission() {
                             <Link key={index} to={`loan/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
                               <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
                                 <div>
-                                  <Avatar dimension="w-7 h-7" src={subm.image} />
+                                  <Avatar dimension="w-7 h-7" src={subm.image || "https://source.boringavatars.com/pixel/120?square"} />
                                 </div>
                                 <div>
                                   <p className="leading-none font-medium">{subm.fullName}</p>
@@ -661,7 +661,7 @@ function Transaction() {
             <div key={index} className={`flex py-[12px] px-6 items-center ${index % 2 === 1 && "bg-gray-50"}`}>
               <div className="flex items-center gap-x-2 col-span-2 w-[30%]">
                 <div>
-                  <Avatar dimension="w-7 h-7" src={tran.image} />
+                  <Avatar dimension="w-7 h-7" src={tran.image || "https://source.boringavatars.com/pixel/120?square"} />
                 </div>
                 <div>
                   <p className="leading-none font-medium">{tran.name}</p>
