@@ -1,6 +1,6 @@
 function StackIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" fill="none" viewBox="0 0 20 22">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 20 22">
       <path
         stroke="#28303F"
         strokeLinecap="round"
