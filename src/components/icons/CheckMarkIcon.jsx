@@ -1,11 +1,10 @@
 function CheckMarkIcon({ isChecked }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 8 6" className="mr-1">
+    <svg viewBox="0 0 17 12" className="w-2 h-2 mr-2">
       <path
-        fill={`${isChecked ? "#0F7BD3" : "#9E9E9E"}`}
-        fillRule="evenodd"
-        d="M7.494.436a.75.75 0 01.07 1.058l-2.87 3.28a1.75 1.75 0 01-2.41.214L.532 3.586a.75.75 0 11.937-1.172L3.22 3.817a.25.25 0 00.345-.031l2.87-3.28a.75.75 0 011.058-.07z"
-        clipRule="evenodd"
+        fill={isChecked ? "#1F73F1" : "#9E9E9E"}
+        d="M25.576 11.414a1.386 1.386 0 010 1.996l-9.404 9.176a1.461 1.461 0 01-1.023.414c-.37 0-.74-.139-1.023-.414l-4.701-4.588a1.386 1.386 0 010-1.996 1.47 1.47 0 012.045 0l3.68 3.59 8.38-8.178a1.47 1.47 0 012.046 0z"
+        transform="translate(-9 -11)"
       ></path>
     </svg>
   );
