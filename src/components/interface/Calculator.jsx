@@ -5,7 +5,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { Input } from "./Input";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
-import { Radio } from "./Radio";
+import { Radio, RadioText } from "./Radio";
 import { Modal } from "./Modal";
 import { ArrowIcon } from "../icons/ArrowIcon";
 import { useProductContext } from "../../context/productContext";
@@ -173,9 +173,6 @@ function Calculator(props) {
               </div>
             )}
           </div>
-          <hr className="my-3 h-px bg-gray-200 border-0"></hr>
-          {product.type === "Simpanan" && <SavingResult calculation={prodCtx.calculation} />}
-          {product.type === "Pinjaman" && <LoanResult calculation={prodCtx.calculation} installment={props.installment} />}
           {product.type === "Pinjaman" && (
             <div className="flex mt-3 text-sm gap-x-3">
               <div className="grow">
@@ -185,41 +182,22 @@ function Calculator(props) {
                     setNote(e.target.value);
                   }}
                   placeholder="Biaya wirausaha"
-                  className="border resize-none px-3 py-2 focus:outline-none border-gray-300 w-full rounded-lg"
+                  className="border resize-none px-3 py-2 focus:outline-none border-gray-200 w-full rounded-lg"
                   cols="30"
-                  rows="3"
+                  rows="1"
                 ></textarea>
               </div>
-              <div className="w-52 text-sm">
-                <Listbox value={selectedCollateral} onChange={setSelectedCollateral}>
-                  <div className="relative">
-                    <p className="mb-2">Jaminan</p>
-                    <Listbox.Button className="border w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left ">
-                      <span className="block truncate">{selectedCollateral}</span>
-                    </Listbox.Button>
-                    <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
-                      <Listbox.Options className="absolute mt-1 max-h-60 border w-full overflow-auto rounded-lg p-2 bg-white shadow-sm">
-                        {collaterals.map((collateral, index) => (
-                          <Listbox.Option
-                            key={index}
-                            className={({ active }) => `relative cursor-pointer select-none px-2 py-1 rounded ${active ? "bg-electron-500 text-white" : "text-gray-900"}`}
-                            value={collateral}
-                          >
-                            {({ selected }) => (
-                              <>
-                                <span className={`block truncate`}>{collateral}</span>
-                                {selected ? <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"></span> : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </Listbox>
+              <div className="w-64 text-sm">
+                <div className="relative">
+                  <p className="mb-2">Jaminan</p>
+                  <RadioText data={collaterals} value={selectedCollateral} onChange={setSelectedCollateral} />
+                </div>
               </div>
             </div>
           )}
+          <hr className="my-3 h-px bg-gray-200 border-0"></hr>
+          {product.type === "Simpanan" && <SavingResult calculation={prodCtx.calculation} />}
+          {product.type === "Pinjaman" && <LoanResult calculation={prodCtx.calculation} installment={props.installment} />}
           <div className="mt-5 w-32">
             <Button
               action={() => {
