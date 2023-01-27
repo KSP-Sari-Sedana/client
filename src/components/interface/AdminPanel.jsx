@@ -641,6 +641,7 @@ function Transaction() {
 
     const res = await transCtx.create(consumedProducts[selectedProduct].accId, type, payload);
     getLastTransaction();
+    getTransactionDetail();
   }
 
   return (
