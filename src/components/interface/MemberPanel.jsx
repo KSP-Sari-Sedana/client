@@ -271,17 +271,11 @@ function Saving() {
       {isLoding ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="grid grid-cols-3 gap-3 min-w-max">
+        <div className="grid grid-cols-4 gap-3 min-w-max">
           {consumedProducts.map((product, index) => {
             return (
               <Link key={index} to={`${product.submId}`}>
-                <Card.Consumed
-                  settleDate={product.settleDate}
-                  productName={product.productName}
-                  productType={product.productType}
-                  accNumber={product.accNumber}
-                  balance={product.balance.toLocaleString("ID-id")}
-                />
+                <Card.Consumed productName={product.productName} productType={product.productType} accNumber={product.accNumber} balance={product.balance.toLocaleString("ID-id")} />
               </Link>
             );
           })}
@@ -380,17 +374,11 @@ function Loan() {
       {isLoading ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="grid grid-cols-3 gap-3 min-w-max">
+        <div className="grid grid-cols-4 gap-3 min-w-max">
           {consumedProducts.map((product, index) => {
             return (
               <Link key={index} to={`${product.submId}`}>
-                <Card.Consumed
-                  settleDate={product.settleDate}
-                  productName={product.productName}
-                  productType={product.productType}
-                  accNumber={product.accNumber}
-                  balance={product.loanBalance?.toLocaleString("ID-id")}
-                />
+                <Card.Consumed productName={product.productName} productType={product.productType} accNumber={product.accNumber} balance={product.loanBalance?.toLocaleString("ID-id")} />
               </Link>
             );
           })}

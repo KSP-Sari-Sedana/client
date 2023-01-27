@@ -30,11 +30,13 @@ function Consumed({ settleDate, accNumber, productName, productType, balance }) 
   const { helpCtx } = useHelperContext();
   return (
     <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center py-6 px-5">
-      <div className="border-r w-16 pr-2">
-        <p>{helpCtx.getDay(settleDate, "short")},</p>
-        <p>{`${helpCtx.getDate(settleDate, "numeric")} ${helpCtx.getMonth(settleDate, "short")}`}</p>
-      </div>
-      <div className="pl-3 grow">
+      {settleDate && (
+        <div className="border-r w-16 pr-2">
+          <p>{helpCtx.getDay(settleDate, "short")},</p>
+          <p>{`${helpCtx.getDate(settleDate, "numeric")} ${helpCtx.getMonth(settleDate, "short")}`}</p>
+        </div>
+      )}
+      <div className={`${settleDate && "pl-3"} grow`}>
         <div className="flex-col">
           <p className="font-sourcecodepro text-lg font-extrabold leading-4">{productName}</p>
           <p className="font-sourcecodepro font-semibold leading-4">rek: {helpCtx.formatAccNumber(accNumber)}</p>
