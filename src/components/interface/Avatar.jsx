@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useUserContext } from "../../context/userContext";
 
-function Avatar({ dimension, src }) {
+function Avatar({ dimension, src, children }) {
   const { userCtx } = useUserContext();
 
   useEffect(() => {
@@ -9,7 +9,8 @@ function Avatar({ dimension, src }) {
   }, []);
 
   return (
-    <div className={`flex justify-center overflow-hidden items-center ${dimension || "w-12 h-12"} bg-zinc-300 rounded-[21px]`}>
+    <div className={`flex justify-center overflow-hidden relative items-center ${dimension || "w-12 h-12"} bg-zinc-300 rounded-[21px]`}>
+      {children}
       {src ? (
         <img src={src} alt="Avatar" />
       ) : userCtx.me.image === null || userCtx.me.image === undefined ? (
