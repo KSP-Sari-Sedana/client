@@ -45,7 +45,7 @@ function Notification() {
           leaveTo="opacity-0 translate-y-1"
         >
           <Popover.Panel>
-            <div className="w-96 h-96 overflow-auto rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
+            <div className="w-[410px] h-[410px] overflow-scroll rounded-2xl bg-white border border-slate-200 shadow-sm px-3 py-3 absolute top-[8px] -right-5">
               <p className="text-sm text-center">Notifikasi terakhir</p>
               {isLoading ? (
                 <Spinner text="Loading" className="text-slate-700 place-content-center mt-3" />
