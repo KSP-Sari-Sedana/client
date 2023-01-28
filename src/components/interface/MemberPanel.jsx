@@ -322,7 +322,7 @@ function SavingDetail() {
           <div className="mt-4">
             <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
             <div className="border rounded-2xl bg-white text-sm">
-              <div className="px-6 py-4 bg-clear-50 rounded-t-2xl border-b border-gray-200">
+              <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                 <div className="grid grid-cols-5 font-medium">
                   <p>Tanggal</p>
                   <p>Sandi</p>
@@ -332,19 +332,29 @@ function SavingDetail() {
                 </div>
               </div>
               <div>
-                {consumedProduct.transDetail.map((trans, index) => {
-                  return (
-                    <div
-                      className={`grid grid-cols-5 py-[10px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${consumedProduct.transDetail.length === index + 1 && "rounded-b-2xl"}`}
-                    >
-                      <p>{new Date(trans.date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
-                      <Badge style={`${trans.code === "Setoran" ? "rice" : trans.code === "Bunga" ? "clear" : trans.code === "Penarikan" ? "pippin" : "magenta"}`}>{trans.code}</Badge>
-                      <p>{`${trans.debit ? `Rp. ${trans.debit.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.credit ? `Rp. ${trans.credit.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.balance ? `Rp. ${trans.balance.toLocaleString("ID-id")}` : ""}`}</p>
-                    </div>
-                  );
-                })}
+                {consumedProduct.transDetail.length <= 0 ? (
+                  <div className="py-2 text-center">
+                    <p>Riwayat transaksi tidak tersedia</p>
+                  </div>
+                ) : (
+                  <Fragment>
+                    {consumedProduct.transDetail.map((trans, index) => {
+                      return (
+                        <div
+                          className={`grid grid-cols-5 py-[6px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
+                            consumedProduct.transDetail.length === index + 1 && "rounded-b-2xl"
+                          }`}
+                        >
+                          <p>{new Date(trans.date).toLocaleString("id-ID", { month: "long", day: "2-digit", year: "numeric" })}</p>
+                          <Badge style={`${trans.code === "Setoran" ? "rice" : trans.code === "Bunga" ? "clear" : trans.code === "Penarikan" ? "pippin" : "magenta"}`}>{trans.code}</Badge>
+                          <p>{`${trans.debit ? `Rp. ${trans.debit.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.credit ? `Rp. ${trans.credit.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.balance ? `Rp. ${trans.balance.toLocaleString("ID-id")}` : ""}`}</p>
+                        </div>
+                      );
+                    })}
+                  </Fragment>
+                )}
               </div>
             </div>
           </div>
@@ -424,8 +434,8 @@ function LoanDetail() {
           </div>
           <div className="mt-4 min-w-max">
             <p className="text-sm mb-2 ml-2">Riwayat Transaksi</p>
-            <div className="border rounded-2xl bg-white text-sm">
-              <div className="px-6 py-4 bg-clear-50 rounded-t-2xl border-b border-gray-200">
+            <div className="border rounded-2xl overflow-hidden bg-white text-sm">
+              <div className="px-6 py-5 bg-white rounded-t-2xl border-b border-gray-200">
                 <div className="grid grid-cols-6 font-medium">
                   <p>Tanggal</p>
                   <p>Pokok</p>
@@ -436,20 +446,26 @@ function LoanDetail() {
                 </div>
               </div>
               <div>
-                {consumedProduct.transDetail.map((trans, index) => {
-                  return (
-                    <div
-                      className={`grid grid-cols-6 py-[10px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${consumedProduct.transDetail.length === index + 1 && "rounded-b-2xl"}`}
-                    >
-                      <p>{new Date(trans.date).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
-                      <p>{`${trans.principal ? `Rp. ${trans.principal.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.interest ? `Rp. ${trans.interest.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.penaltyFee ? `Rp. ${trans.penaltyFee.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.total ? `Rp. ${trans.total.toLocaleString("ID-id")}` : ""}`}</p>
-                      <p>{`${trans.loanBalance ? `Rp. ${trans.loanBalance.toLocaleString("ID-id")}` : ""}`}</p>
-                    </div>
-                  );
-                })}
+                {consumedProduct.transDetail.length <= 0 ? (
+                  <div className="py-2 text-center">
+                    <p>Riwayat transaksi tidak tersedia</p>
+                  </div>
+                ) : (
+                  <Fragment>
+                    {consumedProduct.transDetail.map((trans, index) => {
+                      return (
+                        <div className={`grid grid-cols-6 py-[10px] px-6 items-center ${index % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
+                          <p>{new Date(trans.date).toLocaleString("ID-id", { month: "short", day: "2-digit", year: "numeric" })}</p>
+                          <p>{`${trans.principal ? `Rp. ${trans.principal.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.interest ? `Rp. ${trans.interest.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.penaltyFee ? `Rp. ${trans.penaltyFee.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.total ? `Rp. ${trans.total.toLocaleString("ID-id")}` : ""}`}</p>
+                          <p>{`${trans.loanBalance ? `Rp. ${trans.loanBalance.toLocaleString("ID-id")}` : ""}`}</p>
+                        </div>
+                      );
+                    })}
+                  </Fragment>
+                )}
               </div>
             </div>
           </div>
