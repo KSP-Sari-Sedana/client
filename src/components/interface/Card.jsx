@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { Fragment } from "react";
 
 import { Badge } from "./Badge";
 import { ArrowIcon } from "../icons/ArrowIcon";
 import { HolderIcon } from "../icons/PlaceholderIcon";
+import { WarningIcon } from "../icons/WarningIcon";
+import { ThumbIcon } from "../icons/ThumbIcon";
 import { useHelperContext } from "../../context/helperContext";
 
 function Submission({ submDate, productName, status, productType }) {
@@ -26,24 +29,81 @@ function Submission({ submDate, productName, status, productType }) {
   );
 }
 
-function Consumed({ settleDate, accNumber, productName, productType, balance }) {
+function Consumed({ settleDate, accNumber, productName, productType, balance, accStatus }) {
   const { helpCtx } = useHelperContext();
   return (
-    <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center py-6 px-5">
+    <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center gap-x-3 py-6 px-5">
       {settleDate && (
-        <div className="border-r w-16 pr-2">
-          <p>{helpCtx.getDay(settleDate, "short")},</p>
-          <p>{`${helpCtx.getDate(settleDate, "numeric")} ${helpCtx.getMonth(settleDate, "short")}`}</p>
-        </div>
+        <Fragment>
+          <div className="">
+            <p>{helpCtx.getDay(settleDate, "short")},</p>
+            <p>{`${helpCtx.getDate(settleDate, "numeric")} ${helpCtx.getMonth(settleDate, "short")}`}</p>
+          </div>
+          <div className="border-r-2 border-gray-300 h-full"></div>
+        </Fragment>
       )}
-      <div className={`${settleDate && "pl-3"} grow`}>
+      <div className={`${settleDate && ""} grow`}>
         <div className="flex-col">
           <p className="font-sourcecodepro text-lg font-extrabold leading-4">{productName}</p>
           <p className="font-sourcecodepro font-semibold leading-4">rek: {helpCtx.formatAccNumber(accNumber)}</p>
           <p className={`font-darkergrotesque text-lg font-extrabold leading-4 mt-1 ${productType === "Simpanan" ? "text-clear-600" : "text-bethlehem-600"}`}>Rp. {balance}</p>
         </div>
       </div>
+      {accStatus && (
+        <Fragment>
+          <div className="border-r-2 border-gray-300 h-full"></div>
+          <div className="flex flex-col items-center gap-y-1">
+            <p>Angsuran</p>
+            <Badge style={accStatus === "Selesai" ? "clear" : "buttercup"}>{accStatus}</Badge>
+          </div>
+        </Fragment>
+      )}
     </div>
+  );
+}
+
+function ConsumedAlert({ nextPaymentDate, deposit, settleDate, tenor, accStatus }) {
+  const { helpCtx } = useHelperContext();
+
+  const day = deposit === "Harian" ? 1 : deposit === "Sekali" ? 0 : 30;
+  let nextPayment = undefined;
+  if (day !== 0) {
+    nextPayment = helpCtx.addDays(nextPaymentDate, day);
+    nextPayment = `Pembayaran berikutnya ${helpCtx.getFullDate(nextPayment)}`;
+  } else {
+    nextPayment = `Angsuran telah selesai`;
+  }
+
+  let maturityDate = undefined;
+  if (tenor !== 0) {
+    maturityDate = helpCtx.addDays(settleDate, tenor * 30);
+    maturityDate = `Jatuh tempo ${helpCtx.getFullDate(maturityDate)}`;
+  }
+
+  return (
+    <Fragment>
+      <div className="border rounded-xl bg-white h-20 text-sm leading-4 flex items-center py-6 px-5">
+        <div className="flex flex-col items-center gap-y-1">
+          {accStatus !== "Selesai" ? (
+            <Fragment>
+              <div className="text-bethlehem-500">
+                <WarningIcon.Triangle />
+              </div>
+              <p>{nextPayment}</p>
+              <p>{maturityDate}</p>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div className="text-clear-500">
+                <ThumbIcon />
+              </div>
+              <p>Kerja bagus, Anda telah</p>
+              <p>menyelesaikan angsuran ini!</p>
+            </Fragment>
+          )}
+        </div>
+      </div>
+    </Fragment>
   );
 }
 
@@ -77,6 +137,7 @@ function TinyProduct({ productName, status, image, id }) {
 const Card = {
   Submission,
   Consumed,
+  ConsumedAlert,
   TinyProduct,
 };
 

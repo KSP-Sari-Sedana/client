@@ -13,6 +13,7 @@ import { useSubmContext } from "../../context/submContext";
 import { useProductContext } from "../../context/productContext";
 import { useHelperContext } from "../../context/helperContext";
 import { useSummaryContext } from "../../context/summaryContext";
+import { ArrowIcon } from "../icons/ArrowIcon";
 
 function Summary() {
   const [summary, setSummary] = useState({});
@@ -310,13 +311,21 @@ function SavingDetail() {
       ) : (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
-          <div className="flex">
+          <div className="flex gap-x-3">
             <Card.Consumed
               settleDate={consumedProduct.settleDate}
               productName={consumedProduct.productName}
               productType={consumedProduct.productType}
               accNumber={consumedProduct.accNumber}
               balance={consumedProduct.balance.toLocaleString("Id-id")}
+              accStatus={consumedProduct.status}
+            />
+            <Card.ConsumedAlert
+              nextPaymentDate={consumedProduct?.transDetail[consumedProduct?.transDetail?.length - 1]?.date || consumedProduct.settleDate}
+              deposit={consumedProduct.deposit}
+              settleDate={consumedProduct.settleDate}
+              tenor={consumedProduct.tenor}
+              accStatus={consumedProduct.status}
             />
           </div>
           <div className="mt-4">
@@ -423,13 +432,21 @@ function LoanDetail() {
       ) : (
         <div>
           <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Detail Transaksi {consumedProduct.productName}</p>
-          <div className="flex">
+          <div className="flex gap-x-3">
             <Card.Consumed
               settleDate={consumedProduct.settleDate}
               productName={consumedProduct.productName}
               productType={consumedProduct.productType}
               accNumber={consumedProduct.accNumber}
               balance={consumedProduct.loanBalance?.toLocaleString("Id-id")}
+              accStatus={consumedProduct.status}
+            />
+            <Card.ConsumedAlert
+              nextPaymentDate={consumedProduct?.transDetail[consumedProduct?.transDetail?.length - 1]?.date || consumedProduct.settleDate}
+              deposit={consumedProduct.deposit}
+              settleDate={consumedProduct.settleDate}
+              tenor={consumedProduct.tenor}
+              accStatus={consumedProduct.status}
             />
           </div>
           <div className="mt-4 min-w-max">

@@ -20,7 +20,13 @@ function HelperProvider({ children }) {
   }
 
   function getFullDate(date) {
-    return `@ ${new Date(date).toLocaleString("id-ID", { dateStyle: "full" })}`;
+    return `${new Date(date).toLocaleString("id-ID", { dateStyle: "full" })}`;
+  }
+
+  function addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 
   function formatAccNumber(accNumber) {
@@ -43,6 +49,7 @@ function HelperProvider({ children }) {
     getDate,
     getMonth,
     getFullDate,
+    addDays,
     formatAccNumber,
     formatRupiah,
   };
