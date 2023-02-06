@@ -176,18 +176,18 @@ function Profile() {
             <div className="mb-10">
               <div>
                 <div className="flex gap-x-4">
-                  <Input action={setFirstName} label="Nama depan" value={firstName}></Input>
-                  <Input action={setLastName} label="Nama belakang" value={lastName}></Input>
+                  <Input action={setFirstName} label="Nama depan" placeHolder="Nama depan" value={firstName}></Input>
+                  <Input action={setLastName} label="Nama belakang" placeHolder="Nama belakang" value={lastName}></Input>
                   <div className="grow min-w-max">
-                    <Input action={setUsername} label="Username" value={username} icon="fingerPrint"></Input>
+                    <Input action={setUsername} label="Username" placeHolder="username" value={username} icon="fingerPrint"></Input>
                   </div>
                 </div>
                 <div className="flex gap-x-4">
                   <div className="grow">
-                    <Input action={setEmail} label="Alamat e-mail" value={email} icon="email"></Input>
+                    <Input action={setEmail} label="Alamat e-mail" placeHolder="user@domain.com" value={email} icon="email"></Input>
                   </div>
-                  <Input icon="phone" action={setCellphone} label="Nomor telepon" value={cellphone}></Input>
-                  <Input action={setNin} label="NIP" icon="nin" value={nin} />
+                  <Input icon="phone" action={setCellphone} label="Nomor telepon" placeHolder="081234567890" value={cellphone}></Input>
+                  <Input action={setNin} label="NIP" icon="nin" placeHolder="0505071410024441" value={nin} />
                 </div>
                 <div className="flex gap-x-4">
                   <div className="text-sm">
