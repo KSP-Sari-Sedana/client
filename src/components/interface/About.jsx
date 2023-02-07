@@ -1,7 +1,11 @@
+import { CandleArt } from "../art/CandleArt";
+
 function About() {
   return (
     <div id="about">
-      <img src="/assets/placeholder.svg" alt="About" className="mx-auto w-52" />
+      <div className="flex items-center justify-center">
+        <CandleArt />
+      </div>
       <p className="mt-5 text-center">
         Melalui pelayanan <span className="font-bold">PRIMA</span> untuk peningkatan kesejahteraan anggota dan masyarakat
       </p>
