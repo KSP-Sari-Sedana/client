@@ -567,6 +567,7 @@ function SubmissionDetail() {
 function Transaction() {
   const codeAvailable = ["Setoran", "Penarikan", "Bunga", "Administrasi"];
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGetTrans, setIsLoadingGetTrans] = useState(false);
   const [saveInst, setSaveInst] = useState(0);
   const [principal, setPrincipal] = useState(0);
   const [interest, setInterest] = useState(0);
@@ -586,8 +587,11 @@ function Transaction() {
 
   useEffect(() => {
     getTransactionDetail();
-    getLastTransaction();
   }, [username]);
+
+  useEffect(() => {
+    getLastTransaction();
+  }, []);
 
   async function getTransactionDetail() {
     if (!username) return;
@@ -619,7 +623,9 @@ function Transaction() {
   }
 
   async function getLastTransaction() {
+    setIsLoadingGetTrans(true);
     setTrans(await transCtx.get(6));
+    setIsLoadingGetTrans(false);
   }
 
   async function submitTransaction() {
@@ -648,35 +654,41 @@ function Transaction() {
     <div className="text-sm">
       <div className="min-w-max">
         <div className="flex gap-x-7">
-          <div>
+          <div className="w-[35%]">
             <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Transaksi Terakhir</p>
-            <ol className="relative border-l border-zinc-300 ml-2">
-              {trans?.map((tran, index) => (
-                <li className="mb-3 ml-4" key={index}>
-                  <div className="absolute w-3 h-3 bg-sky-600 rounded-full mt-1.5 -left-1.5"></div>
-                  {index === 0 && <div className="absolute animate-ping w-3 h-3 bg-sky-600 rounded-full mt-1.5 -left-1.5"></div>}
-                  <time className="mb-1 font-normal leading-none text-gray-400 font-sourcecodepro tracking-tighter">{helpCtx.getFullDate(tran.transDate)}</time>
-                  <div className="flex items-center gap-x-4 justify-between">
-                    <div className="flex items-center gap-x-2 col-span-2">
-                      <div>
-                        <Avatar dimension="w-7 h-7" src={tran.image || "https://source.boringavatars.com/pixel/120?square"} />
-                      </div>
-                      <div>
-                        <p className="leading-none font-medium">{tran.name}</p>
-                        <div className="flex items-center">
-                          <StarIcon role={tran.role} />
-                          <p className="font-sourcecodepro text-xs text-gray-600">{tran.role}</p>
+            <div>
+              {isLoadingGetTrans ? (
+                <Spinner text="Mengambil transaksi terakhir" className="text-slate-700 place-content-center mb-2" />
+              ) : (
+                <ol className="relative border-l border-zinc-300 ml-2">
+                  {trans?.map((tran, index) => (
+                    <li className="mb-3 ml-4" key={index}>
+                      <div className="absolute w-3 h-3 bg-sky-600 rounded-full mt-1.5 -left-1.5"></div>
+                      {index === 0 && <div className="absolute animate-ping w-3 h-3 bg-sky-600 rounded-full mt-1.5 -left-1.5"></div>}
+                      <time className="mb-1 font-normal leading-none text-gray-400 font-sourcecodepro tracking-tighter">{helpCtx.getFullDate(tran.transDate)}</time>
+                      <div className="flex items-center gap-x-4 justify-between">
+                        <div className="flex items-center gap-x-2 col-span-2">
+                          <div>
+                            <Avatar dimension="w-7 h-7" src={tran.image || "https://source.boringavatars.com/pixel/120?square"} />
+                          </div>
+                          <div>
+                            <p className="leading-none font-medium">{tran.name}</p>
+                            <div className="flex items-center">
+                              <StarIcon role={tran.role} />
+                              <p className="font-sourcecodepro text-xs text-gray-600">{tran.role}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm border-dashed border-2 px-2 py-1 rounded-md">
+                          <p className="font-sourcecodepro font-medium">{helpCtx.formatAccNumber(tran.accNumber)}</p>
+                          <p className="text-xs font-medium">{helpCtx.formatRupiah(tran.total)}</p>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-sm border-dashed border-2 px-2 py-1 rounded-md">
-                      <p className="font-sourcecodepro font-medium">{helpCtx.formatAccNumber(tran.accNumber)}</p>
-                      <p className="text-xs font-medium">{helpCtx.formatRupiah(tran.total)}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
           </div>
           <div className="grow">
             <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Tambah Transaksi</p>
