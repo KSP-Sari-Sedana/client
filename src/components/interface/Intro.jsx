@@ -1,4 +1,4 @@
-import { HappyCreditCardArt } from "../art/HappyCreditCardArt";
+import { IntroArt } from "../art/IntroArt";
 
 function Intro() {
   return (
@@ -12,8 +12,10 @@ function Intro() {
             <span className="font-black tracking-tight"> PRIMA.</span>
           </p>
         </div>
-        <div className="flex items-center justify-center mt-10">
-          <HappyCreditCardArt />
+        <div className="flex items-center justify-center mt-3">
+          <div>
+            <IntroArt />
+          </div>
         </div>
       </div>
     </div>
