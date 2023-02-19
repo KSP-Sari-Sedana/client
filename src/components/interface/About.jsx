@@ -1,11 +1,7 @@
-import { CandleArt } from "../art/CandleArt";
-
 function About() {
   return (
     <div id="about">
-      <div className="flex items-center justify-center">
-        <CandleArt />
-      </div>
+      <div className="flex items-center justify-center"></div>
       <p className="mt-5 text-center">
         Melalui pelayanan <span className="font-bold">PRIMA</span> untuk peningkatan kesejahteraan anggota dan masyarakat
       </p>
