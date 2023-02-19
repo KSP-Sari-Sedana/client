@@ -9,6 +9,7 @@ import { Button } from "./Button";
 import { Modal } from "./Modal";
 import { Spinner } from "./Spinner";
 import { HolderIcon } from "../icons/HolderIcon";
+import { UpsssArt } from "../art/UpsssArt";
 import { useSubmContext } from "../../context/submContext";
 import { useProductContext } from "../../context/productContext";
 import { useHelperContext } from "../../context/helperContext";
@@ -393,14 +394,27 @@ function Loan() {
       {isLoading ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="grid grid-cols-4 gap-3 min-w-max">
-          {consumedProducts.map((product, index) => {
-            return (
-              <Link key={index} to={`${product.submId}`}>
-                <Card.Consumed productName={product.productName} productType={product.productType} accNumber={product.accNumber} balance={product.loanBalance?.toLocaleString("ID-id")} />
-              </Link>
-            );
-          })}
+        <div>
+          {consumedProducts.length <= 0 ? (
+            <div className="flex items-center justify-center mt-20">
+              <div className="flex flex-col">
+                <div>
+                  <UpsssArt />
+                </div>
+                <p className="text-center text-sm mt-2">Data tidak ditemukan</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-3 min-w-max">
+              {consumedProducts.map((product, index) => {
+                return (
+                  <Link key={index} to={`${product.submId}`}>
+                    <Card.Consumed productName={product.productName} productType={product.productType} accNumber={product.accNumber} balance={product.loanBalance?.toLocaleString("ID-id")} />
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>
