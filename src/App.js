@@ -55,7 +55,7 @@ export default function App() {
                 path="/dashboard"
                 element={
                   <RestrictPage>
-                    <div>
+                    <div className="text-sm">
                       <p>Lengkapi profil dan lakukan pembayaran</p>
                       <p>modal di koperasi untuk mengakses dashboard</p>
                     </div>
