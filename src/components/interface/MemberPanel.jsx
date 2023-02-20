@@ -40,14 +40,12 @@ function Summary() {
           {summary && (
             <div className="grid grid-cols-3 gap-3 place-self-stretch min-w-max text-sm">
               <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3">
-                <HolderIcon.Square />
                 <div className="grow">
                   <p className="font-medium mb-1">Total tabungan</p>
                   <p className="font-darkergrotesque text-lg font-extrabold leading-4 mt-1 text-clear-600">{helpCtx.formatRupiah(summary.saving.balance)}</p>
                 </div>
               </div>
               <div className="col-span-2 bg-white border rounded-xl px-4 py-3 flex gap-x-3">
-                <HolderIcon.Square />
                 <div className="grow flex items-center justify-between gap-x-3">
                   <div>
                     <p className="font-medium mb-1">Total pinjaman</p>
