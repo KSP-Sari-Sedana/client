@@ -28,7 +28,7 @@ function Installment({ isOpen, closeModal, installment }) {
                   </div>
                   <div className="mt-3 border border-slate-200 rounded-xl">
                     <dl className="rounded-lg">
-                      <div className="bg-clear-50 px-4 py-4 grid grid-cols-9 rounded-t-xl text-sm">
+                      <div className="bg-white px-4 py-4 grid grid-cols-9 rounded-t-xl text-sm border-b">
                         <dt>Bulan</dt>
                         <dt className="col-span-2">Pokok</dt>
                         <dt className="col-span-2">Bunga</dt>
@@ -39,7 +39,7 @@ function Installment({ isOpen, closeModal, installment }) {
                         return (
                           <div
                             key={index}
-                            className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${installment.length === index + 1 && "rounded-b-2xl"} px-4 py-3 grid grid-cols-9 text-sm text-zinc-600`}
+                            className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${installment.length === index + 1 && "rounded-b-2xl"} px-4 py-3 grid grid-cols-9 text-sm text-zinc-600`}
                           >
                             <dt>{index + 1}</dt>
                             <dt className="col-span-2">Rp. {item?.principal?.toLocaleString("Id-id")}</dt>
