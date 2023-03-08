@@ -13,7 +13,7 @@ function Navbar() {
         <div className="w-48">
           <Logo />
         </div>
-        <div>
+        <div className="mx-auto">
           <nav className="flex p-4 space-x-20 justify-between text-zinc-500 text-sm">
             <a href="/#product" className="hover:text-zinc-800">
               Produk
