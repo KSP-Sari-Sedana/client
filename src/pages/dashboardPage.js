@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Navbar } from "../components/interface/Navbar";
 import { Admin } from "../components/interface/AdminPanel";
 import { Teller } from "../components/interface/TellerPanel";
-import { Member } from "../components/interface/MemberPanel";
+import { Warga } from "../components/interface/WargaPanel";
 import { DashboardMenu } from "../components/interface/DashboardMenu";
 
 function DashboardLayout({ children }) {
@@ -25,58 +25,58 @@ function DashboardLayout({ children }) {
   );
 }
 
-function MemberSummary() {
+function WargaSummary() {
   return (
     <DashboardLayout>
-      <Member.Summary />
+      <Warga.Summary />
     </DashboardLayout>
   );
 }
 
-function MemberSubmission() {
+function WargaSubmission() {
   return (
     <DashboardLayout>
-      <Member.Submission />
+      <Warga.Submission />
     </DashboardLayout>
   );
 }
 
-function MemberSubmissionDetail() {
+function WargaSubmissionDetail() {
   return (
     <DashboardLayout>
-      <Member.SubmissionDetail />
+      <Warga.SubmissionDetail />
     </DashboardLayout>
   );
 }
 
-function MemberSaving() {
+function WargaSaving() {
   return (
     <DashboardLayout>
-      <Member.Saving />
+      <Warga.Saving />
     </DashboardLayout>
   );
 }
 
-function MemberSavingDetail() {
+function WargaSavingDetail() {
   return (
     <DashboardLayout>
-      <Member.SavingDetail />
+      <Warga.SavingDetail />
     </DashboardLayout>
   );
 }
 
-function MemberLoan() {
+function WargaLoan() {
   return (
     <DashboardLayout>
-      <Member.Loan />
+      <Warga.Loan />
     </DashboardLayout>
   );
 }
 
-function MemberLoanDetail() {
+function WargaLoanDetail() {
   return (
     <DashboardLayout>
-      <Member.LoanDetail />
+      <Warga.LoanDetail />
     </DashboardLayout>
   );
 }
@@ -154,13 +154,13 @@ function TellerTransaction() {
 }
 
 const DashboardPage = {
-  MemberSummary,
-  MemberSubmission,
-  MemberSubmissionDetail,
-  MemberSaving,
-  MemberSavingDetail,
-  MemberLoan,
-  MemberLoanDetail,
+  WargaSummary,
+  WargaSubmission,
+  WargaSubmissionDetail,
+  WargaSaving,
+  WargaSavingDetail,
+  WargaLoan,
+  WargaLoanDetail,
   AdminSummary,
   AdminSubmission,
   AdminSubmissionDetail,

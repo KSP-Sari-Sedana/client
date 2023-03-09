@@ -50,7 +50,7 @@ export default function App() {
             <Route path="/register" element={isLoggedIn ? <Navigate to="/profile" /> : <RegisterPage />} />
             <Route path="/profile" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
             <Route path="/products/:id" element={<ProductPage />} />
-            {userCtx?.me?.role === "Member" ? (
+            {userCtx?.me?.role === "Warga" ? (
               <Route
                 path="/dashboard"
                 element={
@@ -85,13 +85,13 @@ export default function App() {
               />
             ) : (
               <Fragment>
-                <Route path="/dashboard" element={isLoggedIn ? <DashboardPage.MemberSummary /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/submission" element={isLoggedIn ? <DashboardPage.MemberSubmission /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/submission/:type/:id" element={isLoggedIn ? <DashboardPage.MemberSubmissionDetail /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/saving" element={isLoggedIn ? <DashboardPage.MemberSaving /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/saving/:id" element={isLoggedIn ? <DashboardPage.MemberSavingDetail /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/loan" element={isLoggedIn ? <DashboardPage.MemberLoan /> : <Navigate to="/login" />} />
-                <Route path="/dashboard/loan/:id" element={isLoggedIn ? <DashboardPage.MemberLoanDetail /> : <Navigate to="/login" />} />
+                <Route path="/dashboard" element={isLoggedIn ? <DashboardPage.WargaSummary /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/submission" element={isLoggedIn ? <DashboardPage.WargaSubmission /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/submission/:type/:id" element={isLoggedIn ? <DashboardPage.WargaSubmissionDetail /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/saving" element={isLoggedIn ? <DashboardPage.WargaSaving /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/saving/:id" element={isLoggedIn ? <DashboardPage.WargaSavingDetail /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/loan" element={isLoggedIn ? <DashboardPage.WargaLoan /> : <Navigate to="/login" />} />
+                <Route path="/dashboard/loan/:id" element={isLoggedIn ? <DashboardPage.WargaLoanDetail /> : <Navigate to="/login" />} />
                 {userCtx?.me?.role === "Admin" && (
                   <Fragment>
                     <Route path="/dashboard/admin" element={isLoggedIn ? <DashboardPage.AdminSummary /> : <Navigate to="/login" />} />

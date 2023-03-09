@@ -209,7 +209,7 @@ function Calculator(props) {
               icon="arrow"
             />
             <Modal.Confirm show={isOpen} onClose={setIsOpen}>
-              {userCtx.me.status === "Aktif" && userCtx.me.role !== "Member" ? (
+              {userCtx.me.status === "Aktif" && userCtx.me.role !== "Warga" ? (
                 <div className="text-sm">
                   <p className="text-center">
                     Anda akan mengajukan produk <span className="font-sourcecodepro font-bold">{product.name}</span>

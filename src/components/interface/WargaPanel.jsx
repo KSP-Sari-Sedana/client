@@ -504,7 +504,7 @@ function LoanDetail() {
   );
 }
 
-const Member = {
+const Warga = {
   Summary,
   Submission,
   SubmissionDetail,
@@ -514,4 +514,4 @@ const Member = {
   LoanDetail,
 };
 
-export { Member };
+export { Warga };

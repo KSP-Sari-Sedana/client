@@ -28,7 +28,7 @@ import { useAccContext } from "../../context/accContext";
 const typeAvailable = ["Simpanan", "Pinjaman"];
 const depositAvailable = ["Bulanan", "Harian", "Sekali"];
 const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
-const availableRole = ["Admin", "Teller", "Anggota", "Member"];
+const availableRole = ["Admin", "Teller", "Anggota", "Warga"];
 const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
 const availableAccStatus = ["Berjalan", "Selesai"];
 
@@ -104,10 +104,10 @@ function Summary() {
                 </Badge>
               </div>
               <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalMember}</p>
+                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalWarga}</p>
                 <Badge style="gray">
-                  <StarIcon role="Member" />
-                  Member
+                  <StarIcon role="Warga" />
+                  Warga
                 </Badge>
               </div>
             </div>
