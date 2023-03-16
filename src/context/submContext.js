@@ -14,8 +14,8 @@ function SubmProvider({ children }) {
     return res?.data?.subm || {};
   }
 
-  async function get(type) {
-    let res = await submAPI.get(type);
+  async function get(type, status) {
+    let res = await submAPI.get(type, status);
     return res.data.subms;
   }
 

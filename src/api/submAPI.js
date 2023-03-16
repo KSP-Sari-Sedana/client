@@ -12,16 +12,28 @@ async function create(type, data) {
   return res;
 }
 
-async function get(type) {
-  let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm/${type}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-  res = await res.json();
-  return res;
+async function get(type, status) {
+  if (status) {
+    let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm/${type}?status=${status}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    res = await res.json();
+    return res;
+  } else {
+    let res = await fetch(`${process.env.REACT_APP_API_URL}/api/subm/${type}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    res = await res.json();
+    return res;
+  }
 }
 
 async function update(type, id, data) {

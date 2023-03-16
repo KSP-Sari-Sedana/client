@@ -17,6 +17,7 @@ import { WhatsAppIcon } from "../icons/WhatsAppIcon";
 import { ArrowIcon } from "../icons/ArrowIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import { WarningIcon } from "../icons/WarningIcon";
+import { UpsssArt } from "../art/UpsssArt";
 import { useSubmContext } from "../../context/submContext";
 import { useUserContext } from "../../context/userContext";
 import { useProductContext } from "../../context/productContext";
@@ -30,6 +31,7 @@ const depositAvailable = ["Bulanan", "Harian", "Sekali"];
 const statusAvailable = ["Publik", "Nonaktif", "Wajib"];
 const availableRole = ["Admin", "Teller", "Anggota", "Warga"];
 const availableStatus = ["Aktif", "Nonaktif", "Ditinjau"];
+const availableStatusSubmission = ["Ditinjau", "Diterima", "Ditolak"];
 const availableAccStatus = ["Berjalan", "Selesai"];
 
 function Summary() {
@@ -123,14 +125,15 @@ function Submission() {
   const [submSaving, setSubmSaving] = useState([]);
   const [submLoan, setSubmLoan] = useState([]);
   const { submCtx } = useSubmContext();
+  const [selectedStatus, setSelectedStatus] = useState(availableStatusSubmission[0]);
 
   useEffect(() => {
     getSubmSaving();
-  }, []);
+  }, [selectedStatus]);
 
   async function getSubmSaving() {
-    setSubmSaving(await submCtx.get("saving"));
-    setSubmLoan(await submCtx.get("loan"));
+    setSubmSaving(await submCtx.get("saving", selectedStatus));
+    setSubmLoan(await submCtx.get("loan", selectedStatus));
     setIsLoading(false);
   }
 
@@ -138,28 +141,48 @@ function Submission() {
     <div>
       <p className="font-darkergrotesque text-2xl font-extrabold mb-3">Daftar Semua Pengajuan</p>
       <Tab.Group>
-        <div className="flex items-center text-sm mb-3 ml-3">
-          <p>Produk: </p>
-          <Tab.List className="flex gap-x-2 ml-2">
-            <Tab
-              className={({ selected }) =>
-                selected
-                  ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-clear-500 bg-clear-50"
-                  : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
-              }
-            >
-              Simpanan
-            </Tab>
-            <Tab
-              className={({ selected }) =>
-                selected
-                  ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-clear-500 bg-clear-50"
-                  : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
-              }
-            >
-              Pinjaman
-            </Tab>
-          </Tab.List>
+        <div className="flex items-center text-sm mb-3 ml-3 gap-x-2">
+          <div className="flex items-center">
+            <p>Produk: </p>
+            <Tab.List className="flex gap-x-2 ml-2">
+              <Tab
+                className={({ selected }) =>
+                  selected
+                    ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-clear-500 bg-clear-50"
+                    : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
+                }
+              >
+                Simpanan
+              </Tab>
+              <Tab
+                className={({ selected }) =>
+                  selected
+                    ? "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-magenta-500 bg-magenta-50"
+                    : "text-sm px-3.5 py-1 rounded-full flex items-center max-w-fit text-gray-700 bg-gray-100"
+                }
+              >
+                Pinjaman
+              </Tab>
+            </Tab.List>
+          </div>
+          <div>
+            <RadioGroup value={selectedStatus} onChange={setSelectedStatus}>
+              <div className="flex items-center gap-x-2">
+                <p>Status: </p>
+                {availableStatusSubmission.map((status, index) => (
+                  <RadioGroup.Option key={index} value={status} as={Fragment}>
+                    {({ checked }) => (
+                      <div>
+                        <Badge className="cursor-pointer" style={checked ? `${selectedStatus === "Ditinjau" ? "buttercup" : `${selectedStatus === "Diterima" ? "rice" : "pippin"}`}` : "gray"}>
+                          {status}
+                        </Badge>
+                      </div>
+                    )}
+                  </RadioGroup.Option>
+                ))}
+              </div>
+            </RadioGroup>
+          </div>
         </div>
         <Tab.Panels>
           <div>
@@ -183,31 +206,44 @@ function Submission() {
                       </div>
                     ) : (
                       <div className="h-96 overflow-scroll">
-                        {submSaving.map((subm, index) => {
-                          return (
-                            <Link key={index} to={`saving/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
-                              <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
-                                <div>
-                                  <Avatar dimension="w-7 h-7" src={subm.image || "https://source.boringavatars.com/pixel/120?square"} />
-                                </div>
-                                <div>
-                                  <p className="leading-none font-medium">{subm.fullName}</p>
-                                  <div className="flex items-center">
-                                    <StarIcon role={subm.role} />
-                                    <p className="font-sourcecodepro text-xs text-gray-600">{subm.role}</p>
+                        {submSaving.length === 0 ? (
+                          <div className="flex items-center justify-center h-full">
+                            <div>
+                              <UpsssArt />
+                              <p className="text-center">
+                                {`Pengajuan dengan status ${selectedStatus.toLocaleLowerCase()}`} <br /> tidak ditemukan
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            {submSaving.map((subm, index) => {
+                              return (
+                                <Link key={index} to={`saving/${subm.submId}`} className={`flex py-[12px] px-6 items-center hover:bg-gray-50 cursor-pointer`}>
+                                  <div className="flex items-center gap-x-2 col-span-2 w-[37%] ">
+                                    <div>
+                                      <Avatar dimension="w-7 h-7" src={subm.image || "https://source.boringavatars.com/pixel/120?square"} />
+                                    </div>
+                                    <div>
+                                      <p className="leading-none font-medium">{subm.fullName}</p>
+                                      <div className="flex items-center">
+                                        <StarIcon role={subm.role} />
+                                        <p className="font-sourcecodepro text-xs text-gray-600">{subm.role}</p>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-                              <p className=" w-[26%] font-sourcecodepro font-bold">{subm.productName}</p>
-                              <p className=" w-[20%] ">{new Date(subm.submDate).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
-                              <p className=" w-[23%] ">Rp. {subm.installment.toLocaleString("ID-id")}</p>
-                              <p className=" w-[20%] ">{subm.tenor ? subm.tenor + " bulan" : ""}</p>
-                              <div className=" w-[20%] ">
-                                <Badge style={`${subm.status === "Diterima" ? "rice" : subm.status === "Ditinjau" ? "buttercup" : "pippin"}`}>{subm.status}</Badge>
-                              </div>
-                            </Link>
-                          );
-                        })}
+                                  <p className=" w-[26%] font-sourcecodepro font-bold">{subm.productName}</p>
+                                  <p className=" w-[20%] ">{new Date(subm.submDate).toLocaleString("id-ID", { month: "short", day: "2-digit", year: "numeric" })}</p>
+                                  <p className=" w-[23%] ">Rp. {subm.installment.toLocaleString("ID-id")}</p>
+                                  <p className=" w-[20%] ">{subm.tenor ? subm.tenor + " bulan" : ""}</p>
+                                  <div className=" w-[20%] ">
+                                    <Badge style={`${subm.status === "Diterima" ? "rice" : subm.status === "Ditinjau" ? "buttercup" : "pippin"}`}>{subm.status}</Badge>
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
