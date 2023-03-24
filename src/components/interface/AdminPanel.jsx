@@ -53,64 +53,98 @@ function Summary() {
       {isLoading ? (
         <Spinner text="Loading" className="text-slate-700 place-content-center" />
       ) : (
-        <div className="flex gap-3 place-self-stretch min-w-max text-sm">
-          <Link to="/dashboard/admin/user" className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3 grow">
-            <div className="grow gap-x-2 flex items-center justify-between">
-              <div className="flex items-center -space-x-4">
-                <img className="w-8 h-8 rounded-full" src="/assets/profile-picture-bagus.svg" alt="" />
-                <img className="w-10 h-10 rounded-full border-4 border-white" src="/assets/profile-picture-rama.svg" alt="" />
-                <img className="w-10 h-10 rounded-full border-4 border-white" src="/assets/profile-picture-rizky.svg" alt="" />
+        <div className="flex flex-col gap-y-3">
+          <div className="flex gap-3 place-self-stretch min-w-max text-sm">
+            <Link to="/dashboard/admin/user" className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3 grow">
+              <div className="grow gap-x-2 flex items-center justify-between">
+                <div className="flex items-center -space-x-4">
+                  <img className="w-8 h-8 rounded-full" src="/assets/profile-picture-bagus.svg" alt="" />
+                  <img className="w-10 h-10 rounded-full border-4 border-white" src="/assets/profile-picture-rama.svg" alt="" />
+                  <img className="w-10 h-10 rounded-full border-4 border-white" src="/assets/profile-picture-rizky.svg" alt="" />
+                </div>
+                <div className="flex flex-col items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.user.totalUser}</p>
+                  <p className="font-medium">Pengguna</p>
+                </div>
+                <div>
+                  <ArrowIcon.Dart aim="rightTop" />
+                </div>
               </div>
-              <div className="flex flex-col items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.user.totalUser}</p>
-                <p className="font-medium">Pengguna</p>
-              </div>
-              <div>
-                <ArrowIcon.Dart aim="rightTop" />
+            </Link>
+            <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3 grow">
+              <div className="grow gap-x-2 flex items-center justify-around">
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.status.totalAktif}</p>
+                  <Badge style="clear">Aktif</Badge>
+                </div>
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.status.totalNonaktif}</p>
+                  <Badge style="pippin">Nonaktif</Badge>
+                </div>
               </div>
             </div>
-          </Link>
-          <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3 grow">
-            <div className="grow gap-x-2 flex items-center justify-around">
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.status.totalAktif}</p>
-                <Badge style="clear">Aktif</Badge>
-              </div>
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.status.totalNonaktif}</p>
-                <Badge style="pippin">Nonaktif</Badge>
+            <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3">
+              <div className="grow flex gap-x-2 items-center justify-around">
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalAdmin}</p>
+                  <Badge style="gray">
+                    <StarIcon role="Admin" />
+                    Admin
+                  </Badge>
+                </div>
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalTeller}</p>
+                  <Badge style="gray">
+                    <StarIcon role="Teller" />
+                    Teller
+                  </Badge>
+                </div>
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalAnggota}</p>
+                  <Badge style="gray">
+                    <StarIcon role="Anggota" />
+                    Anggota
+                  </Badge>
+                </div>
+                <div className="flex flex-col gap-y-1 items-center">
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalWarga}</p>
+                  <Badge style="gray">
+                    <StarIcon role="Warga" />
+                    Warga
+                  </Badge>
+                </div>
               </div>
             </div>
           </div>
-          <div className="bg-white border rounded-xl px-4 py-3 flex items-center gap-x-3">
-            <div className="grow flex gap-x-2 items-center justify-around">
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalAdmin}</p>
-                <Badge style="gray">
-                  <StarIcon role="Admin" />
-                  Admin
-                </Badge>
+          <div className="flex items-center gap-x-3">
+            <div className="bg-white border rounded-xl px-4 py-3 w-3/5">
+              <p className="text-center mb-2 text-sm font-medium">Saldo Koperasi</p>
+              <div className="flex items-center gap-x-3 justify-around">
+                <div className="px-3 py-2 border-dashed border-2 rounded-xl">
+                  <p className="text-sm font-sourcecodepro text-gray-600">Simpanan</p>
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4 text-clear-600">Rp. {summary.balance.totalSavingBalance.toLocaleString("ID-id")}</p>
+                </div>
+                <div className="px-3 py-2 border-dashed border-2 rounded-xl">
+                  <p className="text-sm font-sourcecodepro text-gray-600">Pinjaman</p>
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4 text-clear-600">Rp. {summary.balance.totalLoanBalance.toLocaleString("ID-id")}</p>
+                </div>
+                <div className="px-3 py-2 border-dashed border-2 rounded-xl">
+                  <p className="text-sm font-sourcecodepro text-gray-600">Total</p>
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4 text-clear-600">Rp. {summary.balance.totalBalance.toLocaleString("ID-id")}</p>
+                </div>
               </div>
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalTeller}</p>
-                <Badge style="gray">
-                  <StarIcon role="Teller" />
-                  Teller
-                </Badge>
-              </div>
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalAnggota}</p>
-                <Badge style="gray">
-                  <StarIcon role="Anggota" />
-                  Anggota
-                </Badge>
-              </div>
-              <div className="flex flex-col gap-y-1 items-center">
-                <p className="font-darkergrotesque text-lg font-extrabold leading-4">{summary.role.totalWarga}</p>
-                <Badge style="gray">
-                  <StarIcon role="Warga" />
-                  Warga
-                </Badge>
+            </div>
+            <div className="bg-white border rounded-xl px-4 py-3 w-2/5">
+              <p className="text-center mb-2 text-sm font-medium">Total Transaksi</p>
+              <div className="flex items-center gap-x-3 justify-around">
+                <div className="px-3 py-2 border-dashed border-2 rounded-xl">
+                  <p className="text-sm font-sourcecodepro text-gray-600">Kemarin</p>
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4 text-clear-600">Rp. {summary.transaction.totalTransYesterday.toLocaleString("ID-id")}</p>
+                </div>
+                <div className="px-3 py-2 border-dashed border-2 rounded-xl">
+                  <p className="text-sm font-sourcecodepro text-gray-600">Hari Ini</p>
+                  <p className="font-darkergrotesque text-lg font-extrabold leading-4 text-clear-600">Rp. {summary.transaction.totalTransToday.toLocaleString("ID-id")}</p>
+                </div>
               </div>
             </div>
           </div>
