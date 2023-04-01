@@ -12,7 +12,7 @@ async function getByUser() {
 
 async function markAsRead(id) {
   await fetch(`${process.env.REACT_APP_API_URL}/api/notif/${id}`, {
-    method: "PATCH",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
